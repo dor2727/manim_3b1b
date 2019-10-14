@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 
 
-from big_ol_pile_of_manim_imports import *
+from manimlib.imports import *
 
 NAME_WITH_SPACES = "Prime Meridian"
 DIAMETER = 3.0
@@ -88,7 +88,9 @@ class NameAnimationScene(Scene):
         return self.animated_name.replace(" ", "") + "Animation"
 
 
-names = []
+names = [
+    "Happy 18th Birthday\\\\Pranavi Hiremath!"
+]
 
 if __name__ == "__main__":
     for name in names:
