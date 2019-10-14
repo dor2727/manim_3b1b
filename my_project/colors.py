@@ -1,5 +1,7 @@
 from manimlib.imports import *
 
+OUTPUT_DIRECTORY = "colors"
+
 COLOR_MAP = {
     "DARK_BROWN": "#8B4513",
     "LIGHT_BROWN": "#CD853F",

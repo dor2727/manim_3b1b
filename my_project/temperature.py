@@ -615,7 +615,7 @@ class MeltIce(Scene):
 				else:
 					particle.radius_mobject.shift(allowed_movement_vector)
 					particle.shift(allowed_movement_vector)
-					particle.new_location += allowed_movement_vector
+					particle._new_location += allowed_movement_vector
 
 		def line_updater(line, dt):
 			c = self.current_step_config

@@ -1,6 +1,6 @@
 from manimlib.imports import *
 
-OUTPUT_DIRECTORY = "my_project_test"
+OUTPUT_DIRECTORY = "my_plot_function"
 
 def parabola(height = 0, center_point = 0, sign=1):
 	return lambda x: sign*(x - center_point)**2 + height
