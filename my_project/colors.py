@@ -1,4 +1,4 @@
-from big_ol_pile_of_manim_imports import *
+from manimlib.imports import *
 
 COLOR_MAP = {
     "DARK_BROWN": "#8B4513",

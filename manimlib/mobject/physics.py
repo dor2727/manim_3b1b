@@ -11,10 +11,10 @@ from manimlib.animation.creation import Write
 
 
 k_B = 1.38064852e-23
-k_B_tex = TexMobject("1.38064852\\times10^{-23} \\frac{m^2 kg}{s^2 K}")
+# k_B_tex = TexMobject("1.38064852\\times10^{-23} \\frac{m^2 kg}{s^2 K}")
 
 SPEED_OF_LIGHT = 299_792_458 # m/s
-SPEED_OF_LIGHT_tex = TexMobject("3\\times10^8 \\frac{m}{s}")
+# SPEED_OF_LIGHT_tex = TexMobject("3\\times10^8 \\frac{m}{s}")
 
 def polar_to_cartesian(r, theta):
 	return r*np.cos(theta), r*np.sin(theta)
