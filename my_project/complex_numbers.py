@@ -1,6 +1,6 @@
 from manimlib.imports import *
 
-OUTPUT_DIRECTORY = "complex_numbers"
+OUTPUT_DIRECTORY = "complex_numbers2"
 
 fix_stretch = lambda factor: (factor - 1) * 0.1 * LEFT
 
@@ -15,7 +15,7 @@ class StretchNumberLine(Scene):
 			(-2, 2 * LEFT),
 		],
 
-		"title": Title("Normal Multiplication"),
+		"title_text": "Normal Multiplication",
 
 		"dot_color": YELLOW,
 
@@ -24,6 +24,7 @@ class StretchNumberLine(Scene):
 		"display_text": True,
 	}
 	def construct(self):
+		self.add_title()
 		# create the number line
 		self.real_number_line = number_line = NumberLine(
 			x_min=self.number_line_min,
@@ -97,6 +98,13 @@ class StretchNumberLine(Scene):
 			self.move_multiply_arrow(example_number, text_location)
 
 		self.wait(3)
+
+	def add_title(self):
+		title = TextMobject(self.title_text)
+		title.add_background_rectangle()
+		title.scale(1.5)
+		title.to_corner(UL, buff=MED_SMALL_BUFF)
+		self.add_foreground_mobject(title)
 
 	def write_and_fade(self, obj, add=True, position=None):
 		if position is not None:
@@ -519,7 +527,7 @@ class StretchNumberLine_3_times(Scene):
 
 		"multiply_by": 2,
 
-		"title": Title("Normal Multiplication"),
+		"title_text": "Normal Multiplication",
 
 		"dot_color": YELLOW,
 
@@ -528,6 +536,7 @@ class StretchNumberLine_3_times(Scene):
 		"display_text": True,
 	}
 	def construct(self):
+		self.add_title()
 		# create the number line
 		self.real_number_line = number_line = NumberLine(
 			x_min=self.number_line_min,
@@ -593,6 +602,13 @@ class StretchNumberLine_3_times(Scene):
 			)
 
 		self.wait(3)
+
+	def add_title(self):
+		title = TextMobject(self.title_text)
+		title.add_background_rectangle()
+		title.scale(1.5)
+		title.to_corner(UL, buff=MED_SMALL_BUFF)
+		self.add_foreground_mobject(title)
 
 	def write_and_fade(self, obj, add=True, position=None):
 		if position is not None:

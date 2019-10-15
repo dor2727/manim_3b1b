@@ -308,7 +308,7 @@ class MyParameterizedCurve(GraphScene):
 	def construct(self):
 		self.setup_axes()
 
-		my_curve = ParametricInfiniteFunction(self.function, **self.curve_config)
+		my_curve = ParametricFunction(self.function, **self.curve_config, step_size="auto")
 		self.play(
 			ShowCreation(my_curve, run_time = 2),
 			Animation(self._setup_equation()),
