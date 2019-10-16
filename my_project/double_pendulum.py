@@ -1,4 +1,4 @@
-from big_ol_pile_of_manim_imports import *
+from manimlib.imports import *
 
 OUTPUT_DIRECTORY = "double_pendulum"
 
@@ -9,10 +9,10 @@ class DoublePendulum(VGroup):
 		"L2": 2,
 		"m1": 1,
 		"m2": 1,
-		"initial_theta1": 45*DEGREES,
-		"initial_theta2": 90*DEGREES,
-		"initial_omega1": 0,
-		"initial_omega2": 0,
+		"initial_theta1": np.float128(45*DEGREES),
+		"initial_theta2": np.float128(90*DEGREES),
+		"initial_omega1": np.float128(0),
+		"initial_omega2": np.float128(0),
 		"gravity": 9.8,
 		"weight_diameter": 0.5,
 		"rod_style": {
@@ -188,15 +188,15 @@ class DoublePendulum(VGroup):
 		return self
 
 	def get_energy_detailed(self):
-		h1 = 0 # todo
-		h2 = 0 # todo
+		h1 = (1 - np.cos(self.get_theta1())) * self.L1
+		h2 = (1 - np.cos(self.get_theta2())) * self.L2
 		U_1 = self.m1 * self.gravity * h1
 		U_2 = self.m2 * self.gravity * h2
 
 		I_1 = self.m1 * self.L1**2
 		I_2 = self.m2 * self.L2**2
-		E_k_1 = 0.5 * I_1 self.get_omega1()**2
-		E_k_2 = 0.5 * I_2 self.get_omega2()**2
+		E_k_1 = 0.5 * I_1 * self.get_omega1()**2
+		E_k_2 = 0.5 * I_2 * self.get_omega2()**2
 
 		return {"U1": U_1, "U2": U_2, "EK1": E_k_1, "EK2": E_k_2}
 	def get_energy(self):
@@ -279,6 +279,7 @@ class DoublePendulum(VGroup):
 			omega2 += omega_2_dot * d_dt
 			# print(omega_1_dot, omega_2_dot)
 			# print(theta1, theta2, omega1, omega2)
+		print(self.get_energy(), self.get_energy_detailed())
 		self.set_theta1(theta1)
 		self.set_theta2(theta2)
 		self.set_omega1(omega1)
