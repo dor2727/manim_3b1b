@@ -1,3 +1,4 @@
+from manimlib.imports import *
 
 class PlotParabola(GraphScene):
 	CONFIG = {

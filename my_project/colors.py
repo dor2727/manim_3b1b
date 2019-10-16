@@ -1,4 +1,6 @@
-from big_ol_pile_of_manim_imports import *
+from manimlib.imports import *
+
+OUTPUT_DIRECTORY = "colors"
 
 COLOR_MAP = {
     "DARK_BROWN": "#8B4513",

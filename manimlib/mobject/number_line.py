@@ -122,13 +122,24 @@ class NumberLine(Line):
         )
         return interpolate(self.x_min, self.x_max, proportion)
 
+    def n2p(self, number):
+        """Abbreviation for number_to_point"""
+        return self.number_to_point(number)
+
+    def p2n(self, point):
+        """Abbreviation for point_to_number"""
+        return self.point_to_number(point)
+
     def get_unit_size(self):
         return (self.x_max - self.x_min) / self.get_length()
 
     def default_numbers_to_display(self):
         if self.numbers_to_show is not None:
             return self.numbers_to_show
-        numbers = np.arange(int(self.leftmost_tick), int(self.x_max))
+        numbers = np.arange(
+            np.floor(self.leftmost_tick),
+            np.ceil(self.x_max),
+        )
         if self.exclude_zero_from_default_numbers:
             numbers = numbers[numbers != 0]
         return numbers

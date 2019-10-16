@@ -1,4 +1,4 @@
-from big_ol_pile_of_manim_imports import *
+from manimlib.imports import *
 
 OUTPUT_DIRECTORY = "magnetic_force"
 
@@ -30,7 +30,7 @@ class ReferenceFrame(Scene):
 		"charge_direction"     : RIGHT,
 		"display_force" : False,
 
-		"title" : TextMobject("Protons' Rest Frame"),
+		"title_text" : "Protons' Rest Frame",
 
 		"wait_time": 1,
 		"end_wait_time": 5,
@@ -40,6 +40,7 @@ class ReferenceFrame(Scene):
 	}
 
 	def construct(self):
+		self.add_title()
 		self.init_values()
 		self.show_particles()
 		self.wait(self.wait_time)
@@ -55,6 +56,13 @@ class ReferenceFrame(Scene):
 
 		self.animate_particles()
 		self.wait(self.end_wait_time)
+
+	def add_title(self):
+		self.title = title = TextMobject(self.title_text)
+		title.add_background_rectangle()
+		title.scale(1.5)
+		title.to_corner(UL, buff=MED_SMALL_BUFF)
+		self.add_foreground_mobject(title)
 
 	def init_values(self):
 		if all(self.charge_direction == RIGHT):
@@ -180,7 +188,7 @@ class ReferenceFrame_ProtonsRestFrame(ReferenceFrame):
 	CONFIG = {
 		"reference_frame_gamma": 1,
 		"charge_gamma"         : 1.1,
-		"title" : TextMobject("Protons' Rest Frame"),
+		"title_text" : "Protons' Rest Frame",
 		"run_time": 7,
 		"force_strength": 3.87,
 	}
@@ -188,7 +196,7 @@ class ReferenceFrame_ProtonsRestFrame_WithForce(ReferenceFrame):
 	CONFIG = {
 		"reference_frame_gamma": 1,
 		"charge_gamma"         : 1.1,
-		"title" : TextMobject("Protons' Rest Frame"),
+		"title_text" : "Protons' Rest Frame",
 		"run_time": 7,
 		"force_strength": 3.87,
 		"display_force": True,
@@ -197,7 +205,7 @@ class ReferenceFrame_ChargeRestFrame(ReferenceFrame):
 	CONFIG = {
 		"reference_frame_gamma": 1.5,
 		"charge_gamma"         : 1,
-		"title" : TextMobject("Charge's Rest Frame"),
+		"title_text" : "Charge's Rest Frame",
 		"run_time": 7,
 	}
 class ReferenceFrame_ChargeRestFrame_WithForce(ReferenceFrame_ChargeRestFrame):
@@ -255,7 +263,7 @@ class ReferenceFrameTransform(Scene):
 		"charge_direction"     : RIGHT,
 		"display_force" : False,
 
-		"title" : TextMobject("Protons' Rest Frame"),
+		"title_text" : "Protons' Rest Frame",
 
 		"wait_time": 1,
 		"end_wait_time": 5,
@@ -265,6 +273,7 @@ class ReferenceFrameTransform(Scene):
 	}
 
 	def construct(self):
+		self.add_title()
 		self.init_values()
 
 		self.show_charge()
@@ -277,6 +286,13 @@ class ReferenceFrameTransform(Scene):
 		# self.transform_electrons()
 
 		self.wait(self.end_wait_time)
+
+	def add_title(self):
+		self.title = title = TextMobject(self.title_text)
+		title.add_background_rectangle()
+		title.scale(1.5)
+		title.to_corner(UL, buff=MED_SMALL_BUFF)
+		self.add_foreground_mobject(title)
 
 	def init_values(self):
 		beta = 0
@@ -369,13 +385,14 @@ class ReferenceFrameIntroduction(Scene):
 		"reference_frame_velocity": 0,
 		"B_absolute_velocity": 2,
 
-        "title" : TextMobject("A's Reference Frame"),
+        "title_text" : "A's Reference Frame",
 
 		"run_time": 5,
 		"dt": 0.1,
 	}
 
 	def construct(self):
+		self.add_title()
 		self.init_values()
 
 		self.A = Dot(self.A_height)
@@ -395,6 +412,13 @@ class ReferenceFrameIntroduction(Scene):
 		self.wait(1)
 		self.animate_people()
 		self.wait(1)
+
+	def add_title(self):
+		self.title = title = TextMobject(self.title_text)
+		title.add_background_rectangle()
+		title.scale(1.5)
+		title.to_corner(UL, buff=MED_SMALL_BUFF)
+		self.add_foreground_mobject(title)
 
 	def init_values(self):
 		self.A_velocity = 0 - self.reference_frame_velocity
@@ -419,16 +443,16 @@ class ReferenceFrameIntroduction(Scene):
 class ReferenceFrameIntroduction_A(ReferenceFrameIntroduction):
 	CONFIG = {
 		"reference_frame_velocity": 0,
-        "title" : TextMobject("A's Reference Frame"),
+        "title_text" : "A's Reference Frame",
 	}
 class ReferenceFrameIntroduction_B(ReferenceFrameIntroduction):
 	CONFIG = {
 		"reference_frame_velocity": 2,
-        "title" : TextMobject("B's Reference Frame"),
+        "title_text" : "B's Reference Frame",
 	}
 class ReferenceFrameIntroduction_COM(ReferenceFrameIntroduction):
 	CONFIG = {
 		"reference_frame_velocity": 1,
-        "title" : TextMobject("Center of Mass Reference Frame"),
+        "title_text" : "Center of Mass Reference Frame",
 		"run_time": 7.2,
 	}

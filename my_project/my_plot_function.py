@@ -1,6 +1,6 @@
-from big_ol_pile_of_manim_imports import *
+from manimlib.imports import *
 
-OUTPUT_DIRECTORY = "my_project_test"
+OUTPUT_DIRECTORY = "my_plot_function"
 
 def parabola(height = 0, center_point = 0, sign=1):
 	return lambda x: sign*(x - center_point)**2 + height
@@ -308,7 +308,7 @@ class MyParameterizedCurve(GraphScene):
 	def construct(self):
 		self.setup_axes()
 
-		my_curve = ParametricInfiniteFunction(self.function, **self.curve_config)
+		my_curve = ParametricFunction(self.function, **self.curve_config, step_size="auto")
 		self.play(
 			ShowCreation(my_curve, run_time = 2),
 			Animation(self._setup_equation()),
