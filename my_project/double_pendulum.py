@@ -2,7 +2,6 @@ from manimlib.imports import *
 
 OUTPUT_DIRECTORY = "double_pendulum"
 
-
 class Example(Scene):
 	CONFIG = {
 		"pendulum_config": {
