@@ -201,6 +201,12 @@ class DoublePendulum(VGroup):
 		return {"U1": U_1, "U2": U_2, "EK1": E_k_1, "EK2": E_k_2}
 	def get_energy(self):
 		return sum(self.get_energy_detailed().values())
+	def display_energy(self):
+		e = self.get_energy_detailed()
+		E = self.get_energy()
+		h1 = (1 - np.cos(self.get_theta1())) * self.L1
+		h2 = (1 - np.cos(self.get_theta2())) * self.L2
+		print(f"E={E:6.3f} U1={e['U1']:6.3f} U2={e['U2']:6.3f} EK1={e['EK1']:6.3f} EK2={e['EK2']:6.3f} h1={h1:6.3f} h2={h2:6.3f}")
 
 	#
 	def add_trajectory(self, weight, color=None):
@@ -277,9 +283,6 @@ class DoublePendulum(VGroup):
 			theta2 += omega2 * d_dt
 			omega1 += omega_1_dot * d_dt
 			omega2 += omega_2_dot * d_dt
-			# print(omega_1_dot, omega_2_dot)
-			# print(theta1, theta2, omega1, omega2)
-		print(self.get_energy(), self.get_energy_detailed())
 		self.set_theta1(theta1)
 		self.set_theta2(theta2)
 		self.set_omega1(omega1)
