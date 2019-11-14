@@ -277,6 +277,28 @@ class BlochSphere_example_H_Z(BlochSphere):
 			Pauli_z,
 		]
 	}
+class BlochSphere_example_H_Z_H(BlochSphere):
+	CONFIG = {
+		"operators": [
+			Hadamard,
+			Pauli_z,
+			Hadamard,
+		]
+	}
+class BlochSphere_example_H_X_H(BlochSphere):
+	CONFIG = {
+		"operators": [
+			Hadamard,
+			Pauli_x,
+			Hadamard,
+		]
+	}
+class BlochSphere_example_Z(BlochSphere):
+	CONFIG = {
+		"operators": [
+			Pauli_z,
+		]
+	}
 class BlochSphere_example_Y(BlochSphere):
 	CONFIG = {
 		"operators": [
