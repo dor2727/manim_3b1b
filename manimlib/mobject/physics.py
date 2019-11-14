@@ -30,6 +30,17 @@ def polar_to_cartesian(r, theta):
 def cartesian_to_polar(x, y):
 	return np.sqrt(x**2 + y**2), np.arctan(y/x)
 
+def spherical_to_cartesian(r, theta, phi):
+	x = r*np.sin(theta)*np.cos(phi)
+	y = r*np.sin(theta)*np.sin(phi)
+	z = r*np.cos(theta)
+	return x,y,z
+def cartesian_to_spherical(x, y, z):
+	r = np.sqrt(x**2 + y**2 + z**2)
+	theta = np.arccos(z/r)
+	phi = np.arctan(y/x)
+	return r, theta, phi
+
 def almost_equal(x, y):
 	return abs(x-y) < 0.01
 def almost_same_point(a, b):
