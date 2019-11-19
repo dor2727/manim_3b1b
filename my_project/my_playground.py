@@ -746,3 +746,57 @@ class PlotFunctions(GraphScene):
 
 	def func_to_graph(self,x):
 		return x**2 + self.FUNC_PARAMETER
+
+
+class DisplayTex(Scene):
+	CONFIG = {
+		# 's': "\\ket{0}\\qquad\\ket{1}",
+		# 's': "\\ket{1}\\ket{1}\\ket{0}\\ket{1}",
+		# 's': "\\ket{1101}",
+		# 's': "\\ket{13}_4",
+		# 's': "\\ket{0}=\\begin{bmatrix} 1 \\\\ 0 \\end{bmatrix}",
+		# 's': "\\ket{1}=\\begin{bmatrix} 0 \\\\ 1 \\end{bmatrix}",
+		# 's': "\\ket{10} = \\ket{1}\\otimes\\ket{0} = \\begin{bmatrix} 0 \\\\ 1 \\end{bmatrix} \\otimes \\begin{bmatrix} 1 \\\\ 0 \\end{bmatrix} = \\begin{bmatrix} 0 \\\\ 0 \\\\ 1 \\\\ 0 \\end{bmatrix}",
+		# 's': "\\begin{bmatrix} a_1 \\\\ a_2 \\end{bmatrix} \\otimes \\begin{bmatrix} b_1 \\\\ b_2 \\end{bmatrix} = \\begin{bmatrix} a_1 b_1 \\\\ a_1 b_2 \\\\ a_2 b_1 \\\\ a_2 b_2 \\end{bmatrix}",
+		# 's': "NOT\\ket{0}=\\ket{1} \\\\ NOT\\ket{1}=\\ket{0}",
+		# 's': "X\\ket{0}=\\ket{1} \\\\ X\\ket{1}=\\ket{0}",
+		# 's': "ERASE\\ket{0}=\\ket{0} \\\\ ERASE\\ket{1}=\\ket{0}",
+		# 's': "50\\% \\ket{0}+ 50\\% \\ket{1}",
+		# 's': "\\ket{\\Psi}=\\alpha_0\\ket{0}+\\alpha_1\\ket{1}",
+		# 's': "\\ket{\\Psi}=\\frac{1+i}{2}\\ket{0}+\\frac{1-i}{2}\\ket{1}",
+		# 's': "\\abs{\\alpha_0}^2 + \\abs{\\alpha_1}^2 = 1",
+		's': "\\sum_{i=0}^{2^N}\\abs{\\alpha_i}^2=1",
+	}
+
+	def construct(self):
+		a = TexMobject(self.s)
+		a.scale(2)
+		self.add(a)
+
+class DisplayMatrix(Scene):
+	CONFIG = {
+		# "name": "X",
+		# "values": [
+		# 	[0,1],
+		# 	[1,0]
+		# ],
+		"name": "ERASE",
+		"values": [
+			[1,1],
+			[0,0]
+		],
+	}
+
+	def construct(self):
+		m = ' \\\\ '.join(
+			' & '.join(str(i) for i in row)
+			for row in self.values
+		)
+
+		"\\begin{bmatrix} a_1 \\\\ a_2 \\end{bmatrix} \\otimes \\begin{bmatrix} b_1 \\\\ b_2 \\end{bmatrix} = \\begin{bmatrix} a_1 b_1 \\\\ a_1 b_2 \\\\ a_2 b_1 \\\\ a_2 b_2 \\end{bmatrix}",
+
+		s = f"{self.name} = \\begin{{bmatrix}} {m} \\end{{bmatrix}}"
+		print(s)
+		a = TexMobject(s)
+		a.scale(2)
+		self.add(a)
