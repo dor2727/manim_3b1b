@@ -68,7 +68,6 @@ def angle_to_str(c):
 
 class State(Mobject):
 	def __init__(self, zero_amplitude, one_amplitude, r=SPHERE_RADIUS, **kwargs):
-	# def __init__(self, theta=0, phi=0, r=SPHERE_RADIUS, **kwargs):
 		Mobject.__init__(self, **kwargs)
 
 		self.zero_amplitude = complex(zero_amplitude)
@@ -76,8 +75,6 @@ class State(Mobject):
 
 		self.r = r
 		self.theta, self.phi = vector_to_angles(self.get_vector())
-		# self.phi = phi
-		# self.theta = theta
 
 		self.line = self.create_line()
 		self.add(self.line)
@@ -158,6 +155,20 @@ class BlochSphere(SpecialThreeDScene):
 		self.init_text()
 		self.wait(self.pre_operators_wait_time)
 
+		direction = 1/np.sqrt(2) * (X_AXIS + Z_AXIS)
+		d = Vector(direction)
+		self.add(d)
+		a = VGroup(self.sphere, self.old_zero.line, self.old_one.line)
+
+		self.play(
+			Rotate(
+				a,
+				angle=PI,
+				axis=direction
+			)
+		)
+
+
 		for o in self.operators:
 			self.apply_operator(o)
 			self.wait(self.wait_time)
@@ -170,7 +181,7 @@ class BlochSphere(SpecialThreeDScene):
 			"\\\\"
 			"as represented in the Bloch Sphere."
 			"\\end{flushleft}",
-	        alignment="",
+			alignment="",
 		)
 		self.intro_tex_1.move_to(2*UP)
 		self.add(self.intro_tex_1)
@@ -408,6 +419,99 @@ class BlochSphere(SpecialThreeDScene):
 
 		self.zero = new_zero
 		self.one = new_one
+
+
+class BlochSphereHadamardRotate(BlochSphere):
+	CONFIG = {
+		"show_intro": False,
+		"rotate_sphere": True,
+		"rotate_time": 5,
+		"rotate_amount": 1,
+	}
+
+	def construct(self):
+		if self.show_intro:
+			self.present_introduction()
+		self.init_camera()
+		self.init_axes()
+		self.init_sphere()
+		self.init_states()
+		self.init_text()
+		self.wait(self.pre_operators_wait_time)
+
+		for _ in range(self.rotate_amount):
+			self.haramard_rotate()
+			self.wait()
+		self.wait(self.final_wait_time)
+		
+	def haramard_rotate(self):
+		direction = 1/np.sqrt(2) * (X_AXIS + Z_AXIS)
+
+		d = Vector(direction * 2)
+		self.add(d)
+		
+		if self.rotate_sphere:
+			a = VGroup(self.sphere, self.old_zero.line, self.old_one.line)
+		else:
+			a = VGroup(             self.old_zero.line, self.old_one.line)
+
+		self.play(
+			Rotate(
+				a,
+				angle=PI,
+				axis=direction
+			),
+			run_time=self.rotate_time
+		)
+class BlochSphereHadamardRotate_once_with_sphere_1(BlochSphereHadamardRotate):
+	CONFIG = {
+		"rotate_sphere": True,
+		"rotate_time": 5,
+		"rotate_amount": 1,
+	}
+class BlochSphereHadamardRotate_once_with_sphere_2(BlochSphereHadamardRotate):
+	CONFIG = {
+		"rotate_sphere": True,
+		"rotate_time": 8,
+		"rotate_amount": 1,
+	}
+class BlochSphereHadamardRotate_once_without_sphere_1(BlochSphereHadamardRotate):
+	CONFIG = {
+		"rotate_sphere": False,
+		"rotate_time": 5,
+		"rotate_amount": 1,
+	}
+class BlochSphereHadamardRotate_once_without_sphere_2(BlochSphereHadamardRotate):
+	CONFIG = {
+		"rotate_sphere": False,
+		"rotate_time": 8,
+		"rotate_amount": 1,
+	}
+class BlochSphereHadamardRotate_twice_with_sphere_1(BlochSphereHadamardRotate):
+	CONFIG = {
+		"rotate_sphere": True,
+		"rotate_time": 5,
+		"rotate_amount": 2,
+	}
+class BlochSphereHadamardRotate_twice_with_sphere_2(BlochSphereHadamardRotate):
+	CONFIG = {
+		"rotate_sphere": True,
+		"rotate_time": 8,
+		"rotate_amount": 2,
+	}
+class BlochSphereHadamardRotate_twice_without_sphere_1(BlochSphereHadamardRotate):
+	CONFIG = {
+		"rotate_sphere": False,
+		"rotate_time": 5,
+		"rotate_amount": 2,
+	}
+class BlochSphereHadamardRotate_twice_without_sphere_2(BlochSphereHadamardRotate):
+	CONFIG = {
+		"rotate_sphere": False,
+		"rotate_time": 8,
+		"rotate_amount": 2,
+	}
+
 
 
 class BlochSphere_example_X(BlochSphere):
