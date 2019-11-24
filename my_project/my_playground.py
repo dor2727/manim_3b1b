@@ -765,13 +765,58 @@ class DisplayTex(Scene):
 		# 's': "\\ket{\\Psi}=\\alpha_0\\ket{0}+\\alpha_1\\ket{1}",
 		# 's': "\\ket{\\Psi}=\\frac{1+i}{2}\\ket{0}+\\frac{1-i}{2}\\ket{1}",
 		# 's': "\\abs{\\alpha_0}^2 + \\abs{\\alpha_1}^2 = 1",
-		's': "\\sum_{i=0}^{2^N}\\abs{\\alpha_i}^2=1",
+		# 's': "\\sum_{i=0}^{2^N}\\abs{\\alpha_i}^2=1",
+		# 's': "i=\\sqrt{-1}\\Rightarrow i^2=-1",
+		# 's': "\\abs{x+iy}^2=x^2+y^2",
+		# 's': "\\abs{\\alpha}^2\\equiv\\alpha^2",
+		# 's': "\\ket{\\Psi}=\\begin{bmatrix} \\alpha_0 \\\\ \\vdots \\\\ \\alpha_{n-1} \\end{bmatrix}",
+		# 's': "\\bra{\\Psi}=\\begin{bmatrix} \\alpha_0^* & \\hdots & \\alpha_{n-1}^* \\end{bmatrix}",
+		# 's': "\\bra{\\Phi}\\ket{\\Psi}=\\sum_{i=0}^{n-1} \\beta_i^*\\alpha_i",
+		# 's': "X\\ket{0}=\\begin{bmatrix} 0 & 1 \\\\ 1 & 0 \\end{bmatrix} \\begin{bmatrix} 1 \\\\ 0 \\end{bmatrix}=\\begin{bmatrix} 0 \\\\ 1 \\end{bmatrix}=\\ket{1}",
+		# 's': "X\\ket{1}=\\begin{bmatrix} 0 & 1 \\\\ 1 & 0 \\end{bmatrix} \\begin{bmatrix} 0 \\\\ 1 \\end{bmatrix}=\\begin{bmatrix} 1 \\\\ 0 \\end{bmatrix}=\\ket{0}",
+		# 's': "C_{10}\\ket{xy}",
+		# 's': "(A \\otimes B) \\otimes C = A \\otimes (B \\otimes C)",
+		# 's': "I_5 \\otimes X_4 \\otimes I_3 \\otimes I_2 \\otimes X_1 \\otimes I_0",
+		# 's': "X_4 X_1=X_1 X_4",
+		# 's': "V U \\ket{x}",
+		# 's': "\\ket{101}=\\begin{bmatrix} 0 \\\\ 1 \\end{bmatrix} \\otimes \\begin{bmatrix} 1 \\\\ 0 \\end{bmatrix} \\otimes \\begin{bmatrix} 0 \\\\ 1 \\end{bmatrix}=\\begin{bmatrix} 0 \\\\ 0 \\\\ 0 \\\\ 0 \\\\ 0 \\\\ 1 \\\\ 0 \\\\ 0 \\end{bmatrix}",
+		's': "\\ket{x_2 x_1 x_0}=\\begin{bmatrix} \\gamma_0 \\\\ \\gamma_1 \\end{bmatrix} \\otimes \\begin{bmatrix} \\beta_0 \\\\ \\beta_1 \\end{bmatrix} \\otimes \\begin{bmatrix} \\alpha_0 \\\\ \\alpha_1 \\end{bmatrix}=\\begin{bmatrix} \\gamma_0 \\beta_0 \\alpha_0 \\\\ \\gamma_0 \\beta_0 \\alpha_1 \\\\ \\gamma_0 \\beta_1 \\alpha_0 \\\\ \\gamma_0 \\beta_1 \\alpha_1 \\\\ \\gamma_1 \\beta_0 \\alpha_0 \\\\ \\gamma_1 \\beta_0 \\alpha_1 \\\\ \\gamma_1 \\beta_1 \\alpha_0 \\\\ \\gamma_1 \\beta_1 \\alpha_1 \\end{bmatrix}",
+
 	}
 
 	def construct(self):
 		a = TexMobject(self.s)
-		a.scale(2)
+		# a.scale(1.5)
 		self.add(a)
+
+class DisplayTex2(Scene):
+	def construct(self):
+		# NOT        = TexMobject("\\begin{bmatrix} 0 & 1 \\\\ 1 & 0 \\end{bmatrix}")
+		ERASE      = TexMobject("\\begin{bmatrix} 1 & 1 \\\\ 0 & 0 \\end{bmatrix}")
+		ZERO_WHO   = TexMobject("\\ket{0}").move_to(1*UP     + 0.35*LEFT)
+		ZERO_WHERE = TexMobject("\\ket{0}").move_to(0.3*UP   + 1  *LEFT)
+		ONE_WHO    = TexMobject("\\ket{1}").move_to(1*UP     + 0.4*RIGHT)
+		ONE_WHERE  = TexMobject("\\ket{1}").move_to(0.3*DOWN + 1  *LEFT)
+		WHO       = TextMobject("Who").move_to(1.7*UP)
+		WHERE     = TextMobject("Where").move_to(2.3*LEFT)
+		self.add(ERASE, ZERO_WHO, ZERO_WHERE, ONE_WHO, ONE_WHERE, WHO, WHERE)
+
+class DisplayTex3(Scene):
+	def construct(self):
+		t0 = TexMobject("\\ket{0}_2=\\ket{00}=\\begin{bmatrix} 1 \\\\ 0 \\\\ 0 \\\\ 0 \\end{bmatrix}").move_to(1.4*UP   + 2.5*LEFT )
+		t1 = TexMobject("\\ket{1}_2=\\ket{01}=\\begin{bmatrix} 0 \\\\ 1 \\\\ 0 \\\\ 0 \\end{bmatrix}").move_to(1.4*UP   + 2.5*RIGHT)
+		t2 = TexMobject("\\ket{2}_2=\\ket{10}=\\begin{bmatrix} 0 \\\\ 0 \\\\ 1 \\\\ 0 \\end{bmatrix}").move_to(1.4*DOWN + 2.5*LEFT )
+		t3 = TexMobject("\\ket{3}_2=\\ket{11}=\\begin{bmatrix} 0 \\\\ 0 \\\\ 0 \\\\ 1 \\end{bmatrix}").move_to(1.4*DOWN + 2.5*RIGHT)
+
+		self.add(t0, t1, t2, t3)
+
+class DisplayTex4(Scene):
+	def construct(self):
+		s = TexMobject("C_{", "i", "j", "}\\ket{x_{n-1} \\hdots x_1 x_0}")
+		s[1].set_color(RED)
+		s[2].set_color(BLUE)
+
+		self.add(s)
 
 class DisplayMatrix(Scene):
 	CONFIG = {
@@ -780,11 +825,33 @@ class DisplayMatrix(Scene):
 		# 	[0,1],
 		# 	[1,0]
 		# ],
-		"name": "ERASE",
+		# "name": "ERASE",
+		# "values": [
+		# 	[1,1],
+		# 	[0,0]
+		# ],
+		# "name": "SWAP",
+		# "values": [
+		# 	[1,0,0,0],
+		# 	[0,0,1,0],
+		# 	[0,1,0,0],
+		# 	[0,0,0,1],
+		# ],
+		# "name": "C_{01}",
+		# "values": [
+		# 	[1,0,0,0],
+		# 	[0,0,0,1],
+		# 	[0,0,1,0],
+		# 	[0,1,0,0],
+		# ],
+		"name": "C_{10}",
 		"values": [
-			[1,1],
-			[0,0]
+			[1,0,0,0],
+			[0,1,0,0],
+			[0,0,0,1],
+			[0,0,1,0],
 		],
+		
 	}
 
 	def construct(self):
@@ -793,10 +860,55 @@ class DisplayMatrix(Scene):
 			for row in self.values
 		)
 
-		"\\begin{bmatrix} a_1 \\\\ a_2 \\end{bmatrix} \\otimes \\begin{bmatrix} b_1 \\\\ b_2 \\end{bmatrix} = \\begin{bmatrix} a_1 b_1 \\\\ a_1 b_2 \\\\ a_2 b_1 \\\\ a_2 b_2 \\end{bmatrix}",
+		# "\\begin{bmatrix} a_1 \\\\ a_2 \\end{bmatrix} \\otimes \\begin{bmatrix} b_1 \\\\ b_2 \\end{bmatrix} = \\begin{bmatrix} a_1 b_1 \\\\ a_1 b_2 \\\\ a_2 b_1 \\\\ a_2 b_2 \\end{bmatrix}",
 
 		s = f"{self.name} = \\begin{{bmatrix}} {m} \\end{{bmatrix}}"
 		print(s)
 		a = TexMobject(s)
-		a.scale(2)
+		a.scale(1.5)
+
 		self.add(a)
+
+class DisplayMatrix2(Scene):
+	def construct(self):
+	
+		a = TexMobject("C_{10} = \\begin{bmatrix} 1 & 0 & 0 & 0 \\\\ 0 & 1 & 0 & 0 \\\\ 0 & 0 & 0 & 1 \\\\ 0 & 0 & 1 & 0 \\end{bmatrix} = \\begin{bmatrix} I & 0 \\\\ 0 & X \\end{bmatrix}")
+		a.scale(1.3)
+
+		l1 = DashedLine(
+			start=1.7*DOWN + 0.6*LEFT,
+			end=1.7*UP + 0.6*LEFT,
+		).set_color(RED)
+
+		l2 = DashedLine(
+			start=1.3*RIGHT,
+			end=2.5*LEFT,
+		).set_color(RED)
+		
+
+		self.add(a, l1, l2)
+		# self.add(a, b, TWO_WHO, c, ONE_WHERE)
+
+class DisplayMatrix3(Scene):
+	def construct(self):
+	
+		# a = TexMobject("I_1 \\otimes X_0 = \\begin{bmatrix} 1 & 0 \\\\ 0 & 1 \\end{bmatrix} \\otimes \\begin{bmatrix} 0 & 1 \\\\ 1 & 0 \\end{bmatrix} = \\begin{bmatrix} 0 & 1 & 0 & 0 \\\\ 1 & 0 & 0 & 0 \\\\ 0 & 0 & 0 & 1 \\\\ 0 & 0 & 1 & 0 \\end{bmatrix} = \\begin{bmatrix} X & 0 \\\\ 0 & X \\end{bmatrix}")
+		a = TexMobject("X_1 \\otimes I_0 = \\begin{bmatrix} 0 & 1 \\\\ 1 & 0 \\end{bmatrix} \\otimes \\begin{bmatrix} 1 & 0 \\\\ 0 & 1 \\end{bmatrix} = \\begin{bmatrix} 0 & 0 & 1 & 0 \\\\ 0 & 0 & 0 & 1 \\\\ 1 & 0 & 0 & 0 \\\\ 0 & 1 & 0 & 0 \\end{bmatrix} = \\begin{bmatrix} 0 & I \\\\ I & 0 \\end{bmatrix}")
+		a.scale(0.8)
+
+		l1 = DashedLine(
+			start=1*DOWN + 1.7*RIGHT,
+			end=1*UP + 1.7*RIGHT,
+		).set_color(RED)
+
+		l2 = DashedLine(
+			start=2.7*RIGHT,
+			end=0.6*RIGHT,
+		).set_color(RED)
+
+		l1.shift(0.15*RIGHT)
+		l2.shift(0.15*RIGHT)
+		
+
+		self.add(a, l1, l2)
+		# self.add(a, b, TWO_WHO, c, ONE_WHERE)
