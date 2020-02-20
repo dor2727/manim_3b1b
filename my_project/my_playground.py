@@ -763,6 +763,7 @@ class DisplayTex(Scene):
 		# 's': "ERASE\\ket{0}=\\ket{0} \\\\ ERASE\\ket{1}=\\ket{0}",
 		# 's': "50\\% \\ket{0}+ 50\\% \\ket{1}",
 		# 's': "\\ket{\\Psi}=\\alpha_0\\ket{0}+\\alpha_1\\ket{1}",
+		's': "\\ket{\\Psi}=\\alpha\\ket{0}+\\beta\\ket{1}",
 		# 's': "\\ket{\\Psi}=\\frac{1+i}{2}\\ket{0}+\\frac{1-i}{2}\\ket{1}",
 		# 's': "\\abs{\\alpha_0}^2 + \\abs{\\alpha_1}^2 = 1",
 		# 's': "\\sum_{i=0}^{2^N}\\abs{\\alpha_i}^2=1",
@@ -780,7 +781,8 @@ class DisplayTex(Scene):
 		# 's': "X_4 X_1=X_1 X_4",
 		# 's': "V U \\ket{x}",
 		# 's': "\\ket{101}=\\begin{bmatrix} 0 \\\\ 1 \\end{bmatrix} \\otimes \\begin{bmatrix} 1 \\\\ 0 \\end{bmatrix} \\otimes \\begin{bmatrix} 0 \\\\ 1 \\end{bmatrix}=\\begin{bmatrix} 0 \\\\ 0 \\\\ 0 \\\\ 0 \\\\ 0 \\\\ 1 \\\\ 0 \\\\ 0 \\end{bmatrix}",
-		's': "\\ket{x_2 x_1 x_0}=\\begin{bmatrix} \\gamma_0 \\\\ \\gamma_1 \\end{bmatrix} \\otimes \\begin{bmatrix} \\beta_0 \\\\ \\beta_1 \\end{bmatrix} \\otimes \\begin{bmatrix} \\alpha_0 \\\\ \\alpha_1 \\end{bmatrix}=\\begin{bmatrix} \\gamma_0 \\beta_0 \\alpha_0 \\\\ \\gamma_0 \\beta_0 \\alpha_1 \\\\ \\gamma_0 \\beta_1 \\alpha_0 \\\\ \\gamma_0 \\beta_1 \\alpha_1 \\\\ \\gamma_1 \\beta_0 \\alpha_0 \\\\ \\gamma_1 \\beta_0 \\alpha_1 \\\\ \\gamma_1 \\beta_1 \\alpha_0 \\\\ \\gamma_1 \\beta_1 \\alpha_1 \\end{bmatrix}",
+		# 's': "\\ket{x_2 x_1 x_0}=\\begin{bmatrix} \\gamma_0 \\\\ \\gamma_1 \\end{bmatrix} \\otimes \\begin{bmatrix} \\beta_0 \\\\ \\beta_1 \\end{bmatrix} \\otimes \\begin{bmatrix} \\alpha_0 \\\\ \\alpha_1 \\end{bmatrix}=\\begin{bmatrix} \\gamma_0 \\beta_0 \\alpha_0 \\\\ \\gamma_0 \\beta_0 \\alpha_1 \\\\ \\gamma_0 \\beta_1 \\alpha_0 \\\\ \\gamma_0 \\beta_1 \\alpha_1 \\\\ \\gamma_1 \\beta_0 \\alpha_0 \\\\ \\gamma_1 \\beta_0 \\alpha_1 \\\\ \\gamma_1 \\beta_1 \\alpha_0 \\\\ \\gamma_1 \\beta_1 \\alpha_1 \\end{bmatrix}",
+		# 's': "P(k)=\\frac{\\lambda^k e^{-\\lambda}}{k!}",
 
 	}
 
@@ -789,6 +791,7 @@ class DisplayTex(Scene):
 		# a.scale(1.5)
 		self.add(a)
 
+# who goes where
 class DisplayTex2(Scene):
 	def construct(self):
 		# NOT        = TexMobject("\\begin{bmatrix} 0 & 1 \\\\ 1 & 0 \\end{bmatrix}")
@@ -801,6 +804,7 @@ class DisplayTex2(Scene):
 		WHERE     = TextMobject("Where").move_to(2.3*LEFT)
 		self.add(ERASE, ZERO_WHO, ZERO_WHERE, ONE_WHO, ONE_WHERE, WHO, WHERE)
 
+# 2 bits base
 class DisplayTex3(Scene):
 	def construct(self):
 		t0 = TexMobject("\\ket{0}_2=\\ket{00}=\\begin{bmatrix} 1 \\\\ 0 \\\\ 0 \\\\ 0 \\end{bmatrix}").move_to(1.4*UP   + 2.5*LEFT )
@@ -844,12 +848,45 @@ class DisplayMatrix(Scene):
 		# 	[0,0,1,0],
 		# 	[0,1,0,0],
 		# ],
-		"name": "C_{10}",
+		# "name": "C_{10}",
+		# "values": [
+		# 	[1,0,0,0],
+		# 	[0,1,0,0],
+		# 	[0,0,0,1],
+		# 	[0,0,1,0],
+		# ],
+		# "name": "AND",
+		# "values": [
+		# 	[1,0,0,0,0,0,0,0],
+		# 	[0,1,0,0,0,0,0,0],
+		# 	[0,0,1,0,0,0,0,0],
+		# 	[0,0,0,1,0,0,0,0],
+		# 	[0,0,0,0,1,0,0,0],
+		# 	[0,0,0,0,0,1,0,0],
+		# 	[0,0,0,0,0,0,0,1],
+		# 	[0,0,0,0,0,0,1,0],
+		# ],
+		# "name": "OR",
+		# "values": [
+			# [1,0,0,0,0,0,0,0], # 000
+			# [0,1,0,0,0,0,0,0], # 001
+			# [0,0,0,1,0,0,0,0], # 010
+			# [0,0,1,0,0,0,0,0], # 011
+			# [0,0,0,0,0,1,0,0], # 100
+			# [0,0,0,0,1,0,0,0], # 101
+			# [0,0,0,0,0,0,0,1], # 110
+			# [0,0,0,0,0,0,1,0], # 111
+		# ],
+		"name": "XOR",
 		"values": [
-			[1,0,0,0],
-			[0,1,0,0],
-			[0,0,0,1],
-			[0,0,1,0],
+			[1,0,0,0,0,0,0,0], # 000
+			[0,1,0,0,0,0,0,0], # 001
+			[0,0,0,1,0,0,0,0], # 010
+			[0,0,1,0,0,0,0,0], # 011
+			[0,0,0,0,0,1,0,0], # 100
+			[0,0,0,0,1,0,0,0], # 101
+			[0,0,0,0,0,0,1,0], # 110
+			[0,0,0,0,0,0,0,1], # 111
 		],
 		
 	}
@@ -865,7 +902,7 @@ class DisplayMatrix(Scene):
 		s = f"{self.name} = \\begin{{bmatrix}} {m} \\end{{bmatrix}}"
 		print(s)
 		a = TexMobject(s)
-		a.scale(1.5)
+		# a.scale(1.5)
 
 		self.add(a)
 

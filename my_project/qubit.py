@@ -13,16 +13,23 @@ def Phase(phi):
 SPHERE_RADIUS = 2
 
 def angles_to_vector(theta, phi):
+	# cos(theta/2) |0> + e^(i theta)*sin(theta/2) |1>
 	zero = complex( np.cos(theta/2) )
 	one = np.exp(1j * phi) * np.sin(theta/2)
 	return np.array([zero, one])
-def vector_to_angles(v):
-	# theta = np.arccos(v[0].real)*2
+def vector_to_angles(v, verbose=True):
+	# alpha = v[0]
+	# abs(alpha)^2 = cos^2(theta/2)
+	# cos(x)=2 cos(x/2)-1
+	# ==> theta = cos^-1(2*abs(alpha)^2 - 1)
 	theta = np.arccos(2 * abs(v[0])**2 - 1)
-	print("theta: ", theta)
+	if verbose:
+		print("theta: ", theta)
 
+	# check if it is one of the poles
 	if v[0] == 0 or v[1] == 0 or abs(v[0]) == 1:
-		print("    reseting phi")
+		if verbose:
+			print("    reseting phi")
 		phi = 0
 	else:
 		try:
@@ -90,12 +97,13 @@ class State(Mobject):
 
 	def get_vector(self):
 		return np.array([self.zero_amplitude, self.one_amplitude])
-		# return angles_to_vector(self.theta, self.phi)
 
-	def apply_operator(self, operator):
-		print("from: ", self.get_vector())
+	def apply_operator(self, operator, verbose=True):
+		if verbose:
+			print("from: ", self.get_vector())
 		vector_result = operator.dot(self.get_vector())
-		print("to  : ", vector_result)
+		if verbose:
+			print("to  : ", vector_result)
 		new_state = State(*vector_result)
 		new_state.set_color(self.color)
 		return new_state
@@ -155,20 +163,6 @@ class BlochSphere(SpecialThreeDScene):
 		self.init_text()
 		self.wait(self.pre_operators_wait_time)
 
-		direction = 1/np.sqrt(2) * (X_AXIS + Z_AXIS)
-		d = Vector(direction)
-		self.add(d)
-		a = VGroup(self.sphere, self.old_zero.line, self.old_one.line)
-
-		self.play(
-			Rotate(
-				a,
-				angle=PI,
-				axis=direction
-			)
-		)
-
-
 		for o in self.operators:
 			self.apply_operator(o)
 			self.wait(self.wait_time)
@@ -190,27 +184,36 @@ class BlochSphere(SpecialThreeDScene):
 			run_time=1.5
 		)
 
-		self.intro_tex_2 = TextMobject(
-			"\\begin{flushleft}"
-			"The following gates will be applied:"
-			"\\\\"
-			+
-			"\\\\".join(f"{i+1}) {n}" for i,n in enumerate(self.operator_names))
-			+
-			"\\end{flushleft}",
-	        alignment="",
-		)
-		self.intro_tex_2.move_to(0.8*DOWN)
-		self.add(self.intro_tex_2)
-		self.play(
-			Write(self.intro_tex_2),
-			run_time=2.5
-		)
+		if self.operator_names:
+			self.intro_tex_2 = TextMobject(
+				"\\begin{flushleft}"
+				"The following gates will be applied:"
+				"\\\\"
+				+
+				"\\\\".join(f"{i+1}) {n}" for i,n in enumerate(self.operator_names))
+				+
+				"\\end{flushleft}",
+				alignment="",
+			)
+			self.intro_tex_2.move_to(0.8*DOWN)
+			self.add(self.intro_tex_2)
+			self.play(
+				Write(self.intro_tex_2),
+				run_time=2.5
+			)
+
 		self.wait(self.intro_wait_time)
-		self.play(
-			FadeOut(self.intro_tex_1),
-			FadeOut(self.intro_tex_2)
-		)
+
+		if self.operator_names:
+			self.play(
+				FadeOut(self.intro_tex_1),
+				FadeOut(self.intro_tex_2)
+			)
+		else:
+			self.play(
+				FadeOut(self.intro_tex_1)
+			)
+
 		self.wait(self.intro_fadeout_wait_time)
 
 	def init_camera(self):
@@ -332,7 +335,7 @@ class BlochSphere(SpecialThreeDScene):
 		self.tex_one_phi.set_color(RED)
 		self.tex_one_phi.move_to(Z_AXIS * 0.5 + Y_AXIS * 4)
 
-		self.tex_dot_product= self._tex("\\bra{0}\\ket{1} = ", "0.000")
+		self.tex_dot_product= self._tex("\\bra{0}\\ket{1} = ", "\\qquad \\quad 0.000")
 		self.tex_dot_product.set_color(WHITE)
 		self.tex_dot_product.move_to(- Z_AXIS * 2 + Y_AXIS * 3)
 
@@ -394,8 +397,6 @@ class BlochSphere(SpecialThreeDScene):
 		)
 
 	def init_states(self):
-		# self.old_zero = self.zero = State(0, 0, r=2)
-		# self.old_one  = self.one  = State(180*DEGREES, 0, r=2)
 		self.old_zero = self.zero = State(1, 0, r=2)
 		self.old_one  = self.one  = State(0, 1, r=2)
 
@@ -404,11 +405,13 @@ class BlochSphere(SpecialThreeDScene):
 
 		self.add(self.zero, self.one)
 
-	def apply_operator(self, operator):
-		print()
-		print("00000")
+	def apply_operator(self, operator, verbose=True):
+		if verbose:
+			print()
+			print("00000")
 		new_zero = self.zero.apply_operator(operator)
-		print("11111")
+		if verbose:
+			print("11111")
 		new_one = self.one.apply_operator(operator)
 
 		self.play(
@@ -863,3 +866,114 @@ class BlochSphere_example_H_P45_H(BlochSphere):
 	}
 
 
+class BlochSphereWalk(BlochSphere):
+	CONFIG = {
+		"show_intro": False,
+	}
+	def construct(self):
+		if self.show_intro:
+			self.present_introduction()
+		self.init_camera()
+		self.init_axes()
+		self.init_sphere()
+		self.init_states()
+		self.init_text()
+		self.wait(self.pre_operators_wait_time)
+
+		theta = 0
+		phi   = 0
+
+		# theta 0 -> 90
+		for i in range(90):
+			theta += 1*DEGREES
+			self.update_state(theta, phi)
+		self.wait(1)
+		# phi 0 -> 90
+		for i in range(90):
+			phi += 1*DEGREES
+			self.update_state(theta, phi)
+		self.wait(1)
+		# theta 90 -> 45
+		for i in range(45):
+			theta -= 1*DEGREES
+			self.update_state(theta, phi)
+		self.wait(1)
+		# phi 90 -> 270
+		for i in range(180):
+			phi += 1*DEGREES
+			self.update_state(theta, phi)
+		self.wait(1)
+		# theta 45 -> 135
+		for i in range(90):
+			theta += 1*DEGREES
+			self.update_state(theta, phi)
+		self.wait(1)
+		# phi 270 -> 0
+		for i in range(90):
+			phi += 1*DEGREES
+			self.update_state(theta, phi)
+		self.wait(1)
+		# theta 135 -> 0
+		for i in range(135):
+			theta -= 1*DEGREES
+			self.update_state(theta, phi)
+
+
+		self.wait(self.final_wait_time)
+
+	def update_state(self, theta, phi, wait=None):
+		print(f"theta={theta} ; phi={phi}")
+		new_zero = State(*angles_to_vector(theta, phi), r=2)
+		new_zero.set_color(BLUE)
+		self.play(
+			Transform(self.old_zero, new_zero),
+			*self.update_tex_transforms(new_zero, self.one),
+			run_time=0.045, # 1/90 = 0.011111111111111112
+		)
+
+		if wait:
+			self.wait(wait)
+
+		return new_zero
+
+class BlochSphereWalk_2(BlochSphereWalk):
+	CONFIG = {
+		"show_intro": False,
+	}
+	def construct(self):
+		if self.show_intro:
+			self.present_introduction()
+		self.init_camera()
+		self.init_axes()
+		self.init_sphere()
+		self.init_states()
+		self.init_text()
+		self.wait(self.pre_operators_wait_time)
+
+		theta = 0
+		phi   = 0
+
+		# theta   0 ->  90
+		for i in range(90):
+			theta += 1*DEGREES
+			self.update_state(theta, phi)
+		self.wait(1)
+		# theta  90 -> 180
+		for i in range(90):
+			theta += 1*DEGREES
+			self.update_state(theta, phi)
+		self.wait(1)
+		# phi jump from 0 to 180
+		phi = 180
+		# theta 180 ->  90
+		for i in range(90):
+			theta -= 1*DEGREES
+			self.update_state(theta, phi)
+		self.wait(1)
+		# theta  90 ->   0
+		for i in range(90):
+			theta -= 1*DEGREES
+			self.update_state(theta, phi)
+		self.wait(1)
+		
+		self.wait(self.final_wait_time)
