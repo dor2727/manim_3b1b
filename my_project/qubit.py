@@ -447,7 +447,7 @@ class BlochSphereHadamardRotate(BlochSphere):
 	def haramard_rotate(self):
 		direction = 1/np.sqrt(2) * (X_AXIS + Z_AXIS)
 
-		d = Vector(direction * 2)
+		d = Line(direction * 2)
 		self.add(d)
 		
 		if self.rotate_sphere:
