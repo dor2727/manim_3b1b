@@ -780,7 +780,10 @@ class DisplayTex(Scene):
 		# 's': "X_4 X_1=X_1 X_4",
 		# 's': "V U \\ket{x}",
 		# 's': "\\ket{101}=\\begin{bmatrix} 0 \\\\ 1 \\end{bmatrix} \\otimes \\begin{bmatrix} 1 \\\\ 0 \\end{bmatrix} \\otimes \\begin{bmatrix} 0 \\\\ 1 \\end{bmatrix}=\\begin{bmatrix} 0 \\\\ 0 \\\\ 0 \\\\ 0 \\\\ 0 \\\\ 1 \\\\ 0 \\\\ 0 \\end{bmatrix}",
-		's': "\\ket{x_2 x_1 x_0}=\\begin{bmatrix} \\gamma_0 \\\\ \\gamma_1 \\end{bmatrix} \\otimes \\begin{bmatrix} \\beta_0 \\\\ \\beta_1 \\end{bmatrix} \\otimes \\begin{bmatrix} \\alpha_0 \\\\ \\alpha_1 \\end{bmatrix}=\\begin{bmatrix} \\gamma_0 \\beta_0 \\alpha_0 \\\\ \\gamma_0 \\beta_0 \\alpha_1 \\\\ \\gamma_0 \\beta_1 \\alpha_0 \\\\ \\gamma_0 \\beta_1 \\alpha_1 \\\\ \\gamma_1 \\beta_0 \\alpha_0 \\\\ \\gamma_1 \\beta_0 \\alpha_1 \\\\ \\gamma_1 \\beta_1 \\alpha_0 \\\\ \\gamma_1 \\beta_1 \\alpha_1 \\end{bmatrix}",
+		# 's': "\\ket{x_2 x_1 x_0}=\\begin{bmatrix} \\gamma_0 \\\\ \\gamma_1 \\end{bmatrix} \\otimes \\begin{bmatrix} \\beta_0 \\\\ \\beta_1 \\end{bmatrix} \\otimes \\begin{bmatrix} \\alpha_0 \\\\ \\alpha_1 \\end{bmatrix}=\\begin{bmatrix} \\gamma_0 \\beta_0 \\alpha_0 \\\\ \\gamma_0 \\beta_0 \\alpha_1 \\\\ \\gamma_0 \\beta_1 \\alpha_0 \\\\ \\gamma_0 \\beta_1 \\alpha_1 \\\\ \\gamma_1 \\beta_0 \\alpha_0 \\\\ \\gamma_1 \\beta_0 \\alpha_1 \\\\ \\gamma_1 \\beta_1 \\alpha_0 \\\\ \\gamma_1 \\beta_1 \\alpha_1 \\end{bmatrix}",
+		# 's': "H\\ket{0}= \\frac{1}{\\sqrt{2}} \\begin{bmatrix} 1 & 1 \\\\ 1 & -1 \\end{bmatrix} \\begin{bmatrix} 1 \\\\ 0 \\end{bmatrix}= \\frac{1}{\\sqrt{2}} \\begin{bmatrix} 1 \\\\ 1 \\end{bmatrix} = \\frac{\\ket{0} + \\ket{1}}{\\sqrt{2}} \\equiv \\ket{+}",
+		# 's': "H\\ket{1}= \\frac{1}{\\sqrt{2}} \\begin{bmatrix} 1 & 1 \\\\ 1 & -1 \\end{bmatrix} \\begin{bmatrix} 0 \\\\ 1 \\end{bmatrix}= \\frac{1}{\\sqrt{2}} \\begin{bmatrix} 1 \\\\ -1 \\end{bmatrix} = \\frac{\\ket{0} - \\ket{1}}{\\sqrt{2}} \\equiv \\ket{-}",
+		's': "H = \\frac{1}{\\sqrt{2}}\\begin{bmatrix} 1 & 1 \\\\ 1 & -1 \\end{bmatrix} = \\frac{1}{\\sqrt{2}}\\begin{bmatrix} 0 & 1 \\\\ 1 & 0 \\end{bmatrix} + \\frac{1}{\\sqrt{2}}\\begin{bmatrix} 1 & 0 \\\\ 0 & -1 \\end{bmatrix} = \\frac{\\sigma_{x} + \\sigma_{z}}{\\sqrt{2}}",
 
 	}
 
@@ -789,6 +792,7 @@ class DisplayTex(Scene):
 		# a.scale(1.5)
 		self.add(a)
 
+# who goes where
 class DisplayTex2(Scene):
 	def construct(self):
 		# NOT        = TexMobject("\\begin{bmatrix} 0 & 1 \\\\ 1 & 0 \\end{bmatrix}")
@@ -844,14 +848,21 @@ class DisplayMatrix(Scene):
 		# 	[0,0,1,0],
 		# 	[0,1,0,0],
 		# ],
-		"name": "C_{10}",
+		# "name": "C_{10}",
+		# "values": [
+		# 	[1,0,0,0],
+		# 	[0,1,0,0],
+		# 	[0,0,0,1],
+		# 	[0,0,1,0],
+		# ],
+		"name": "H",
 		"values": [
-			[1,0,0,0],
-			[0,1,0,0],
-			[0,0,0,1],
-			[0,0,1,0],
+			[1,1],
+			[1,-1]
 		],
-		
+
+		# "factor": "",
+		"factor": "\\frac{1}{\\sqrt{2}}",
 	}
 
 	def construct(self):
@@ -862,7 +873,7 @@ class DisplayMatrix(Scene):
 
 		# "\\begin{bmatrix} a_1 \\\\ a_2 \\end{bmatrix} \\otimes \\begin{bmatrix} b_1 \\\\ b_2 \\end{bmatrix} = \\begin{bmatrix} a_1 b_1 \\\\ a_1 b_2 \\\\ a_2 b_1 \\\\ a_2 b_2 \\end{bmatrix}",
 
-		s = f"{self.name} = \\begin{{bmatrix}} {m} \\end{{bmatrix}}"
+		s = f"{self.name} = {self.factor} \\begin{{bmatrix}} {m} \\end{{bmatrix}}"
 		print(s)
 		a = TexMobject(s)
 		a.scale(1.5)
@@ -912,3 +923,54 @@ class DisplayMatrix3(Scene):
 
 		self.add(a, l1, l2)
 		# self.add(a, b, TWO_WHO, c, ONE_WHERE)
+
+class DisplayMatrix4(Scene):
+	CONFIG = {
+		"name": "SWAP",
+		"values": [
+			[1,0,0,0],
+			[0,0,1,0],
+			[0,1,0,0],
+			[0,0,0,1],
+		],
+		
+	}
+
+	def construct(self):
+		m = ' \\\\ '.join(
+			' & '.join(str(i) for i in row)
+			for row in self.values
+		)
+
+		s = f"{self.name} = \\begin{{bmatrix}} {m} \\end{{bmatrix}}"
+		print(s)
+		a = TexMobject(s)
+		a.scale(1.5)
+
+		self.add_row_rectangle(1)
+
+		self.add(a)
+
+	def add_row_rectangle(self, rownum):
+		r = Rectangle(
+			width=len(self.values)+0.7,
+			height=1,
+		)
+		r.set_color(BLUE)
+
+		center = (1+len(self.values))/2
+		r.shift((rownum-center)*UP)
+
+		r.shift(1.8*RIGHT)
+
+		self.add(r)
+		return r
+
+class DisplayMatrix5(Scene):
+	def construct(self):
+		# a = TexMobject("C^{Z}_{10} = \\begin{bmatrix} I & 0 \\\\ 0 & Z \\end{bmatrix} = \\begin{bmatrix} 1 & 0 & 0 & 0 \\\\ 0 & 1 & 0 & 0 \\\\ 0 & 0 & 1 & 0 \\\\ 0 & 0 & 0 & -1 \\end{bmatrix} = C^{Z}_{01}")
+		# a = TexMobject("\\sigma_{Z} = Z = \\begin{bmatrix} 1 & 0 \\\\ 0 & -1 \\end{bmatrix}")
+		a = TexMobject("\\sigma_{Y} = Y = \\begin{bmatrix} 0 & -i \\\\ i & 0 \\end{bmatrix}")
+		a.scale(1.3)
+
+		self.add(a)
