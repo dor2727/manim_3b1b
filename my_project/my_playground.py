@@ -1,5 +1,7 @@
 from manimlib.imports import *
 
+# my first manim classes
+
 class PlotParabola(GraphScene):
 	CONFIG = {
 		# graph parameters
@@ -807,7 +809,7 @@ class DisplayTex2(Scene):
 		WHERE     = TextMobject("Where").move_to(2.3*LEFT)
 		self.add(ERASE, ZERO_WHO, ZERO_WHERE, ONE_WHO, ONE_WHERE, WHO, WHERE)
 
-# 2 bits base
+# 2 bits basis
 class DisplayTex3(Scene):
 	def construct(self):
 		t0 = TexMobject("\\ket{0}_2=\\ket{00}=\\begin{bmatrix} 1 \\\\ 0 \\\\ 0 \\\\ 0 \\end{bmatrix}").move_to(1.4*UP   + 2.5*LEFT )
@@ -817,6 +819,7 @@ class DisplayTex3(Scene):
 
 		self.add(t0, t1, t2, t3)
 
+# different colors for different letters
 class DisplayTex4(Scene):
 	def construct(self):
 		s = TexMobject("C_{", "i", "j", "}\\ket{x_{n-1} \\hdots x_1 x_0}")
@@ -916,9 +919,9 @@ class DisplayMatrix(Scene):
 
 		self.add(a)
 
+# dashed lines seperating a matrix
 class DisplayMatrix2(Scene):
 	def construct(self):
-	
 		a = TexMobject("C_{10} = \\begin{bmatrix} 1 & 0 & 0 & 0 \\\\ 0 & 1 & 0 & 0 \\\\ 0 & 0 & 0 & 1 \\\\ 0 & 0 & 1 & 0 \\end{bmatrix} = \\begin{bmatrix} I & 0 \\\\ 0 & X \\end{bmatrix}")
 		a.scale(1.3)
 
@@ -936,9 +939,9 @@ class DisplayMatrix2(Scene):
 		self.add(a, l1, l2)
 		# self.add(a, b, TWO_WHO, c, ONE_WHERE)
 
+# dashed lines seperating a matrix
 class DisplayMatrix3(Scene):
 	def construct(self):
-	
 		# a = TexMobject("I_1 \\otimes X_0 = \\begin{bmatrix} 1 & 0 \\\\ 0 & 1 \\end{bmatrix} \\otimes \\begin{bmatrix} 0 & 1 \\\\ 1 & 0 \\end{bmatrix} = \\begin{bmatrix} 0 & 1 & 0 & 0 \\\\ 1 & 0 & 0 & 0 \\\\ 0 & 0 & 0 & 1 \\\\ 0 & 0 & 1 & 0 \\end{bmatrix} = \\begin{bmatrix} X & 0 \\\\ 0 & X \\end{bmatrix}")
 		a = TexMobject("X_1 \\otimes I_0 = \\begin{bmatrix} 0 & 1 \\\\ 1 & 0 \\end{bmatrix} \\otimes \\begin{bmatrix} 1 & 0 \\\\ 0 & 1 \\end{bmatrix} = \\begin{bmatrix} 0 & 0 & 1 & 0 \\\\ 0 & 0 & 0 & 1 \\\\ 1 & 0 & 0 & 0 \\\\ 0 & 1 & 0 & 0 \\end{bmatrix} = \\begin{bmatrix} 0 & I \\\\ I & 0 \\end{bmatrix}")
 		a.scale(0.8)
@@ -960,6 +963,7 @@ class DisplayMatrix3(Scene):
 		self.add(a, l1, l2)
 		# self.add(a, b, TWO_WHO, c, ONE_WHERE)
 
+# trying to automate the who-goes-where
 class DisplayMatrix4(Scene):
 	CONFIG = {
 		"name": "SWAP",
@@ -1002,6 +1006,7 @@ class DisplayMatrix4(Scene):
 		self.add(r)
 		return r
 
+# showing a matrix with multiple names
 class DisplayMatrix5(Scene):
 	def construct(self):
 		# a = TexMobject("C^{Z}_{10} = \\begin{bmatrix} I & 0 \\\\ 0 & Z \\end{bmatrix} = \\begin{bmatrix} 1 & 0 & 0 & 0 \\\\ 0 & 1 & 0 & 0 \\\\ 0 & 0 & 1 & 0 \\\\ 0 & 0 & 0 & -1 \\end{bmatrix} = C^{Z}_{01}")

@@ -2,6 +2,9 @@ from manimlib.imports import *
 
 OUTPUT_DIRECTORY = "qubit"
 
+#
+# quantum gates
+#
 Hadamard = 1/np.sqrt(2) * np.array([[1,1],[1,-1]])
 Pauli_x = np.array([[0,1],[1,0]])
 Pauli_y = np.array([[0,-1j],[1j,0]])
@@ -10,7 +13,6 @@ Sqrt_x = 1/2 * np.array([[1+1j,1-1j],[1-1j,1+1j]])
 def Phase(phi):
 	return np.array([[1,0],[0,np.exp(1j * phi)]])
 
-SPHERE_RADIUS = 2
 
 def angles_to_vector(theta, phi):
 	# cos(theta/2) |0> + e^(i theta)*sin(theta/2) |1>
@@ -50,17 +52,6 @@ def vector_to_angles(v, verbose=True):
 		p += 2*PI
 	return t, p
 
-	# old phi calculation
-	if theta == 0 or np.sin(theta/2) == 0 or v[1] == 0:
-		print("    reseting phi")
-		phi = 0
-	else:
-		phi = -1j * np.log(v[1] / np.sin(theta/2))
-		if almost_zero(phi.imag):
-			phi = phi.real
-	print("phi: ", phi)
-	return theta.real, phi.real
-
 def almost_zero(d):
 	return np.around(d, 5) == 0
 def complex_to_str(c):
@@ -71,6 +62,9 @@ def complex_to_str(c):
 	return str(np.around(c, 3))
 def angle_to_str(c):
 	return str(np.around(c / DEGREES, 3))
+
+
+SPHERE_RADIUS = 2
 
 
 class State(Mobject):
@@ -107,6 +101,24 @@ class State(Mobject):
 		new_state = State(*vector_result)
 		new_state.set_color(self.color)
 		return new_state
+
+state_zero  = State(1,             0,            r=SPHERE_RADIUS)
+state_one   = State(0,             1,            r=SPHERE_RADIUS)
+state_plus  = State(1/np.sqrt(2),  1/np.sqrt(2), r=SPHERE_RADIUS)
+state_minus = State(1/np.sqrt(2), -1/np.sqrt(2), r=SPHERE_RADIUS)
+
+
+def tex(*s):
+	tex = TexMobject(*s)
+	tex.rotate(90 * DEGREES, RIGHT)
+	tex.rotate(90 * DEGREES, OUT)
+	tex.scale(0.5)
+	return tex
+def transform(source, dest):
+	t = tex(dest)
+	t.move_to(source.get_center())
+	t.set_color(source.get_color())
+	return Transform(source, t)
 
 class BlochSphere(SpecialThreeDScene):
 	CONFIG = {
@@ -234,14 +246,14 @@ class BlochSphere(SpecialThreeDScene):
 	def set_axes_labels(self):
 		labels = VGroup()
 
-		zero = self._tex("\\ket{0}")
+		zero = tex("\\ket{0}")
 		zero.next_to(
 			self.axes.z_axis.number_to_point(1),
 			Y_AXIS + Z_AXIS,
 			MED_SMALL_BUFF
 		)
 
-		one = self._tex("\\ket{1}")
+		one = tex("\\ket{1}")
 		one.next_to(
 			self.axes.z_axis.number_to_point(-1),
 			Y_AXIS - Z_AXIS,
@@ -251,7 +263,7 @@ class BlochSphere(SpecialThreeDScene):
 		labels.add(zero, one)
 		self.axes.z_axis.add(labels)
 
-		x = self._tex("x")
+		x = tex("x")
 		x.next_to(
 			self.axes.x_axis.number_to_point(1),
 			-Y_AXIS,
@@ -259,7 +271,7 @@ class BlochSphere(SpecialThreeDScene):
 		)
 		self.axes.x_axis.add(x)
 
-		y = self._tex("y")
+		y = tex("y")
 		y.next_to(
 			self.axes.y_axis.number_to_point(1),
 			Y_AXIS + Z_AXIS,
@@ -309,33 +321,33 @@ class BlochSphere(SpecialThreeDScene):
 			the probabilities
 			theta & phi
 		"""
-		# self.tex_zero_vec   = self._tex("\\ket{0} = ", "1.0+0.0j", " \\\\ ", "0.0+0.0j")
-		self.tex_zero_vec   = self._tex("\\ket{BLUE} = ", "\\qquad \\qquad 1", " \\\\ ", "\\qquad 0")
+		# the qquad is used as a placeholder, since the value changes, and the length of the value changes.
+		self.tex_zero_vec   = tex("\\ket{BLUE} = ", "\\qquad \\qquad 1", " \\\\ ", "\\qquad 0")
 		self.tex_zero_vec.set_color(BLUE)
 		self.tex_zero_vec.move_to(Z_AXIS * 2 - Y_AXIS * 4)
 
-		self.tex_zero_theta = self._tex("\\theta = ", "0.000")
+		self.tex_zero_theta = tex("\\theta = ", "0.000")
 		self.tex_zero_theta.set_color(BLUE)
 		self.tex_zero_theta.move_to(Z_AXIS * 1 - Y_AXIS * 4)
 
-		self.tex_zero_phi   = self._tex("\\phi = ", "0.000")
+		self.tex_zero_phi   = tex("\\phi = ", "0.000")
 		self.tex_zero_phi.set_color(BLUE)
 		self.tex_zero_phi.move_to(Z_AXIS * 0.5 - Y_AXIS * 4)
 
 
-		self.tex_one_vec    = self._tex("\\ket{RED} = ", "\\qquad \\qquad 0", " \\\\ ", "\\qquad 1")
+		self.tex_one_vec    = tex("\\ket{RED} = ", "\\qquad \\qquad 0", " \\\\ ", "\\qquad 1")
 		self.tex_one_vec.set_color(RED)
 		self.tex_one_vec.move_to(Z_AXIS * 2 + Y_AXIS * 3.5)
 
-		self.tex_one_theta  = self._tex("\\theta = ", "180.0")
+		self.tex_one_theta  = tex("\\theta = ", "180.0")
 		self.tex_one_theta.set_color(RED)
 		self.tex_one_theta.move_to(Z_AXIS * 1 + Y_AXIS * 4)
 
-		self.tex_one_phi    = self._tex("\\phi = ", "0.000")
+		self.tex_one_phi    = tex("\\phi = ", "0.000")
 		self.tex_one_phi.set_color(RED)
 		self.tex_one_phi.move_to(Z_AXIS * 0.5 + Y_AXIS * 4)
 
-		self.tex_dot_product= self._tex("\\bra{0}\\ket{1} = ", "\\qquad \\quad 0.000")
+		self.tex_dot_product= tex("\\bra{0}\\ket{1} = ", "\\qquad \\quad 0.000")
 		self.tex_dot_product.set_color(WHITE)
 		self.tex_dot_product.move_to(- Z_AXIS * 2 + Y_AXIS * 3)
 
@@ -365,33 +377,16 @@ class BlochSphere(SpecialThreeDScene):
 
 		dot_product = np.vdot( new_one.get_vector(), new_zero.get_vector())
 
-		def transform(source, dest):
-			t = self._tex(dest)
-			t.move_to(source.get_center())
-			t.set_color(source.get_color())
-			return Transform(source, t)
-
-		# self.play(
-		# 	Transform(self.tex_zero_vec[1],   self._tex(zero_state[0])),
-		# 	Transform(self.tex_zero_vec[3],   self._tex(zero_state[1])),
-		# 	Transform(self.tex_zero_theta[1], self._tex(zero_angles[0])),
-		# 	Transform(self.tex_zero_phi[1],   self._tex(zero_angles[1])),
-
-		# 	Transform(self.tex_one_vec[1],   self._tex(one_state[0])),
-		# 	Transform(self.tex_one_vec[3],   self._tex(one_state[1])),
-		# 	Transform(self.tex_one_theta[1], self._tex(one_angles[0])),
-		# 	Transform(self.tex_one_phi[1],   self._tex(one_angles[1])),
-		# )
 		return(
 			transform(self.tex_zero_vec[1],   complex_to_str(zero_state[0])),
 			transform(self.tex_zero_vec[3],   complex_to_str(zero_state[1])),
-			transform(self.tex_zero_theta[1], angle_to_str(zero_angles[0])),
-			transform(self.tex_zero_phi[1],   angle_to_str(zero_angles[1])),
+			transform(self.tex_zero_theta[1], angle_to_str(zero_angles[0]) ),
+			transform(self.tex_zero_phi[1],   angle_to_str(zero_angles[1]) ),
 
-			transform(self.tex_one_vec[1],   complex_to_str(one_state[0])),
-			transform(self.tex_one_vec[3],   complex_to_str(one_state[1])),
-			transform(self.tex_one_theta[1], angle_to_str(one_angles[0])),
-			transform(self.tex_one_phi[1],   angle_to_str(one_angles[1])),
+			transform(self.tex_one_vec[1],    complex_to_str(one_state[0]) ),
+			transform(self.tex_one_vec[3],    complex_to_str(one_state[1]) ),
+			transform(self.tex_one_theta[1],  angle_to_str(one_angles[0])  ),
+			transform(self.tex_one_phi[1],    angle_to_str(one_angles[1])  ),
 
 			transform(self.tex_dot_product[1],   complex_to_str(dot_product)),
 		)
@@ -416,12 +411,12 @@ class BlochSphere(SpecialThreeDScene):
 
 		self.play(
 			Transform(self.old_zero, new_zero),
-			Transform(self.old_one, new_one),
+			Transform(self.old_one,  new_one),
 			*self.update_tex_transforms(new_zero, new_one),
 		)
 
 		self.zero = new_zero
-		self.one = new_one
+		self.one  = new_one
 
 
 class BlochSphereHadamardRotate(BlochSphere):
@@ -450,13 +445,18 @@ class BlochSphereHadamardRotate(BlochSphere):
 	def haramard_rotate(self):
 		direction = 1/np.sqrt(2) * (X_AXIS + Z_AXIS)
 
-		d = Line(direction * 2)
+		d = Line(
+			start=ORIGIN,
+			end=direction * 2
+		)
 		self.add(d)
 		
+		a = VGroup(self.old_zero.line, self.old_one.line)
 		if self.rotate_sphere:
-			a = VGroup(self.sphere, self.old_zero.line, self.old_one.line)
-		else:
-			a = VGroup(             self.old_zero.line, self.old_one.line)
+			a.add(self.sphere)
+		# 	a = VGroup(self.sphere, self.old_zero.line, self.old_one.line)
+		# else:
+		# 	a = VGroup(             self.old_zero.line, self.old_one.line)
 
 		self.play(
 			Rotate(
@@ -466,49 +466,49 @@ class BlochSphereHadamardRotate(BlochSphere):
 			),
 			run_time=self.rotate_time
 		)
-class BlochSphereHadamardRotate_once_with_sphere_1(BlochSphereHadamardRotate):
+class BlochSphereHadamardRotate_once_with_sphere_slow(BlochSphereHadamardRotate):
 	CONFIG = {
 		"rotate_sphere": True,
 		"rotate_time": 5,
 		"rotate_amount": 1,
 	}
-class BlochSphereHadamardRotate_once_with_sphere_2(BlochSphereHadamardRotate):
+class BlochSphereHadamardRotate_once_with_sphere_fast(BlochSphereHadamardRotate):
 	CONFIG = {
 		"rotate_sphere": True,
 		"rotate_time": 8,
 		"rotate_amount": 1,
 	}
-class BlochSphereHadamardRotate_once_without_sphere_1(BlochSphereHadamardRotate):
+class BlochSphereHadamardRotate_once_without_sphere_slow(BlochSphereHadamardRotate):
 	CONFIG = {
 		"rotate_sphere": False,
 		"rotate_time": 5,
 		"rotate_amount": 1,
 	}
-class BlochSphereHadamardRotate_once_without_sphere_2(BlochSphereHadamardRotate):
+class BlochSphereHadamardRotate_once_without_sphere_fast(BlochSphereHadamardRotate):
 	CONFIG = {
 		"rotate_sphere": False,
 		"rotate_time": 8,
 		"rotate_amount": 1,
 	}
-class BlochSphereHadamardRotate_twice_with_sphere_1(BlochSphereHadamardRotate):
+class BlochSphereHadamardRotate_twice_with_sphere_slow(BlochSphereHadamardRotate):
 	CONFIG = {
 		"rotate_sphere": True,
 		"rotate_time": 5,
 		"rotate_amount": 2,
 	}
-class BlochSphereHadamardRotate_twice_with_sphere_2(BlochSphereHadamardRotate):
+class BlochSphereHadamardRotate_twice_with_sphere_fast(BlochSphereHadamardRotate):
 	CONFIG = {
 		"rotate_sphere": True,
 		"rotate_time": 8,
 		"rotate_amount": 2,
 	}
-class BlochSphereHadamardRotate_twice_without_sphere_1(BlochSphereHadamardRotate):
+class BlochSphereHadamardRotate_twice_without_sphere_slow(BlochSphereHadamardRotate):
 	CONFIG = {
 		"rotate_sphere": False,
 		"rotate_time": 5,
 		"rotate_amount": 2,
 	}
-class BlochSphereHadamardRotate_twice_without_sphere_2(BlochSphereHadamardRotate):
+class BlochSphereHadamardRotate_twice_without_sphere_fast(BlochSphereHadamardRotate):
 	CONFIG = {
 		"rotate_sphere": False,
 		"rotate_time": 8,
@@ -977,3 +977,4 @@ class BlochSphereWalk_2(BlochSphereWalk):
 		self.wait(1)
 		
 		self.wait(self.final_wait_time)
+
