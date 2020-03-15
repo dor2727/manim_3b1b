@@ -12,7 +12,7 @@ from manimlib.animation.creation import Write
 
 
 # physical constants.
-# the TexMobjects are commented our so that it won't compile them when this file is being used
+# the TexMobjects are commented our so that it won't compile them when this file is being imported
 
 k_B = 1.38064852e-23
 # k_B_tex = TexMobject("1.38064852\\times10^{-23} \\frac{m^2 kg}{s^2 K}")
@@ -50,7 +50,7 @@ def almost_same_point(a, b):
 # Physical mobjects
 #
 class Particle(Dot):
-	# by concention, full word (such as velocity, force) is for the vector, while single letter (v, F) is for the scalar
+	# by convention, full word (such as velocity, force) is for the vector, while single letter (v, F) is for the scalar
 	CONFIG = {
 		# velocity can be either a vector or a scalar
 		"velocity": RIGHT, # m/s
@@ -113,6 +113,20 @@ class Particle(Dot):
 	def get_kinetic_energy_relativistic(self):
 		return (self.gamma - 1) * self.m * SPEED_OF_LIGHT**2
 
+	@property
+	def momentum(self, relativity=False):
+		if relativity:
+			return self.gamma * self.m * self.velocity
+		else:
+			return self.m * self.velocity
+	@property
+	def p(self, relativity=False):
+		if relativity:
+			return self.gamma * self.m * self.v
+		else:
+			return self.m * self.v
+
+
 
 	def get_force(self):
 		raise NotImplemented()
@@ -121,6 +135,7 @@ class Particle(Dot):
 	def F(self):
 		return get_norm(self.get_force())
 
+	# thermodynamics
 	@property
 	def Temperature(self):
 		return self.m * self.v**2 / 3
@@ -155,8 +170,9 @@ class Particle(Dot):
 
 	def walk_by_force(self, dt):
 		"""
-		increase velocity as if acceleration is constant
-		increase position as if velocity     is constant
+		at each time dt:
+			increase velocity as if acceleration is constant
+			increase position as if velocity     is constant
 
 		non relative version! F=m*dv/dt
 		"""
@@ -204,7 +220,6 @@ class Particle1D(Particle):
 			allowed_movement = self._move_toward_new_location(allowed_movement)
 
 	def back_and_forth(self, dt):
-		# import pdb; pdb.set_trace()
 		allowed_movement = abs(self.velocity) * dt
 
 		axis = np.array((0., 0., 0.))
@@ -373,6 +388,7 @@ class ChargedParticle(Particle):
 	}
 	def get_force(self):
 		force = self.q * (self.E + np.cross(self.velocity, self.B))
+
 		# there's a bug whenever the force exactly equals 0.5
 		# the force arrow will become of size 0, and will raise an exception
 		if get_norm(force) == 0.5:
