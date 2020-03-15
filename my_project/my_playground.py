@@ -747,6 +747,11 @@ class PlotFunctions(GraphScene):
 	def func_to_graph(self,x):
 		return x**2 + self.FUNC_PARAMETER
 
+Hadamard_1d = ""
+# Hadamard_2d = "\\begin{bmatrix} 1 & 1 & 1 & 1 \\\\ 1 & -1 & 1 & -1 \\\\ 1 & 1 & -1 & -1 \\\\ 1 & -1 & -1 & 1\\end{bmatrix}"
+Hadamard_2d = "\\frac{1}{2}\\begin{bmatrix} 1 & 1 & 1 & 1 \\\\ 1 & -1 & 1 & -1 \\\\ 1 & 1 & -1 & -1 \\\\ 1 & -1 & -1 & 1\\end{bmatrix}"
+C_10        = "\\begin{bmatrix} 1 & 0 & 0 & 0 \\\\ 0 & 1 & 0 & 0 \\\\ 0 & 0 & 0 & 1 \\\\ 0 & 0 & 1 & 0\\end{bmatrix}"
+C_01        = "\\begin{bmatrix} 1 & 0 & 0 & 0 \\\\ 0 & 0 & 0 & 1 \\\\ 0 & 0 & 1 & 0 \\\\ 0 & 1 & 0 & 0\\end{bmatrix}"
 
 class DisplayTex(Scene):
 	CONFIG = {
@@ -763,7 +768,7 @@ class DisplayTex(Scene):
 		# 's': "ERASE\\ket{0}=\\ket{0} \\\\ ERASE\\ket{1}=\\ket{0}",
 		# 's': "50\\% \\ket{0}+ 50\\% \\ket{1}",
 		# 's': "\\ket{\\Psi}=\\alpha_0\\ket{0}+\\alpha_1\\ket{1}",
-		's': "\\ket{\\Psi}=\\alpha\\ket{0}+\\beta\\ket{1}",
+		# 's': "\\ket{\\Psi}=\\alpha\\ket{0}+\\beta\\ket{1}",
 		# 's': "\\ket{\\Psi}=\\frac{1+i}{2}\\ket{0}+\\frac{1-i}{2}\\ket{1}",
 		# 's': "\\abs{\\alpha_0}^2 + \\abs{\\alpha_1}^2 = 1",
 		# 's': "\\sum_{i=0}^{2^N}\\abs{\\alpha_i}^2=1",
@@ -783,12 +788,20 @@ class DisplayTex(Scene):
 		# 's': "\\ket{101}=\\begin{bmatrix} 0 \\\\ 1 \\end{bmatrix} \\otimes \\begin{bmatrix} 1 \\\\ 0 \\end{bmatrix} \\otimes \\begin{bmatrix} 0 \\\\ 1 \\end{bmatrix}=\\begin{bmatrix} 0 \\\\ 0 \\\\ 0 \\\\ 0 \\\\ 0 \\\\ 1 \\\\ 0 \\\\ 0 \\end{bmatrix}",
 		# 's': "\\ket{x_2 x_1 x_0}=\\begin{bmatrix} \\gamma_0 \\\\ \\gamma_1 \\end{bmatrix} \\otimes \\begin{bmatrix} \\beta_0 \\\\ \\beta_1 \\end{bmatrix} \\otimes \\begin{bmatrix} \\alpha_0 \\\\ \\alpha_1 \\end{bmatrix}=\\begin{bmatrix} \\gamma_0 \\beta_0 \\alpha_0 \\\\ \\gamma_0 \\beta_0 \\alpha_1 \\\\ \\gamma_0 \\beta_1 \\alpha_0 \\\\ \\gamma_0 \\beta_1 \\alpha_1 \\\\ \\gamma_1 \\beta_0 \\alpha_0 \\\\ \\gamma_1 \\beta_0 \\alpha_1 \\\\ \\gamma_1 \\beta_1 \\alpha_0 \\\\ \\gamma_1 \\beta_1 \\alpha_1 \\end{bmatrix}",
 		# 's': "P(k)=\\frac{\\lambda^k e^{-\\lambda}}{k!}",
-
+		# 's': "\\frac{1}{2}\\cdot\\ket{0}=\\frac{1}{2}\\cdot\\begin{bmatrix} 1 \\\\ 0 \\end{bmatrix}=\\begin{bmatrix} \\frac{1}{2} \\\\ 0 \\end{bmatrix}",
+		# 's': "5\\cdot\\ket{0}+7\\cdot\\ket{1}=5\\cdot\\begin{bmatrix} 1 \\\\ 0 \\end{bmatrix}+7\\cdot\\begin{bmatrix} 0 \\\\ 1 \\end{bmatrix}=\\begin{bmatrix} 5 \\\\ 7 \\end{bmatrix}",
+		# 's': "H(H\\ket{0})=H\\frac{\\ket{0}+\\ket{1}}{\\sqrt{2}}=\\frac{\\ket{0}+\\ket{1}}{2}+\\frac{\\ket{0}-\\ket{1}}{2}=\\ket{0}",
+		# 's': "H(H\\ket{1})=H\\frac{\\ket{0}-\\ket{1}}{\\sqrt{2}}=\\frac{\\ket{0}+\\ket{1}}{2}-\\frac{\\ket{0}-\\ket{1}}{2}=\\ket{1}",
+		# 's': "H^{(2)}\\ket{00}=(H\\ket{0})(H\\ket{0})=(\\frac{\\ket{0}+\\ket{1}}{\\sqrt{2}})(\\frac{\\ket{0}+\\ket{1}}{\\sqrt{2}})=\\frac{\\ket{00}+\\ket{01}+\\ket{10}+\\ket{11}}{2}",
+		# 's': "C_{10}H_1\\ket{00}=C_{10}\\frac{\\ket{0}+\\ket{1}}{\\sqrt{2}}\\ket{0}=\\frac{\\ket{00}+\\ket{11}}{\\sqrt{2}}\\equiv\\ket{\\Phi^+}",
+		# 's': "H^{(2)}C_{10}H^{(2)}=%s%s%s" % (Hadamard_2d, C_10, Hadamard_2d),
+		's': "O_x=%s=C_{01}" % C_01,
 	}
 
 	def construct(self):
 		a = TexMobject(self.s)
 		# a.scale(1.5)
+		a.scale(0.6)
 		self.add(a)
 
 # who goes where
@@ -816,9 +829,24 @@ class DisplayTex3(Scene):
 
 class DisplayTex4(Scene):
 	def construct(self):
-		s = TexMobject("C_{", "i", "j", "}\\ket{x_{n-1} \\hdots x_1 x_0}")
-		s[1].set_color(RED)
+		# s = TexMobject("C_{", "i", "j", "}\\ket{x_{n-1} \\hdots x_1 x_0}")
+		s = TexMobject("\\frac{\\alpha}{2}(\\ket{", '0', '0', '0', "}+\\ket{", '0', '1', '1', "}) + \\frac{\\beta}{2}(\\ket{", '1', '0', '0', "}+\\ket{", '1', '1', '1', "})")
+		
+		s[1].set_color(GREEN)
 		s[2].set_color(BLUE)
+		s[3].set_color(RED)
+
+		s[5].set_color(GREEN)
+		s[6].set_color(BLUE)
+		s[7].set_color(RED)
+
+		s[9].set_color(GREEN)
+		s[10].set_color(BLUE)
+		s[11].set_color(RED)
+
+		s[13].set_color(GREEN)
+		s[14].set_color(BLUE)
+		s[15].set_color(RED)
 
 		self.add(s)
 
@@ -929,19 +957,24 @@ class DisplayMatrix2(Scene):
 class DisplayMatrix3(Scene):
 	def construct(self):
 	
+		a = TexMobject("I_1 \\otimes X_0 = \\begin{bmatrix} 1 & 0 \\\\ 0 & 1 \\end{bmatrix} \\otimes X_0 = \\begin{bmatrix} 1 \\cdot X_0 & 0 \\cdot X_0 \\\\ 0 \\cdot X_0 & 1 \\cdot X_0 \\end{bmatrix} = \\begin{bmatrix} 0 & 1 & 0 & 0 \\\\ 1 & 0 & 0 & 0 \\\\ 0 & 0 & 0 & 1 \\\\ 0 & 0 & 1 & 0 \\end{bmatrix} = \\begin{bmatrix} X & 0 \\\\ 0 & X \\end{bmatrix}")
 		# a = TexMobject("I_1 \\otimes X_0 = \\begin{bmatrix} 1 & 0 \\\\ 0 & 1 \\end{bmatrix} \\otimes \\begin{bmatrix} 0 & 1 \\\\ 1 & 0 \\end{bmatrix} = \\begin{bmatrix} 0 & 1 & 0 & 0 \\\\ 1 & 0 & 0 & 0 \\\\ 0 & 0 & 0 & 1 \\\\ 0 & 0 & 1 & 0 \\end{bmatrix} = \\begin{bmatrix} X & 0 \\\\ 0 & X \\end{bmatrix}")
-		a = TexMobject("X_1 \\otimes I_0 = \\begin{bmatrix} 0 & 1 \\\\ 1 & 0 \\end{bmatrix} \\otimes \\begin{bmatrix} 1 & 0 \\\\ 0 & 1 \\end{bmatrix} = \\begin{bmatrix} 0 & 0 & 1 & 0 \\\\ 0 & 0 & 0 & 1 \\\\ 1 & 0 & 0 & 0 \\\\ 0 & 1 & 0 & 0 \\end{bmatrix} = \\begin{bmatrix} 0 & I \\\\ I & 0 \\end{bmatrix}")
-		a.scale(0.8)
+		# a = TexMobject("X_1 \\otimes I_0 = \\begin{bmatrix} 0 & 1 \\\\ 1 & 0 \\end{bmatrix} \\otimes \\begin{bmatrix} 1 & 0 \\\\ 0 & 1 \\end{bmatrix} = \\begin{bmatrix} 0 & 0 & 1 & 0 \\\\ 0 & 0 & 0 & 1 \\\\ 1 & 0 & 0 & 0 \\\\ 0 & 1 & 0 & 0 \\end{bmatrix} = \\begin{bmatrix} 0 & I \\\\ I & 0 \\end{bmatrix}")
+		a.scale(0.6)
 
 		l1 = DashedLine(
-			start=1*DOWN + 1.7*RIGHT,
-			end=1*UP + 1.7*RIGHT,
+			start=1*DOWN + 1.7*RIGHT + 0.4*RIGHT,
+			end=1*UP + 1.7*RIGHT + 0.4*RIGHT,
 		).set_color(RED)
 
 		l2 = DashedLine(
-			start=2.7*RIGHT,
-			end=0.6*RIGHT,
+			start=2.7*RIGHT + 0.4*RIGHT,
+			end=0.6*RIGHT + 0.4*RIGHT,
 		).set_color(RED)
+
+		l1.scale(0.8)
+		l2.scale(0.8)
+
 
 		l1.shift(0.15*RIGHT)
 		l2.shift(0.15*RIGHT)
