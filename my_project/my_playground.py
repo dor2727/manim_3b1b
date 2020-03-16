@@ -861,10 +861,17 @@ class DisplayMatrix(Scene):
 		# 	[0,0,0,1],
 		# 	[0,0,1,0],
 		# ],
-		"name": "H",
+		# "name": "H",
+		# "values": [
+		# 	[1,1],
+		# 	[1,-1]
+		# ],
+		"name": "H^{(2)}",
 		"values": [
-			[1,1],
-			[1,-1]
+			[1, 1, 1, 1],
+			[1,-1, 1,-1],
+			[1, 1,-1,-1],
+			[1,-1,-1, 1],
 		],
 		# "name": "AND",
 		# "values": [
@@ -901,7 +908,8 @@ class DisplayMatrix(Scene):
 		# ],
 
 		# "factor": "",
-		"factor": "\\frac{1}{\\sqrt{2}}",
+		# "factor": "\\frac{1}{\\sqrt{2}}",
+		"factor": "\\frac{1}{2}",
 	}
 
 	def construct(self):
