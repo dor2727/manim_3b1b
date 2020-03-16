@@ -437,20 +437,48 @@ class BlochSphereHadamardRotate(BlochSphere):
 		self.init_text()
 		self.wait(self.pre_operators_wait_time)
 
+		self.init_rotation_axis()
+
 		for _ in range(self.rotate_amount):
 			self.haramard_rotate()
 			self.wait()
 		self.wait(self.final_wait_time)
-		
-	def haramard_rotate(self):
-		direction = 1/np.sqrt(2) * (X_AXIS + Z_AXIS)
+
+	def init_rotation_axis(self):
+		self.direction = 1/np.sqrt(2) * (X_AXIS + Z_AXIS)
 
 		d = Line(
 			start=ORIGIN,
-			end=direction * 2
+			end=self.direction * SPHERE_RADIUS
 		)
-		self.add(d)
-		
+
+		x_arc = Arc(
+			arc_center=ORIGIN,
+			start_angle=0 * DEGREES,
+			angle=45 * DEGREES,
+			**{
+				"radius": 1,
+				"stroke_color": GREEN,
+				"stroke_width": 2,
+			},
+		)
+
+		z_arc = Arc(
+			arc_center=ORIGIN,
+			start_angle=90 * DEGREES,
+			angle=-45 * DEGREES,
+			**{
+				"radius": 0.8,
+				"stroke_color": PINK,
+				"stroke_width": 2,
+			},
+		)
+		x_arc.rotate_about_origin(90 * DEGREES, X_AXIS)
+		z_arc.rotate_about_origin(90 * DEGREES, X_AXIS)
+
+		self.add(d, x_arc, z_arc)
+
+	def haramard_rotate(self):
 		a = VGroup(self.old_zero.line, self.old_one.line)
 		if self.rotate_sphere:
 			a.add(self.sphere)
@@ -462,53 +490,53 @@ class BlochSphereHadamardRotate(BlochSphere):
 			Rotate(
 				a,
 				angle=PI,
-				axis=direction
+				axis=self.direction
 			),
 			run_time=self.rotate_time
 		)
-class BlochSphereHadamardRotate_once_with_sphere_slow(BlochSphereHadamardRotate):
-	CONFIG = {
-		"rotate_sphere": True,
-		"rotate_time": 5,
-		"rotate_amount": 1,
-	}
 class BlochSphereHadamardRotate_once_with_sphere_fast(BlochSphereHadamardRotate):
 	CONFIG = {
 		"rotate_sphere": True,
-		"rotate_time": 8,
+		"rotate_time": 5,
 		"rotate_amount": 1,
 	}
-class BlochSphereHadamardRotate_once_without_sphere_slow(BlochSphereHadamardRotate):
+class BlochSphereHadamardRotate_once_with_sphere_slow(BlochSphereHadamardRotate):
 	CONFIG = {
-		"rotate_sphere": False,
-		"rotate_time": 5,
+		"rotate_sphere": True,
+		"rotate_time": 8,
 		"rotate_amount": 1,
 	}
 class BlochSphereHadamardRotate_once_without_sphere_fast(BlochSphereHadamardRotate):
 	CONFIG = {
 		"rotate_sphere": False,
+		"rotate_time": 5,
+		"rotate_amount": 1,
+	}
+class BlochSphereHadamardRotate_once_without_sphere_slow(BlochSphereHadamardRotate):
+	CONFIG = {
+		"rotate_sphere": False,
 		"rotate_time": 8,
 		"rotate_amount": 1,
 	}
-class BlochSphereHadamardRotate_twice_with_sphere_slow(BlochSphereHadamardRotate):
+class BlochSphereHadamardRotate_twice_with_sphere_fast(BlochSphereHadamardRotate):
 	CONFIG = {
 		"rotate_sphere": True,
 		"rotate_time": 5,
 		"rotate_amount": 2,
 	}
-class BlochSphereHadamardRotate_twice_with_sphere_fast(BlochSphereHadamardRotate):
+class BlochSphereHadamardRotate_twice_with_sphere_slow(BlochSphereHadamardRotate):
 	CONFIG = {
 		"rotate_sphere": True,
 		"rotate_time": 8,
 		"rotate_amount": 2,
 	}
-class BlochSphereHadamardRotate_twice_without_sphere_slow(BlochSphereHadamardRotate):
+class BlochSphereHadamardRotate_twice_without_sphere_fast(BlochSphereHadamardRotate):
 	CONFIG = {
 		"rotate_sphere": False,
 		"rotate_time": 5,
 		"rotate_amount": 2,
 	}
-class BlochSphereHadamardRotate_twice_without_sphere_fast(BlochSphereHadamardRotate):
+class BlochSphereHadamardRotate_twice_without_sphere_slow(BlochSphereHadamardRotate):
 	CONFIG = {
 		"rotate_sphere": False,
 		"rotate_time": 8,
