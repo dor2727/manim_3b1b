@@ -1028,24 +1028,88 @@ class DisplayMatrix4(Scene):
 		a = TexMobject(s)
 		a.scale(1.5)
 
-		self.add_row_rectangle(1)
+		# self.add_col_rectangle(0, "\\ket{00}")
+		# self.add_row_rectangle(0, "\\ket{00}")
+
+		# self.add_col_rectangle(1, "\\ket{01}")
+		# self.add_row_rectangle(2, "\\ket{10}")
+
+		self.add_col_rectangle(2)
+		self.add_row_rectangle(1, "\\ket{01}")
+
+		# self.add_col_rectangle(3)
+		# self.add_row_rectangle(3)
+
 
 		self.add(a)
 
-	def add_row_rectangle(self, rownum):
+	def add_row_rectangle(self, rownum, name=True):
 		r = Rectangle(
 			width=len(self.values)+0.7,
-			height=1,
+			height=0.8,
 		)
 		r.set_color(BLUE)
 
-		center = (1+len(self.values))/2
-		r.shift((rownum-center)*UP)
+		# center the rectangle around the midpoint
+		center = (len(self.values)-1)/2
+		r.shift(center*UP)
+
+		# shift according to the row
+		r.shift(rownum*DOWN)
+
+		# correction
+		r.shift(0.1*UP*(rownum-1))
 
 		r.shift(1.8*RIGHT)
 
 		self.add(r)
+
+		if name is True:
+			name = self._generate_name(rownum)
+		if name:
+			n = TexMobject(name)
+			n.set_color(BLUE)
+
+			n.shift(LEFT)
+			n.shift(center*UP)
+			n.shift(rownum*DOWN)
+			n.shift(0.1*UP*(rownum-1))
+
+			self.add(n)
+
 		return r
+
+	def add_col_rectangle(self, colnum, name=True):
+		r = Rectangle(
+			width=0.7,
+			height=len(self.values)+0.1,
+		)
+		r.set_color(RED)
+
+		# center the rectangle around the left-most column
+		r.shift(0.15*RIGHT)
+
+		# shift according to the column
+		r.shift(colnum*1.1*RIGHT)
+
+		self.add(r)
+
+		if name is True:
+			name = self._generate_name(colnum)
+		if name:
+			n = TexMobject(name)
+			n.set_color(RED)
+
+			n.shift(2.4*UP)
+			n.shift(0.15*RIGHT)
+			n.shift(colnum*1.1*RIGHT)
+			
+			self.add(n)
+
+		return r
+
+	def _generate_name(self, value):
+		return "\\ket{%s}" % bin(value)[2:]
 
 # showing a matrix with multiple names
 class DisplayMatrix5(Scene):
