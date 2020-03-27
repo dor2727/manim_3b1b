@@ -19,7 +19,7 @@ def angles_to_vector(theta, phi):
 	zero = complex( np.cos(theta/2) )
 	one = np.exp(1j * phi) * np.sin(theta/2)
 	return np.array([zero, one])
-def vector_to_angles(v, verbose=True):
+def vector_to_angles(v, verbose=False):
 	# alpha = v[0]
 	# abs(alpha)^2 = cos^2(theta/2)
 	# cos(x)=2 cos(x/2)-1
@@ -897,6 +897,8 @@ class BlochSphere_example_H_P45_H(BlochSphere):
 class BlochSphereWalk(BlochSphere):
 	CONFIG = {
 		"show_intro": False,
+
+		"traj_max_length": 0, # 0 is infinite
 	}
 	def construct(self):
 		if self.show_intro:
@@ -907,6 +909,8 @@ class BlochSphereWalk(BlochSphere):
 		self.init_states()
 		self.init_text()
 		self.wait(self.pre_operators_wait_time)
+
+		self.traj_zero = self.add_trajectory(self.old_zero, TEAL_C)
 
 		theta = 0
 		phi   = 0
@@ -953,6 +957,13 @@ class BlochSphereWalk(BlochSphere):
 		print(f"theta={theta} ; phi={phi}")
 		new_zero = State(*angles_to_vector(theta, phi), r=2)
 		new_zero.set_color(BLUE)
+
+		traj = self.traj_zero
+		new_point = new_zero.line.get_end()
+		if get_norm(new_point - traj.points[-1]) > 0.01:
+			traj.add_smooth_curve_to(new_point)
+		traj.set_points(traj.points[-self.traj_max_length:])
+		
 		self.play(
 			Transform(self.old_zero, new_zero),
 			*self.update_tex_transforms(new_zero, self.one),
@@ -963,6 +974,18 @@ class BlochSphereWalk(BlochSphere):
 			self.wait(wait)
 
 		return new_zero
+
+	def add_trajectory(self, state, color=None):
+		traj = VMobject()
+		traj.set_color(color or state.get_color())
+		traj.state = state
+
+		traj.start_new_path(state.line.get_end())
+		traj.set_stroke(state.get_color(), 1, opacity=0.75)
+
+		self.add(traj)
+		return traj
+
 
 class BlochSphereWalk_2(BlochSphereWalk):
 	CONFIG = {
@@ -978,6 +1001,8 @@ class BlochSphereWalk_2(BlochSphereWalk):
 		self.init_text()
 		self.wait(self.pre_operators_wait_time)
 
+		self.traj_zero = self.add_trajectory(self.old_zero, TEAL_C)
+
 		theta = 0
 		phi   = 0
 
@@ -992,7 +1017,7 @@ class BlochSphereWalk_2(BlochSphereWalk):
 			self.update_state(theta, phi)
 		self.wait(1)
 		# phi jump from 0 to 180
-		phi = 180
+		phi = 180*DEGREES
 		# theta 180 ->  90
 		for i in range(90):
 			theta -= 1*DEGREES
@@ -1002,6 +1027,119 @@ class BlochSphereWalk_2(BlochSphereWalk):
 		for i in range(90):
 			theta -= 1*DEGREES
 			self.update_state(theta, phi)
+		self.wait(1)
+		
+		self.wait(self.final_wait_time)
+
+
+class BlochSphereWalk_3(BlochSphereWalk):
+	CONFIG = {
+		"show_intro": False,
+	}
+	def construct(self):
+		if self.show_intro:
+			self.present_introduction()
+		self.init_camera()
+		self.init_axes()
+		self.init_sphere()
+		self.init_states()
+		self.init_text()
+		self.wait(self.pre_operators_wait_time)
+
+		self.traj_zero = self.add_trajectory(self.old_zero, TEAL_C)
+
+		theta = 0
+		phi   = 0
+
+		# theta   0 ->  90
+		for i in range(90):
+			theta += 1*DEGREES
+			self.update_state(theta, phi)
+		self.wait(1)
+		# phi   0 ->  90
+		for i in range(90):
+			phi += 1*DEGREES
+			self.update_state(theta, phi)
+		self.wait(1)
+		# theta  90 -> 180
+		for i in range(90):
+			theta += 1*DEGREES
+			self.update_state(theta, phi)
+		self.wait(1)
+		# phi jump from 90 to 180
+		phi = 180*DEGREES
+		# theta 180 ->  90
+		for i in range(90):
+			theta -= 1*DEGREES
+			self.update_state(theta, phi)
+		self.wait(1)
+		# phi 180 -> 270
+		for i in range(90):
+			phi += 1*DEGREES
+			self.update_state(theta, phi)
+		self.wait(1)
+		# theta  90 ->   0
+		for i in range(90):
+			theta -= 1*DEGREES
+			self.update_state(theta, phi)
+		self.wait(1)
+		
+		self.wait(self.final_wait_time)
+
+
+class BlochSphereWalk_4(BlochSphereWalk):
+	CONFIG = {
+		"show_intro": False,
+	}
+	def construct(self):
+		if self.show_intro:
+			self.present_introduction()
+		self.init_camera()
+		self.init_axes()
+		self.init_sphere()
+		self.init_states()
+		self.init_text()
+		self.wait(self.pre_operators_wait_time)
+
+		self.traj_zero = self.add_trajectory(self.old_zero, TEAL_C)
+
+		theta = 0
+		phi   = 0
+
+		# theta   0 -> 180
+		# phi     0 -> 180
+		for i in range(180):
+			theta += 1
+			phi   += 1
+			self.update_state(theta*DEGREES, phi*DEGREES)
+		self.wait(0.1)
+		# theta 180 ->   0
+		# phi   180 -> 360
+		for i in range(180):
+			theta -= 1
+			phi   += 1
+			self.update_state(theta*DEGREES, phi*DEGREES)
+		self.wait(2)
+
+		# again, but with a 90 degrees phase
+		theta = 0
+		phi   = 90
+		self.update_state(theta*DEGREES, phi*DEGREES)
+		# theta   0 -> 180
+		# phi    90 -> 270
+		for i in range(180):
+			theta += 1
+			phi   += 1
+			self.update_state(theta*DEGREES, phi*DEGREES)
+		self.wait(0.1)
+		# theta 180 ->   0
+		# phi   180 -> 360
+		for i in range(180):
+			theta -= 1
+			phi   += 1
+			if phi == 360:
+				phi = 0
+			self.update_state(theta*DEGREES, phi*DEGREES)
 		self.wait(1)
 		
 		self.wait(self.final_wait_time)
