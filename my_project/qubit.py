@@ -1111,6 +1111,7 @@ class BlochSphereWalk_4(BlochSphereWalk):
 		for i in range(180):
 			theta += 1
 			phi   += 1
+			print(theta, phi)
 			self.update_state(theta*DEGREES, phi*DEGREES)
 		self.wait(0.1)
 		# theta 180 ->   0
@@ -1118,6 +1119,7 @@ class BlochSphereWalk_4(BlochSphereWalk):
 		for i in range(180):
 			theta -= 1
 			phi   += 1
+			print(theta, phi)
 			self.update_state(theta*DEGREES, phi*DEGREES)
 		self.wait(2)
 
@@ -1130,15 +1132,17 @@ class BlochSphereWalk_4(BlochSphereWalk):
 		for i in range(180):
 			theta += 1
 			phi   += 1
+			print(theta, phi)
 			self.update_state(theta*DEGREES, phi*DEGREES)
 		self.wait(0.1)
 		# theta 180 ->   0
-		# phi   180 -> 360
+		# phi   270 ->  90
 		for i in range(180):
 			theta -= 1
 			phi   += 1
-			if phi == 360:
+			if phi >= 360:
 				phi = 0
+			print(theta, phi)
 			self.update_state(theta*DEGREES, phi*DEGREES)
 		self.wait(1)
 		
