@@ -1,124 +1,8 @@
 from manimlib.imports import *
+from my_project.qubit_utils import *
 
 OUTPUT_DIRECTORY = "qubit"
 
-#
-# quantum gates
-#
-Hadamard = 1/np.sqrt(2) * np.array([[1,1],[1,-1]])
-Pauli_x = np.array([[0,1],[1,0]])
-Pauli_y = np.array([[0,-1j],[1j,0]])
-Pauli_z = np.array([[1,0],[0,-1]])
-Sqrt_x = 1/2 * np.array([[1+1j,1-1j],[1-1j,1+1j]])
-def Phase(phi):
-	return np.array([[1,0],[0,np.exp(1j * phi)]])
-
-
-def angles_to_vector(theta, phi):
-	# cos(theta/2) |0> + e^(i theta)*sin(theta/2) |1>
-	zero = complex( np.cos(theta/2) )
-	one = np.exp(1j * phi) * np.sin(theta/2)
-	return np.array([zero, one])
-def vector_to_angles(v, verbose=True):
-	# alpha = v[0]
-	# abs(alpha)^2 = cos^2(theta/2)
-	# cos(x)=2 cos(x/2)-1
-	# ==> theta = cos^-1(2*abs(alpha)^2 - 1)
-	theta = np.arccos(2 * abs(v[0])**2 - 1)
-	if verbose:
-		print("theta: ", theta)
-
-	# check if it is one of the poles
-	if v[0] == 0 or v[1] == 0 or abs(v[0]) == 1:
-		if verbose:
-			print("    reseting phi")
-		phi = 0
-	else:
-		try:
-			phi = -1j * np.log(
-				( abs(v[0]) * v[1] )
-				 /
-				(v[0] * np.sqrt(
-					1 - abs(v[0])**2
-				))
-			)
-		except:
-			print("    reseting phi (error)")
-			phi = 0
-
-	t = theta.real
-	p = phi.real
-	if p < 0:
-		p += 2*PI
-	return t, p
-
-def almost_zero(d):
-	return np.around(d, 5) == 0
-def complex_to_str(c):
-	if almost_zero(c.imag):
-		return str(np.around(c.real, 3))
-	if almost_zero(c.real):
-		return str(np.around(c.imag, 3)) + 'j'
-	return str(np.around(c, 3))
-def angle_to_str(c):
-	return str(np.around(c / DEGREES, 3))
-
-
-SPHERE_RADIUS = 2
-
-
-class State(Mobject):
-	def __init__(self, zero_amplitude, one_amplitude, r=SPHERE_RADIUS, **kwargs):
-		Mobject.__init__(self, **kwargs)
-
-		self.zero_amplitude = complex(zero_amplitude)
-		self.one_amplitude = complex(one_amplitude)
-
-		self.r = r
-		self.theta, self.phi = vector_to_angles(self.get_vector())
-
-		self.line = self.create_line()
-		self.add(self.line)
-
-	def _get_cartesian(self):
-		return np.array( spherical_to_cartesian(self.r, self.theta, self.phi) )
-
-	def create_line(self):
-		return Line(
-			start=ORIGIN,
-			end=self._get_cartesian(),
-		)
-
-	def get_vector(self):
-		return np.array([self.zero_amplitude, self.one_amplitude])
-
-	def apply_operator(self, operator, verbose=True):
-		if verbose:
-			print("from: ", self.get_vector())
-		vector_result = operator.dot(self.get_vector())
-		if verbose:
-			print("to  : ", vector_result)
-		new_state = State(*vector_result)
-		new_state.set_color(self.color)
-		return new_state
-
-state_zero  = State(1,             0,            r=SPHERE_RADIUS)
-state_one   = State(0,             1,            r=SPHERE_RADIUS)
-state_plus  = State(1/np.sqrt(2),  1/np.sqrt(2), r=SPHERE_RADIUS)
-state_minus = State(1/np.sqrt(2), -1/np.sqrt(2), r=SPHERE_RADIUS)
-
-
-def tex(*s):
-	tex = TexMobject(*s)
-	tex.rotate(90 * DEGREES, RIGHT)
-	tex.rotate(90 * DEGREES, OUT)
-	tex.scale(0.5)
-	return tex
-def transform(source, dest):
-	t = tex(dest)
-	t.move_to(source.get_center())
-	t.set_color(source.get_color())
-	return Transform(source, t)
 
 class BlochSphere(SpecialThreeDScene):
 	CONFIG = {
@@ -152,6 +36,8 @@ class BlochSphere(SpecialThreeDScene):
 			"resolution": (60, 60),
 		},
 		
+		"rotate_sphere": True,
+		"rotate_time": 5,
 		"operators": [
 		],
 		"operator_names": [
@@ -182,13 +68,26 @@ class BlochSphere(SpecialThreeDScene):
 
 	def present_introduction(self):
 		self.intro_tex_1 = TextMobject(
-			"\\begin{flushleft}"
-			"The state of the Qbit"
+			"\\begin{flushleft}\n"
+			"The State of the Qbit"
 			"\\\\"
 			"as represented in the Bloch Sphere."
-			"\\end{flushleft}",
+			"\n\\end{flushleft}",
 			alignment="",
 		)
+		# self.intro_tex_1 = TextMobject(
+		# 	# "\\begin{align*}\n" + "The state of the Qbit" + "\n\\end{align*}",
+		# 	"\\begin{flalign}\n" + "The state of the Qbit" + "\n\\end{flalign}",
+		# 	# "The state of the Qbit",
+		# 	# "\\begin{flushleft}"
+		# 	# "The state of the Qbit"
+		# 	# "\\\\"
+		# 	# "as represented in the Bloch Sphere."
+		# 	# "\\end{flushleft}",
+		# 	alignment="",
+		# 	# template_tex_file_body=TEMPLATE_TEXT_FILE_BODY,
+	 #        # arg_separator="",
+		# )
 		self.intro_tex_1.move_to(2*UP)
 		self.add(self.intro_tex_1)
 		self.play(
@@ -401,6 +300,35 @@ class BlochSphere(SpecialThreeDScene):
 		self.add(self.zero, self.one)
 
 	def apply_operator(self, operator, verbose=True):
+		# preparing the rotation animation
+		vg = VGroup(self.old_zero.line, self.old_one.line)
+		if self.rotate_sphere:
+			vg.add(self.sphere)
+
+		rm = RotationMatrix(operator)
+
+		if verbose:
+			print(f"rotating around axis: {rm.axis} by {rm.theta / DEGREES} degrees")
+
+		# preparing the tex update
+		new_zero = self.zero.apply_operator(operator)
+		new_one = self.one.apply_operator(operator)
+
+
+		self.play(
+			Rotate(
+				vg,
+				angle=rm.theta,
+				axis=rm.axis
+			),
+			*self.update_tex_transforms(new_zero, new_one),
+			run_time=self.rotate_time
+		)
+
+		self.zero = new_zero
+		self.one  = new_one
+
+	def apply_operator_old(self, operator, verbose=True):
 		if verbose:
 			print()
 			print("00000")
@@ -494,404 +422,6 @@ class BlochSphereHadamardRotate(BlochSphere):
 			),
 			run_time=self.rotate_time
 		)
-class BlochSphereHadamardRotate_once_with_sphere_fast(BlochSphereHadamardRotate):
-	CONFIG = {
-		"rotate_sphere": True,
-		"rotate_time": 5,
-		"rotate_amount": 1,
-	}
-class BlochSphereHadamardRotate_once_with_sphere_slow(BlochSphereHadamardRotate):
-	CONFIG = {
-		"rotate_sphere": True,
-		"rotate_time": 8,
-		"rotate_amount": 1,
-	}
-class BlochSphereHadamardRotate_once_without_sphere_fast(BlochSphereHadamardRotate):
-	CONFIG = {
-		"rotate_sphere": False,
-		"rotate_time": 5,
-		"rotate_amount": 1,
-	}
-class BlochSphereHadamardRotate_once_without_sphere_slow(BlochSphereHadamardRotate):
-	CONFIG = {
-		"rotate_sphere": False,
-		"rotate_time": 8,
-		"rotate_amount": 1,
-	}
-class BlochSphereHadamardRotate_twice_with_sphere_fast(BlochSphereHadamardRotate):
-	CONFIG = {
-		"rotate_sphere": True,
-		"rotate_time": 5,
-		"rotate_amount": 2,
-	}
-class BlochSphereHadamardRotate_twice_with_sphere_slow(BlochSphereHadamardRotate):
-	CONFIG = {
-		"rotate_sphere": True,
-		"rotate_time": 8,
-		"rotate_amount": 2,
-	}
-class BlochSphereHadamardRotate_twice_without_sphere_fast(BlochSphereHadamardRotate):
-	CONFIG = {
-		"rotate_sphere": False,
-		"rotate_time": 5,
-		"rotate_amount": 2,
-	}
-class BlochSphereHadamardRotate_twice_without_sphere_slow(BlochSphereHadamardRotate):
-	CONFIG = {
-		"rotate_sphere": False,
-		"rotate_time": 8,
-		"rotate_amount": 2,
-	}
-
-
-
-class BlochSphere_example_X(BlochSphere):
-	CONFIG = {
-		"operators": [
-			Pauli_x,
-		],
-		"operator_names": [
-			"Pauli X",
-		],
-	}
-class BlochSphere_example_Y(BlochSphere):
-	CONFIG = {
-		"operators": [
-			Pauli_y,
-		],
-		"operator_names": [
-			"Pauli Y",
-		],
-	}
-class BlochSphere_example_Z(BlochSphere):
-	CONFIG = {
-		"operators": [
-			Pauli_z,
-		],
-		"operator_names": [
-			"Pauli Z",
-		],
-	}
-
-class BlochSphere_example_X_X(BlochSphere):
-	CONFIG = {
-		"operators": [
-			Pauli_x,
-			Pauli_x,
-		],
-		"operator_names": [
-			"Pauli X",
-			"Pauli X",
-		],
-	}
-class BlochSphere_example_Y_Y(BlochSphere):
-	CONFIG = {
-		"operators": [
-			Pauli_y,
-			Pauli_y,
-		],
-		"operator_names": [
-			"Pauli Y",
-			"Pauli Y",
-		],
-	}
-class BlochSphere_example_Z_Z(BlochSphere):
-	CONFIG = {
-		"operators": [
-			Pauli_z,
-			Pauli_z,
-		],
-		"operator_names": [
-			"Pauli Z",
-			"Pauli Z",
-		],
-	}
-
-class BlochSphere_example_H_H(BlochSphere):
-	CONFIG = {
-		"operators": [
-			Hadamard,
-			Hadamard,
-		],
-		"operator_names": [
-			"Hadamard",
-			"Hadamard",
-		],
-	}
-class BlochSphere_example_H_Z(BlochSphere):
-	CONFIG = {
-		"operators": [
-			Hadamard,
-			Pauli_z,
-		],
-		"operator_names": [
-			"Hadamard",
-			"Pauli Z",
-		],
-	}
-class BlochSphere_example_H_Z_H(BlochSphere):
-	CONFIG = {
-		"operators": [
-			Hadamard,
-			Pauli_z,
-			Hadamard,
-		],
-		"operator_names": [
-			"Hadamard",
-			"Pauli Z",
-			"Hadamard",
-		],
-	}
-class BlochSphere_example_H_X_H(BlochSphere):
-	CONFIG = {
-		"operators": [
-			Hadamard,
-			Pauli_x,
-			Hadamard,
-		],
-		"operator_names": [
-			"Hadamard",
-			"Pauli X",
-			"Hadamard",
-		],
-	}
-
-class BlochSphere_example_SX_SX(BlochSphere):
-	CONFIG = {
-		"operators": [
-			Sqrt_x,
-			Sqrt_x,
-		],
-		"operator_names": [
-			"Sqrt of X",
-			"Sqrt of X",
-		],
-	}
-class BlochSphere_example_SX_SX_SX_SX(BlochSphere):
-	CONFIG = {
-		"operators": [
-			Sqrt_x,
-			Sqrt_x,
-			Sqrt_x,
-			Sqrt_x,
-		],
-		"operator_names": [
-			"Sqrt of X",
-			"Sqrt of X",
-			"Sqrt of X",
-			"Sqrt of X",
-		],
-	}
-class BlochSphere_example_SX_P90_SX(BlochSphere):
-	CONFIG = {
-		"operators": [
-			Sqrt_x,
-			Phase(90 * DEGREES),
-			Sqrt_x,
-		],
-		"operator_names": [
-			"Sqrt of X",
-			"Phase 90",
-			"Sqrt of X",
-		],
-	}
-class BlochSphere_example_SX_P180_SX(BlochSphere):
-	CONFIG = {
-		"operators": [
-			Sqrt_x,
-			Phase(180 * DEGREES),
-			Sqrt_x,
-		],
-		"operator_names": [
-			"Sqrt of X",
-			"Phase 180",
-			"Sqrt of X",
-		],
-	}
-class BlochSphere_example_SX_P270_SX(BlochSphere):
-	CONFIG = {
-		"operators": [
-			Sqrt_x,
-			Phase(270 * DEGREES),
-			Sqrt_x,
-		],
-		"operator_names": [
-			"Sqrt of X",
-			"Phase 270",
-			"Sqrt of X",
-		],
-	}
-class BlochSphere_example_SX_P45_SX(BlochSphere):
-	CONFIG = {
-		"circle_xz_show": True,
-		"operators": [
-			Sqrt_x,
-			Phase(45 * DEGREES),
-			Sqrt_x,
-		],
-		"operator_names": [
-			"Sqrt of X",
-			"Phase 45",
-			"Sqrt of X",
-		],
-	}
-class BlochSphere_example_SX_P45_SX_SX(BlochSphere):
-	CONFIG = {
-		"circle_xz_show": True,
-		"operators": [
-			Sqrt_x,
-			Phase(45 * DEGREES),
-			Sqrt_x,
-			Sqrt_x,
-		],
-		"operator_names": [
-			"Sqrt of X",
-			"Phase 45",
-			"Sqrt of X",
-			"Sqrt of X",
-		],
-	}
-class BlochSphere_example_SX_P45_SX_SX_SX_SX(BlochSphere):
-	CONFIG = {
-		"circle_xz_show": True,
-		"operators": [
-			Sqrt_x,
-			Phase(45 * DEGREES),
-			Sqrt_x,
-			Sqrt_x,
-			Sqrt_x,
-			Sqrt_x,
-		],
-		"operator_names": [
-			"Sqrt of X",
-			"Phase 45",
-			"Sqrt of X",
-			"Sqrt of X",
-			"Sqrt of X",
-			"Sqrt of X",
-		],
-	}
-class BlochSphere_example_SX_P45_SX_Y_SX(BlochSphere):
-	CONFIG = {
-		"circle_xz_show": True,
-		"operators": [
-			Sqrt_x,
-			Phase(45 * DEGREES),
-			Sqrt_x,
-			Pauli_y,
-			Sqrt_x,
-		],
-		"operator_names": [
-			"Sqrt of X",
-			"Phase 45",
-			"Sqrt of X",
-			"Pauli Y",
-			"Sqrt of X",
-		],
-	}
-
-class BlochSphere_example_H_P180(BlochSphere):
-	CONFIG = {
-		"operators": [
-			Hadamard,
-			Phase(180 * DEGREES),
-		],
-		"operator_names": [
-			"Hadamard",
-			"Phase 180",
-		],
-	}
-class BlochSphere_example_P180_H(BlochSphere):
-	CONFIG = {
-		"operators": [
-			Phase(180 * DEGREES),
-			Hadamard,
-		],
-		"operator_names": [
-			"Phase 180",
-			"Hadamard",
-		],
-	}
-class BlochSphere_example_H_P180_H(BlochSphere):
-	CONFIG = {
-		"operators": [
-			Hadamard,
-			Phase(180 * DEGREES),
-			Hadamard,
-		],
-		"operator_names": [
-			"Hadamard",
-			"Phase 180",
-			"Hadamard",
-		],
-	}
-class BlochSphere_example_H_P90(BlochSphere):
-	CONFIG = {
-		"operators": [
-			Hadamard,
-			Phase(90 * DEGREES),
-		],
-		"operator_names": [
-			"Hadamard",
-			"Phase 90",
-		],
-	}
-class BlochSphere_example_H_P90_H(BlochSphere):
-	CONFIG = {
-		"operators": [
-			Hadamard,
-			Phase(90 * DEGREES),
-			Hadamard,
-		],
-		"operator_names": [
-			"Hadamard",
-			"Phase 90",
-			"Hadamard",
-		],
-	}
-class BlochSphere_example_H_P90_H_SX(BlochSphere):
-	CONFIG = {
-		"operators": [
-			Hadamard,
-			Phase(90 * DEGREES),
-			Hadamard,
-			Sqrt_x,
-		],
-		"operator_names": [
-			"Hadamard",
-			"Phase 90",
-			"Hadamard",
-			"Sqrt of X",
-		],
-	}
-class BlochSphere_example_H_P90_H_H(BlochSphere):
-	CONFIG = {
-		"operators": [
-			Hadamard,
-			Phase(90 * DEGREES),
-			Hadamard,
-			Hadamard,
-		],
-		"operator_names": [
-			"Hadamard",
-			"Phase 90",
-			"Hadamard",
-			"Hadamard",
-		],
-	}
-class BlochSphere_example_H_P45_H(BlochSphere):
-	CONFIG = {
-		"operators": [
-			Hadamard,
-			Phase(45 * DEGREES),
-			Hadamard,
-		],
-		"operator_names": [
-			"Hadamard",
-			"Phase 45",
-			"Hadamard",
-		],
-	}
 
 
 class BlochSphereWalk(BlochSphere):
@@ -908,46 +438,15 @@ class BlochSphereWalk(BlochSphere):
 		self.init_text()
 		self.wait(self.pre_operators_wait_time)
 
+		self.update_theta_and_phi()
+		
+		self.wait(self.final_wait_time)
+
+	def update_theta_and_phi(self):
 		theta = 0
 		phi   = 0
 
-		# theta 0 -> 90
-		for i in range(90):
-			theta += 1*DEGREES
-			self.update_state(theta, phi)
-		self.wait(1)
-		# phi 0 -> 90
-		for i in range(90):
-			phi += 1*DEGREES
-			self.update_state(theta, phi)
-		self.wait(1)
-		# theta 90 -> 45
-		for i in range(45):
-			theta -= 1*DEGREES
-			self.update_state(theta, phi)
-		self.wait(1)
-		# phi 90 -> 270
-		for i in range(180):
-			phi += 1*DEGREES
-			self.update_state(theta, phi)
-		self.wait(1)
-		# theta 45 -> 135
-		for i in range(90):
-			theta += 1*DEGREES
-			self.update_state(theta, phi)
-		self.wait(1)
-		# phi 270 -> 0
-		for i in range(90):
-			phi += 1*DEGREES
-			self.update_state(theta, phi)
-		self.wait(1)
-		# theta 135 -> 0
-		for i in range(135):
-			theta -= 1*DEGREES
-			self.update_state(theta, phi)
-
-
-		self.wait(self.final_wait_time)
+		# update theta and phi
 
 	def update_state(self, theta, phi, wait=None):
 		print(f"theta={theta} ; phi={phi}")
@@ -963,46 +462,3 @@ class BlochSphereWalk(BlochSphere):
 			self.wait(wait)
 
 		return new_zero
-
-class BlochSphereWalk_2(BlochSphereWalk):
-	CONFIG = {
-		"show_intro": False,
-	}
-	def construct(self):
-		if self.show_intro:
-			self.present_introduction()
-		self.init_camera()
-		self.init_axes()
-		self.init_sphere()
-		self.init_states()
-		self.init_text()
-		self.wait(self.pre_operators_wait_time)
-
-		theta = 0
-		phi   = 0
-
-		# theta   0 ->  90
-		for i in range(90):
-			theta += 1*DEGREES
-			self.update_state(theta, phi)
-		self.wait(1)
-		# theta  90 -> 180
-		for i in range(90):
-			theta += 1*DEGREES
-			self.update_state(theta, phi)
-		self.wait(1)
-		# phi jump from 0 to 180
-		phi = 180
-		# theta 180 ->  90
-		for i in range(90):
-			theta -= 1*DEGREES
-			self.update_state(theta, phi)
-		self.wait(1)
-		# theta  90 ->   0
-		for i in range(90):
-			theta -= 1*DEGREES
-			self.update_state(theta, phi)
-		self.wait(1)
-		
-		self.wait(self.final_wait_time)
-
