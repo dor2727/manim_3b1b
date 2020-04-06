@@ -413,7 +413,6 @@ class BlochSphere_example_H_P45_H(BlochSphere):
 # 
 # bloch sphere walk
 # 
-
 class BlochSphereWalk_example_1(BlochSphereWalk):
 	def update_theta_and_phi(self):
 		theta = 0
@@ -471,7 +470,7 @@ class BlochSphereWalk_example_2(BlochSphereWalk):
 			self.update_state(theta, phi)
 		self.wait(1)
 		# phi jump from 0 to 180
-		phi = 180
+		phi = 180*DEGREES
 		# theta 180 ->  90
 		for i in range(90):
 			theta -= 1*DEGREES
@@ -483,3 +482,85 @@ class BlochSphereWalk_example_2(BlochSphereWalk):
 			self.update_state(theta, phi)
 		self.wait(1)
 
+class BlochSphereWalk_example_3(BlochSphereWalk):
+	def update_theta_and_phi(self):
+		theta = 0
+		phi   = 0
+
+		# theta   0 ->  90
+		for i in range(90):
+			theta += 1*DEGREES
+			self.update_state(theta, phi)
+		self.wait(1)
+		# phi   0 ->  90
+		for i in range(90):
+			phi += 1*DEGREES
+			self.update_state(theta, phi)
+		self.wait(1)
+		# theta  90 -> 180
+		for i in range(90):
+			theta += 1*DEGREES
+			self.update_state(theta, phi)
+		self.wait(1)
+		# phi jump from 90 to 180
+		phi = 180*DEGREES
+		# theta 180 ->  90
+		for i in range(90):
+			theta -= 1*DEGREES
+			self.update_state(theta, phi)
+		self.wait(1)
+		# phi 180 -> 270
+		for i in range(90):
+			phi += 1*DEGREES
+			self.update_state(theta, phi)
+		self.wait(1)
+		# theta  90 ->   0
+		for i in range(90):
+			theta -= 1*DEGREES
+			self.update_state(theta, phi)
+		self.wait(1)
+
+class BlochSphereWalk_example_4(BlochSphereWalk):
+	def update_theta_and_phi(self):
+		theta = 0
+		phi   = 0
+
+		# theta   0 -> 180
+		# phi     0 -> 180
+		for i in range(180):
+			theta += 1
+			phi   += 1
+			print(theta, phi)
+			self.update_state(theta*DEGREES, phi*DEGREES)
+		self.wait(0.1)
+		# theta 180 ->   0
+		# phi   180 -> 360
+		for i in range(180):
+			theta -= 1
+			phi   += 1
+			print(theta, phi)
+			self.update_state(theta*DEGREES, phi*DEGREES)
+		self.wait(2)
+
+		# again, but with a 90 degrees phase
+		theta = 0
+		phi   = 90
+		self.update_state(theta*DEGREES, phi*DEGREES)
+		# theta   0 -> 180
+		# phi    90 -> 270
+		for i in range(180):
+			theta += 1
+			phi   += 1
+			print(theta, phi)
+			self.update_state(theta*DEGREES, phi*DEGREES)
+		self.wait(0.1)
+		# theta 180 ->   0
+		# phi   270 ->  90
+		for i in range(180):
+			theta -= 1
+			phi   += 1
+			if phi >= 360:
+				phi = 0
+			print(theta, phi)
+			self.update_state(theta*DEGREES, phi*DEGREES)
+		self.wait(1)
