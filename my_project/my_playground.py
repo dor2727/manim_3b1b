@@ -768,6 +768,7 @@ class DisplayTex(Scene):
 		# 's': "NOT\\ket{0}=\\ket{1} \\\\ NOT\\ket{1}=\\ket{0}",
 		# 's': "X\\ket{0}=\\ket{1} \\\\ X\\ket{1}=\\ket{0}",
 		# 's': "ERASE\\ket{0}=\\ket{0} \\\\ ERASE\\ket{1}=\\ket{0}",
+		's': "NOT \\  ERASE\\ket{0}=\\ket{1} \\\\ NOT \\  ERASE\\ket{1}=\\ket{1}",
 		# 's': "50\\% \\ket{0}+ 50\\% \\ket{1}",
 		# 's': "\\ket{\\Psi}=\\alpha_0\\ket{0}+\\alpha_1\\ket{1}",
 		# 's': "\\ket{\\Psi}=\\alpha\\ket{0}+\\beta\\ket{1}",
@@ -791,7 +792,7 @@ class DisplayTex(Scene):
 		# 's': "\\ket{x_2 x_1 x_0}=\\begin{bmatrix} \\gamma_0 \\\\ \\gamma_1 \\end{bmatrix} \\otimes \\begin{bmatrix} \\beta_0 \\\\ \\beta_1 \\end{bmatrix} \\otimes \\begin{bmatrix} \\alpha_0 \\\\ \\alpha_1 \\end{bmatrix}=\\begin{bmatrix} \\gamma_0 \\beta_0 \\alpha_0 \\\\ \\gamma_0 \\beta_0 \\alpha_1 \\\\ \\gamma_0 \\beta_1 \\alpha_0 \\\\ \\gamma_0 \\beta_1 \\alpha_1 \\\\ \\gamma_1 \\beta_0 \\alpha_0 \\\\ \\gamma_1 \\beta_0 \\alpha_1 \\\\ \\gamma_1 \\beta_1 \\alpha_0 \\\\ \\gamma_1 \\beta_1 \\alpha_1 \\end{bmatrix}",
 		# 's': "H\\ket{0}= \\frac{1}{\\sqrt{2}} \\begin{bmatrix} 1 & 1 \\\\ 1 & -1 \\end{bmatrix} \\begin{bmatrix} 1 \\\\ 0 \\end{bmatrix}= \\frac{1}{\\sqrt{2}} \\begin{bmatrix} 1 \\\\ 1 \\end{bmatrix} = \\frac{\\ket{0} + \\ket{1}}{\\sqrt{2}} \\equiv \\ket{+}",
 		# 's': "H\\ket{1}= \\frac{1}{\\sqrt{2}} \\begin{bmatrix} 1 & 1 \\\\ 1 & -1 \\end{bmatrix} \\begin{bmatrix} 0 \\\\ 1 \\end{bmatrix}= \\frac{1}{\\sqrt{2}} \\begin{bmatrix} 1 \\\\ -1 \\end{bmatrix} = \\frac{\\ket{0} - \\ket{1}}{\\sqrt{2}} \\equiv \\ket{-}",
-		's': "H = \\frac{1}{\\sqrt{2}}\\begin{bmatrix} 1 & 1 \\\\ 1 & -1 \\end{bmatrix} = \\frac{1}{\\sqrt{2}}\\begin{bmatrix} 0 & 1 \\\\ 1 & 0 \\end{bmatrix} + \\frac{1}{\\sqrt{2}}\\begin{bmatrix} 1 & 0 \\\\ 0 & -1 \\end{bmatrix} = \\frac{\\sigma_{x} + \\sigma_{z}}{\\sqrt{2}}",
+		# 's': "H = \\frac{1}{\\sqrt{2}}\\begin{bmatrix} 1 & 1 \\\\ 1 & -1 \\end{bmatrix} = \\frac{1}{\\sqrt{2}}\\begin{bmatrix} 0 & 1 \\\\ 1 & 0 \\end{bmatrix} + \\frac{1}{\\sqrt{2}}\\begin{bmatrix} 1 & 0 \\\\ 0 & -1 \\end{bmatrix} = \\frac{\\sigma_{x} + \\sigma_{z}}{\\sqrt{2}}",
 		# 's': "P(k)=\\frac{\\lambda^k e^{-\\lambda}}{k!}",
 		# 's': "\\frac{1}{2}\\cdot\\ket{0}=\\frac{1}{2}\\cdot\\begin{bmatrix} 1 \\\\ 0 \\end{bmatrix}=\\begin{bmatrix} \\frac{1}{2} \\\\ 0 \\end{bmatrix}",
 		# 's': "5\\cdot\\ket{0}+7\\cdot\\ket{1}=5\\cdot\\begin{bmatrix} 1 \\\\ 0 \\end{bmatrix}+7\\cdot\\begin{bmatrix} 0 \\\\ 1 \\end{bmatrix}=\\begin{bmatrix} 5 \\\\ 7 \\end{bmatrix}",
@@ -868,6 +869,11 @@ class DisplayMatrix(Scene):
 		# 	[1,1],
 		# 	[0,0]
 		# ],
+		"name": "NOT \\  ERASE",
+		"values": [
+			[0,0],
+			[1,1]
+		],
 		# "name": "SWAP",
 		# "values": [
 		# 	[1,0,0,0],
@@ -894,13 +900,13 @@ class DisplayMatrix(Scene):
 		# 	[1,1],
 		# 	[1,-1]
 		# ],
-		"name": "H^{(2)}",
-		"values": [
-			[1, 1, 1, 1],
-			[1,-1, 1,-1],
-			[1, 1,-1,-1],
-			[1,-1,-1, 1],
-		],
+		# "name": "H^{(2)}",
+		# "values": [
+		# 	[1, 1, 1, 1],
+		# 	[1,-1, 1,-1],
+		# 	[1, 1,-1,-1],
+		# 	[1,-1,-1, 1],
+		# ],
 		# "name": "AND",
 		# "values": [
 		# 	[1,0,0,0,0,0,0,0],
@@ -935,9 +941,9 @@ class DisplayMatrix(Scene):
 		# 	[0,0,0,0,0,0,0,1], # 111
 		# ],
 
-		# "factor": "",
+		"factor": "",
 		# "factor": "\\frac{1}{\\sqrt{2}}",
-		"factor": "\\frac{1}{2}",
+		# "factor": "\\frac{1}{2}",
 	}
 
 	def construct(self):
