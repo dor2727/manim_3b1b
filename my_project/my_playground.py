@@ -801,13 +801,17 @@ class DisplayTex(Scene):
 		# 's': "H^{(2)}\\ket{00}=(H\\ket{0})(H\\ket{0})=(\\frac{\\ket{0}+\\ket{1}}{\\sqrt{2}})(\\frac{\\ket{0}+\\ket{1}}{\\sqrt{2}})=\\frac{\\ket{00}+\\ket{01}+\\ket{10}+\\ket{11}}{2}",
 		# 's': "C_{10}H_1\\ket{00}=C_{10}\\frac{\\ket{0}+\\ket{1}}{\\sqrt{2}}\\ket{0}=\\frac{\\ket{00}+\\ket{11}}{\\sqrt{2}}\\equiv\\ket{\\Phi^+}",
 		# 's': "H^{(2)}C_{10}H^{(2)}=%s%s%s" % (Hadamard_2d, C_10, Hadamard_2d),
-		's': "O_x=%s=C_{01}" % C_01,
+		# 's': "O_x=%s=C_{01}" % C_01,
 	}
 
 	def construct(self):
+		self.camera.background_color = WHITE
+		self.camera.init_background()
+
 		a = TexMobject(self.s)
 		# a.scale(1.5)
 		a.scale(0.6)
+		a.set_color(BLACK)
 		self.add(a)
 
 # who goes where
