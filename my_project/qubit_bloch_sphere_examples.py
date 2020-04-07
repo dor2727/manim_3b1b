@@ -453,7 +453,6 @@ class BlochSphereWalk_example_1(BlochSphereWalk):
 			theta -= 1*DEGREES
 			self.update_state(theta, phi)
 		self.wait(1)
-
 class BlochSphereWalk_example_2(BlochSphereWalk):
 	def update_theta_and_phi(self):
 		theta = 0
@@ -481,7 +480,6 @@ class BlochSphereWalk_example_2(BlochSphereWalk):
 			theta -= 1*DEGREES
 			self.update_state(theta, phi)
 		self.wait(1)
-
 class BlochSphereWalk_example_3(BlochSphereWalk):
 	def update_theta_and_phi(self):
 		theta = 0
@@ -519,7 +517,6 @@ class BlochSphereWalk_example_3(BlochSphereWalk):
 			theta -= 1*DEGREES
 			self.update_state(theta, phi)
 		self.wait(1)
-
 class BlochSphereWalk_example_4(BlochSphereWalk):
 	def update_theta_and_phi(self):
 		theta = 0
