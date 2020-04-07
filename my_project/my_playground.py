@@ -124,11 +124,11 @@ class DisplayMatrix(Scene):
 		# 	[1,1],
 		# 	[0,0]
 		# ],
-		"name": "NOT \\  ERASE",
-		"values": [
-			[0,0],
-			[1,1]
-		],
+		# "name": "NOT \\  ERASE",
+		# "values": [
+		# 	[0,0],
+		# 	[1,1]
+		# ],
 		# "name": "SWAP",
 		# "values": [
 		# 	[1,0,0,0],
@@ -195,6 +195,11 @@ class DisplayMatrix(Scene):
 		# 	[0,0,0,0,0,0,1,0], # 110
 		# 	[0,0,0,0,0,0,0,1], # 111
 		# ],
+		"name": "M",
+		"values": [
+			["m_{00}","m_{01}"],
+			["m_{10}","m_{11}"]
+		],
 
 		"factor": "",
 		# "factor": "\\frac{1}{\\sqrt{2}}",
