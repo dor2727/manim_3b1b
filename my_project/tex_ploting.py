@@ -224,10 +224,15 @@ class DisplayMatrix(WhiteScene):
 		# 	[0,0,0,0,0,0,1,0], # 110
 		# 	[0,0,0,0,0,0,0,1], # 111
 		# ],
-		"name": "M",
+		# "name": "M",
+		# "values": [
+		# 	["m_{00}","m_{01}"],
+		# 	["m_{10}","m_{11}"]
+		# ],
+		"name": "\\alpha I + \\beta X + \\gamma Y + \\delta Z",
 		"values": [
-			["m_{00}","m_{01}"],
-			["m_{10}","m_{11}"]
+			["\\alpha + \\delta","\\beta - i \\gamma"],
+			["\\beta + i \\gamma","\\alpha - \\delta"]
 		],
 
 		"factor": "",
