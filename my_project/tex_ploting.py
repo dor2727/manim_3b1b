@@ -6,7 +6,41 @@ Hadamard_2d = "\\frac{1}{2}\\begin{bmatrix} 1 & 1 & 1 & 1 \\\\ 1 & -1 & 1 & -1 \
 C_10        = "\\begin{bmatrix} 1 & 0 & 0 & 0 \\\\ 0 & 1 & 0 & 0 \\\\ 0 & 0 & 0 & 1 \\\\ 0 & 0 & 1 & 0\\end{bmatrix}"
 C_01        = "\\begin{bmatrix} 1 & 0 & 0 & 0 \\\\ 0 & 0 & 0 & 1 \\\\ 0 & 0 & 1 & 0 \\\\ 0 & 1 & 0 & 0\\end{bmatrix}"
 
-class DisplayTex(Scene):
+class WhiteScene(Scene):
+	CONFIG = {
+        "camera_config": {
+	        "background_color": WHITE,
+        },
+	}
+
+	def _tex(self, string=None, *args, **kwargs):
+		if string is None:
+			t = TexMobject(self.s, *args, **kwargs)
+		else:
+			t = TexMobject(string, *args, **kwargs)
+
+		t.set_color(BLACK)
+		return t
+
+	def _text(self, string=None, *args, **kwargs):
+		if string is None:
+			t = TextMobject(self.s, *args, **kwargs)
+		else:
+			t = TextMobject(string, *args, **kwargs)
+
+		t.set_color(BLACK)
+		return t
+
+	def add_tex(self, string=None, scale=None):
+		t = self._tex(string=string)
+
+		if scale is not None:
+			t.scale(scale)
+
+		self.add(t)
+		
+
+class DisplayTex(WhiteScene):
 	CONFIG = {
 		# 's': "\\ket{0}\\qquad\\ket{1}",
 		# 's': "\\ket{1}\\ket{1}\\ket{0}\\ket{1}",
@@ -56,43 +90,38 @@ class DisplayTex(Scene):
 	}
 
 	def construct(self):
-		self.camera.background_color = WHITE
-		self.camera.init_background()
-
-		a = TexMobject(self.s)
-		# a.scale(1.5)
-		a.scale(0.6)
-		a.set_color(BLACK)
-		self.add(a)
+		self.add_tex(scale=0.6)
 
 # who goes where
-class DisplayTex2(Scene):
+class DisplayTex2(WhiteScene):
 	def construct(self):
 		# NOT        = TexMobject("\\begin{bmatrix} 0 & 1 \\\\ 1 & 0 \\end{bmatrix}")
-		ERASE      = TexMobject("\\begin{bmatrix} 1 & 1 \\\\ 0 & 0 \\end{bmatrix}")
-		ZERO_WHO   = TexMobject("\\ket{0}").move_to(1*UP     + 0.35*LEFT)
-		ZERO_WHERE = TexMobject("\\ket{0}").move_to(0.3*UP   + 1  *LEFT)
-		ONE_WHO    = TexMobject("\\ket{1}").move_to(1*UP     + 0.4*RIGHT)
-		ONE_WHERE  = TexMobject("\\ket{1}").move_to(0.3*DOWN + 1  *LEFT)
-		WHO       = TextMobject("Who").move_to(1.7*UP)
-		WHERE     = TextMobject("Where").move_to(2.3*LEFT)
+		ERASE      = self._tex("\\begin{bmatrix} 1 & 1 \\\\ 0 & 0 \\end{bmatrix}")
+		ZERO_WHO   = self._tex("\\ket{0}").move_to(1*UP     + 0.35*LEFT)
+		ZERO_WHERE = self._tex("\\ket{0}").move_to(0.3*UP   + 1  *LEFT)
+		ONE_WHO    = self._tex("\\ket{1}").move_to(1*UP     + 0.4*RIGHT)
+		ONE_WHERE  = self._tex("\\ket{1}").move_to(0.3*DOWN + 1  *LEFT)
+		WHO       = self._text("Who").move_to(1.7*UP)
+		# WHO       = self._tex("Who", alignment="").move_to(1.7*UP)
+		WHERE     = self._text("Where").move_to(2.3*LEFT)
 		self.add(ERASE, ZERO_WHO, ZERO_WHERE, ONE_WHO, ONE_WHERE, WHO, WHERE)
 
 # 2 bits basis
-class DisplayTex3(Scene):
+class DisplayTex3(WhiteScene):
 	def construct(self):
-		t0 = TexMobject("\\ket{0}_2=\\ket{00}=\\begin{bmatrix} 1 \\\\ 0 \\\\ 0 \\\\ 0 \\end{bmatrix}").move_to(1.4*UP   + 2.5*LEFT )
-		t1 = TexMobject("\\ket{1}_2=\\ket{01}=\\begin{bmatrix} 0 \\\\ 1 \\\\ 0 \\\\ 0 \\end{bmatrix}").move_to(1.4*UP   + 2.5*RIGHT)
-		t2 = TexMobject("\\ket{2}_2=\\ket{10}=\\begin{bmatrix} 0 \\\\ 0 \\\\ 1 \\\\ 0 \\end{bmatrix}").move_to(1.4*DOWN + 2.5*LEFT )
-		t3 = TexMobject("\\ket{3}_2=\\ket{11}=\\begin{bmatrix} 0 \\\\ 0 \\\\ 0 \\\\ 1 \\end{bmatrix}").move_to(1.4*DOWN + 2.5*RIGHT)
+		t0 = self._tex("\\ket{0}_2=\\ket{00}=\\begin{bmatrix} 1 \\\\ 0 \\\\ 0 \\\\ 0 \\end{bmatrix}").move_to(1.4*UP   + 2.5*LEFT )
+		t1 = self._tex("\\ket{1}_2=\\ket{01}=\\begin{bmatrix} 0 \\\\ 1 \\\\ 0 \\\\ 0 \\end{bmatrix}").move_to(1.4*UP   + 2.5*RIGHT)
+		t2 = self._tex("\\ket{2}_2=\\ket{10}=\\begin{bmatrix} 0 \\\\ 0 \\\\ 1 \\\\ 0 \\end{bmatrix}").move_to(1.4*DOWN + 2.5*LEFT )
+		t3 = self._tex("\\ket{3}_2=\\ket{11}=\\begin{bmatrix} 0 \\\\ 0 \\\\ 0 \\\\ 1 \\end{bmatrix}").move_to(1.4*DOWN + 2.5*RIGHT)
 
 		self.add(t0, t1, t2, t3)
 
+# broken
 # different colors for different letters
-class DisplayTex4(Scene):
+class DisplayTex4(WhiteScene):
 	def construct(self):
 		# s = TexMobject("C_{", "i", "j", "}\\ket{x_{n-1} \\hdots x_1 x_0}")
-		s = TexMobject("\\frac{\\alpha}{2}(\\ket{", '0', '0', '0', "}+\\ket{", '0', '1', '1', "}) + \\frac{\\beta}{2}(\\ket{", '1', '0', '0', "}+\\ket{", '1', '1', '1', "})")
+		s = self._tex("\\frac{\\alpha}{2}(\\ket{", '0', '0', '0', "}+\\ket{", '0', '1', '1', "}) + \\frac{\\beta}{2}(\\ket{", '1', '0', '0', "}+\\ket{", '1', '1', '1', "})")
 		
 		s[1].set_color(GREEN)
 		s[2].set_color(BLUE)
@@ -112,7 +141,7 @@ class DisplayTex4(Scene):
 
 		self.add(s)
 
-class DisplayMatrix(Scene):
+class DisplayMatrix(WhiteScene):
 	CONFIG = {
 		# "name": "X",
 		# "values": [
@@ -216,15 +245,13 @@ class DisplayMatrix(Scene):
 
 		s = f"{self.name} = {self.factor} \\begin{{bmatrix}} {m} \\end{{bmatrix}}"
 		print(s)
-		a = TexMobject(s)
-		# a.scale(1.5)
 
-		self.add(a)
+		self.add_tex(s, scale=None)
 
 # dashed lines seperating a matrix
-class DisplayMatrix2(Scene):
+class DisplayMatrix2(WhiteScene):
 	def construct(self):
-		a = TexMobject("C_{10} = \\begin{bmatrix} 1 & 0 & 0 & 0 \\\\ 0 & 1 & 0 & 0 \\\\ 0 & 0 & 0 & 1 \\\\ 0 & 0 & 1 & 0 \\end{bmatrix} = \\begin{bmatrix} I & 0 \\\\ 0 & X \\end{bmatrix}")
+		a = self._tex("C_{10} = \\begin{bmatrix} 1 & 0 & 0 & 0 \\\\ 0 & 1 & 0 & 0 \\\\ 0 & 0 & 0 & 1 \\\\ 0 & 0 & 1 & 0 \\end{bmatrix} = \\begin{bmatrix} I & 0 \\\\ 0 & X \\end{bmatrix}")
 		a.scale(1.3)
 
 		l1 = DashedLine(
@@ -242,9 +269,9 @@ class DisplayMatrix2(Scene):
 		# self.add(a, b, TWO_WHO, c, ONE_WHERE)
 
 # dashed lines seperating a matrix
-class DisplayMatrix3(Scene):
+class DisplayMatrix3(WhiteScene):
 	def construct(self):
-		a = TexMobject("I_1 \\otimes X_0 = \\begin{bmatrix} 1 & 0 \\\\ 0 & 1 \\end{bmatrix} \\otimes X_0 = \\begin{bmatrix} 1 \\cdot X_0 & 0 \\cdot X_0 \\\\ 0 \\cdot X_0 & 1 \\cdot X_0 \\end{bmatrix} = \\begin{bmatrix} 0 & 1 & 0 & 0 \\\\ 1 & 0 & 0 & 0 \\\\ 0 & 0 & 0 & 1 \\\\ 0 & 0 & 1 & 0 \\end{bmatrix} = \\begin{bmatrix} X & 0 \\\\ 0 & X \\end{bmatrix}")
+		a = self._tex("I_1 \\otimes X_0 = \\begin{bmatrix} 1 & 0 \\\\ 0 & 1 \\end{bmatrix} \\otimes X_0 = \\begin{bmatrix} 1 \\cdot X_0 & 0 \\cdot X_0 \\\\ 0 \\cdot X_0 & 1 \\cdot X_0 \\end{bmatrix} = \\begin{bmatrix} 0 & 1 & 0 & 0 \\\\ 1 & 0 & 0 & 0 \\\\ 0 & 0 & 0 & 1 \\\\ 0 & 0 & 1 & 0 \\end{bmatrix} = \\begin{bmatrix} X & 0 \\\\ 0 & X \\end{bmatrix}")
 		# a = TexMobject("I_1 \\otimes X_0 = \\begin{bmatrix} 1 & 0 \\\\ 0 & 1 \\end{bmatrix} \\otimes \\begin{bmatrix} 0 & 1 \\\\ 1 & 0 \\end{bmatrix} = \\begin{bmatrix} 0 & 1 & 0 & 0 \\\\ 1 & 0 & 0 & 0 \\\\ 0 & 0 & 0 & 1 \\\\ 0 & 0 & 1 & 0 \\end{bmatrix} = \\begin{bmatrix} X & 0 \\\\ 0 & X \\end{bmatrix}")
 		# a = TexMobject("X_1 \\otimes I_0 = \\begin{bmatrix} 0 & 1 \\\\ 1 & 0 \\end{bmatrix} \\otimes \\begin{bmatrix} 1 & 0 \\\\ 0 & 1 \\end{bmatrix} = \\begin{bmatrix} 0 & 0 & 1 & 0 \\\\ 0 & 0 & 0 & 1 \\\\ 1 & 0 & 0 & 0 \\\\ 0 & 1 & 0 & 0 \\end{bmatrix} = \\begin{bmatrix} 0 & I \\\\ I & 0 \\end{bmatrix}")
 		a.scale(0.6)
@@ -271,7 +298,7 @@ class DisplayMatrix3(Scene):
 		# self.add(a, b, TWO_WHO, c, ONE_WHERE)
 
 # trying to automate the who-goes-where
-class DisplayMatrix4(Scene):
+class DisplayMatrix4(WhiteScene):
 	CONFIG = {
 		"name": "SWAP",
 		"values": [
@@ -291,7 +318,7 @@ class DisplayMatrix4(Scene):
 
 		s = f"{self.name} = \\begin{{bmatrix}} {m} \\end{{bmatrix}}"
 		print(s)
-		a = TexMobject(s)
+		a = self._tex(s)
 		a.scale(1.5)
 
 		# self.add_col_rectangle(0, "\\ket{00}")
@@ -378,11 +405,12 @@ class DisplayMatrix4(Scene):
 		return "\\ket{%s}" % bin(value)[2:]
 
 # showing a matrix with multiple names
-class DisplayMatrix5(Scene):
+class DisplayMatrix5(WhiteScene):
 	def construct(self):
 		# a = TexMobject("C^{Z}_{10} = \\begin{bmatrix} I & 0 \\\\ 0 & Z \\end{bmatrix} = \\begin{bmatrix} 1 & 0 & 0 & 0 \\\\ 0 & 1 & 0 & 0 \\\\ 0 & 0 & 1 & 0 \\\\ 0 & 0 & 0 & -1 \\end{bmatrix} = C^{Z}_{01}")
 		# a = TexMobject("\\sigma_{Z} = Z = \\begin{bmatrix} 1 & 0 \\\\ 0 & -1 \\end{bmatrix}")
-		a = TexMobject("\\sigma_{Y} = Y = \\begin{bmatrix} 0 & -i \\\\ i & 0 \\end{bmatrix}")
-		a.scale(1.3)
+		# a = TexMobject("\\sigma_{Y} = Y = \\begin{bmatrix} 0 & -i \\\\ i & 0 \\end{bmatrix}")
+		# a.scale(1.3)
 
-		self.add(a)
+		# self.add(a)
+		self.add_tex("\\sigma_{Y} = Y = \\begin{bmatrix} 0 & -i \\\\ i & 0 \\end{bmatrix}", scale=1.3)
