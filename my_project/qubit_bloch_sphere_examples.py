@@ -306,6 +306,33 @@ class BlochSphere_example_SX_P45_SX_Y_SX(BlochSphere):
 		],
 	}
 
+class BlochSphere_example_SY_SY(BlochSphere):
+	CONFIG = {
+		"operators": [
+			Sqrt_y,
+			Sqrt_y,
+		],
+		"operator_names": [
+			"Sqrt of Y",
+			"Sqrt of Y",
+		],
+	}
+class BlochSphere_example_SY_SY_SY_SY(BlochSphere):
+	CONFIG = {
+		"operators": [
+			Sqrt_y,
+			Sqrt_y,
+			Sqrt_y,
+			Sqrt_y,
+		],
+		"operator_names": [
+			"Sqrt of Y",
+			"Sqrt of Y",
+			"Sqrt of Y",
+			"Sqrt of Y",
+		],
+	}
+
 class BlochSphere_example_H_P180(BlochSphere):
 	CONFIG = {
 		"operators": [

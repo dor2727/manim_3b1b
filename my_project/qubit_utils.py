@@ -10,10 +10,17 @@ SPHERE_RADIUS = 2
 # quantum gates
 #
 Hadamard = 1/np.sqrt(2) * np.array([[1,1],[1,-1]])
-Pauli_x = np.array([[0,1],[1,0]])
-Pauli_y = np.array([[0,-1j],[1j,0]])
-Pauli_z = np.array([[1,0],[0,-1]])
-Sqrt_x = 1/2 * np.array([[1+1j,1-1j],[1-1j,1+1j]])
+Pauli_x = np.array([[0,1],
+					[1,0]])
+Pauli_y = np.array([[0 ,-1j],
+					[1j,0  ]])
+Pauli_z = np.array([[1,0 ],
+					[0,-1]])
+Sqrt_x = 1/2 * np.array([[1+1j,1-1j],
+						 [1-1j,1+1j]])
+Sqrt_y = 1/2 * np.array([[-1+1j,-1+1j],
+						 [1-1j ,-1+1j]])
+
 def Phase(phi):
 	return np.array([[1,0],[0,np.exp(1j * phi)]])
 
@@ -163,7 +170,7 @@ class RotationMatrix(object):
 		self.alpha = (a + d)/2
 		self.delta = (a - d)/2
 		self.beta  = (b + c)/2
-		self.gamma = (b - c)/2j
+		self.gamma = (c - b)/2j
 
 	# this other decomposition method is actually not used, but it stays here because
 	# 1) its always nice to see other decomposition methods
