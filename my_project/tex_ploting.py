@@ -229,13 +229,23 @@ class DisplayMatrix(WhiteScene):
 		# 	["m_{00}","m_{01}"],
 		# 	["m_{10}","m_{11}"]
 		# ],
-		"name": "\\alpha I + \\beta X + \\gamma Y + \\delta Z",
+		# "name": "\\alpha I + \\beta X + \\gamma Y + \\delta Z",
+		# "values": [
+		# 	["\\alpha + \\delta","\\beta - i \\gamma"],
+		# 	["\\beta + i \\gamma","\\alpha - \\delta"]
+		# ],
+		# "name": "Sqrt\\ X",
+		# "values": [
+		# 	[1+1j,1-1j],
+		# 	[1-1j,1+1j]
+		# ],
+		"name": "Phase",
 		"values": [
-			["\\alpha + \\delta","\\beta - i \\gamma"],
-			["\\beta + i \\gamma","\\alpha - \\delta"]
+			[1,0],
+			[0,"e^{i\\theta}"]
 		],
 
-		"factor": "",
+		# "factor": "",
 		# "factor": "\\frac{1}{\\sqrt{2}}",
 		# "factor": "\\frac{1}{2}",
 	}
@@ -248,7 +258,8 @@ class DisplayMatrix(WhiteScene):
 
 		# "\\begin{bmatrix} a_1 \\\\ a_2 \\end{bmatrix} \\otimes \\begin{bmatrix} b_1 \\\\ b_2 \\end{bmatrix} = \\begin{bmatrix} a_1 b_1 \\\\ a_1 b_2 \\\\ a_2 b_1 \\\\ a_2 b_2 \\end{bmatrix}",
 
-		s = f"{self.name} = {self.factor} \\begin{{bmatrix}} {m} \\end{{bmatrix}}"
+		factor = getattr(self, "factor", "")
+		s = f"{self.name} = {factor} \\begin{{bmatrix}} {m} \\end{{bmatrix}}"
 		print(s)
 
 		self.add_tex(s, scale=None)
