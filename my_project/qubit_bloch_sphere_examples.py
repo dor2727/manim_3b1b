@@ -333,6 +333,33 @@ class BlochSphere_example_SY_SY_SY_SY(BlochSphere):
 		],
 	}
 
+class BlochSphere_example_SH_SH(BlochSphere):
+	CONFIG = {
+		"operators": [
+			Sqrt_H,
+			Sqrt_H,
+		],
+		"operator_names": [
+			"Sqrt of Hadamard",
+			"Sqrt of Hadamard",
+		],
+	}
+class BlochSphere_example_SH_SH_SH_SH(BlochSphere):
+	CONFIG = {
+		"operators": [
+			Sqrt_H,
+			Sqrt_H,
+			Sqrt_H,
+			Sqrt_H,
+		],
+		"operator_names": [
+			"Sqrt of Hadamard",
+			"Sqrt of Hadamard",
+			"Sqrt of Hadamard",
+			"Sqrt of Hadamard",
+		],
+	}
+
 class BlochSphere_example_H_P180(BlochSphere):
 	CONFIG = {
 		"operators": [
