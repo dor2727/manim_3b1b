@@ -21,8 +21,15 @@ Sqrt_x = 1/2 * np.array([[1+1j,1-1j],
 Sqrt_y = 1/2 * np.array([[-1+1j,-1+1j],
 						 [1-1j ,-1+1j]])
 
+s2 = np.sqrt(2)
+# the sqrt(i) is the phase, so that it will come out as H
+Sqrt_H = np.sqrt(1j) / s2 * np.array([[ 1 - 1j/s2 ,   - 1j/s2 ],
+									  [   - 1j/s2 , 1 + 1j/s2 ]])
+del s2
+
 def Phase(phi):
-	return np.array([[1,0],[0,np.exp(1j * phi)]])
+	return np.array([[1,0               ],
+					 [0,np.exp(1j * phi)]]) # e^(i phi)
 
 
 # 
@@ -208,7 +215,10 @@ class RotationMatrix(object):
 		Then we take its absolute value, to remove any absolute phase
 		And then we take inverse-cosine, and multiply by 2
 		"""
-		return np.arccos(abs(self.alpha))*2
+		theta = np.arccos(abs(self.alpha))*2
+		if self.alpha.imag < 0:
+			theta += np.pi
+		return theta
 
 	_long_doc = """
 	The purpose of this class is to take any 2x2 matrix, and decompose it into the rotation it describes
