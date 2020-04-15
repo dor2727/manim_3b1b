@@ -386,3 +386,4 @@ class DisplayMatrix5(Scene):
 		a.scale(1.3)
 
 		self.add(a)
+
