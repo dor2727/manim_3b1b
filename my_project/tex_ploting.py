@@ -242,15 +242,29 @@ class DisplayMatrix(WhiteScene):
 		# 	[1+1j,1-1j],
 		# 	[1-1j,1+1j]
 		# ],
-		"name": "Phase",
+		# "name": "Phase",
+		# "values": [
+		# 	[1,0],
+		# 	[0,"e^{i\\theta}"]
+		# ],
+		# "name": "X_{1} Z_{0}",
+		# "values": [
+		# 		[0, 0, 1, 0],
+		# 		[0, 0, 0,-1],
+		# 		[1, 0, 0, 0],
+		# 		[0,-1, 0, 0],
+		# ],
+		"name": "X_{diagonal}",
 		"values": [
 			[1,0],
-			[0,"e^{i\\theta}"]
+			[0,-1]
 		],
 
 		# "factor": "",
 		# "factor": "\\frac{1}{\\sqrt{2}}",
 		# "factor": "\\frac{1}{2}",
+
+		"subscript": "\\{\\ket{+},\\ket{-}\\}",
 	}
 
 	def construct(self):
@@ -262,7 +276,11 @@ class DisplayMatrix(WhiteScene):
 		# "\\begin{bmatrix} a_1 \\\\ a_2 \\end{bmatrix} \\otimes \\begin{bmatrix} b_1 \\\\ b_2 \\end{bmatrix} = \\begin{bmatrix} a_1 b_1 \\\\ a_1 b_2 \\\\ a_2 b_1 \\\\ a_2 b_2 \\end{bmatrix}",
 
 		factor = getattr(self, "factor", "")
-		s = f"{self.name} = {factor} \\begin{{bmatrix}} {m} \\end{{bmatrix}}"
+		if hasattr(self, "subscript"):
+			subscript = f"_{{{self.subscript}}}"
+		else:
+			subscript = ''
+		s = f"{self.name} = {factor} \\begin{{bmatrix}} {m} \\end{{bmatrix}}{subscript}"
 		print(s)
 
 		self.add_tex(s, scale=None)
