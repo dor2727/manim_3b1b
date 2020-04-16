@@ -123,24 +123,18 @@ class DisplayTex3(WhiteScene):
 # different colors for different letters
 class DisplayTex4(WhiteScene):
 	def construct(self):
-		# s = TexMobject("C_{", "i", "j", "}\\ket{x_{n-1} \\hdots x_1 x_0}")
-		s = self._tex("\\frac{\\alpha}{2}(\\ket{", '0', '0', '0', "}+\\ket{", '0', '1', '1', "}) + \\frac{\\beta}{2}(\\ket{", '1', '0', '0', "}+\\ket{", '1', '1', '1', "})")
+		# s = self._tex("C_{", "i", "j", "}\\ket{x_{n-1} \\hdots x_1 x_0}")
+		# s[1].set_color(RED)
+		# s[2].set_color(BLUE)
+		# self.add(s)
+
+		s = self._tex("\\frac{\\alpha}{2}(", "\\ket{000}", "+", "\\ket{011}", ") + \\frac{\\beta}{2}(", "\\ket{100}", "+", "\\ket{111}", ")")
 		
-		s[1].set_color(GREEN)
-		s[2].set_color(BLUE)
-		s[3].set_color(RED)
+		for i in (1,3,5,7): # indexes to sub-tex-mobjects which are kets
+			s[i][1:2].set_color(BLUE)
+			s[i][2:3].set_color(RED)
+			s[i][3:4].set_color(GREEN)
 
-		s[5].set_color(GREEN)
-		s[6].set_color(BLUE)
-		s[7].set_color(RED)
-
-		s[9].set_color(GREEN)
-		s[10].set_color(BLUE)
-		s[11].set_color(RED)
-
-		s[13].set_color(GREEN)
-		s[14].set_color(BLUE)
-		s[15].set_color(RED)
 
 		self.add(s)
 
