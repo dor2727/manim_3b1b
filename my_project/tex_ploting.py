@@ -87,10 +87,13 @@ class DisplayTex(WhiteScene):
 		# 's': "C_{10}H_1\\ket{00}=C_{10}\\frac{\\ket{0}+\\ket{1}}{\\sqrt{2}}\\ket{0}=\\frac{\\ket{00}+\\ket{11}}{\\sqrt{2}}\\equiv\\ket{\\Phi^+}",
 		# 's': "H^{(2)}C_{10}H^{(2)}=%s%s%s" % (Hadamard_2d, C_10, Hadamard_2d),
 		# 's': "O_x=%s=C_{01}" % C_01,
+		# 's': "\\begin{bmatrix} \\bra{0}\\ket{1} & \\bra{0}\\ket{0} \\\\ \\bra{1}\\ket{1} & \\bra{1}\\ket{0} \\end{bmatrix}",
+		's': "\\begin{bmatrix} 0 & 1 \\\\ 1 & 0 \\end{bmatrix}",
 	}
 
 	def construct(self):
-		self.add_tex(scale=0.6)
+		self.add_tex()
+		# self.add_tex(scale=0.6)
 
 # who goes where
 class DisplayTex2(WhiteScene):
@@ -429,4 +432,36 @@ class DisplayMatrix5(WhiteScene):
 		# a.scale(1.3)
 
 		# self.add(a)
-		self.add_tex("\\sigma_{Y} = Y = \\begin{bmatrix} 0 & -i \\\\ i & 0 \\end{bmatrix}", scale=1.3)
+		# self.add_tex("\\sigma_{Y} = Y = \\begin{bmatrix} 0 & -i \\\\ i & 0 \\end{bmatrix}", scale=1.3)
+		self.add_tex("\\sigma_{Z} = Z = \\begin{bmatrix} 1 & 0 \\\\ 0 & -1 \\end{bmatrix}", scale=1.3)
+
+# showing 2 equal matrices
+class DisplayMatrix6(WhiteScene):
+	def construct(self):
+		self.add_tex("Phase(\\theta) = \\begin{bmatrix} 1 & 0 \\\\ 0 & e^{i\\theta} \\end{bmatrix} = e^{i\\frac{\\theta}{2}} \\begin{bmatrix} e^{-i\\frac{\\theta}{2}} & 0 \\\\ 0 & e^{i\\frac{\\theta}{2}} \\end{bmatrix}", scale=1.3)
+
+# showing 2 equal matrices
+class DisplayMatrix7(WhiteScene):
+	CONFIG = {
+		# "gate_name": "X",
+		"gate_name": "X_{1} Z_{0}",
+		# "bits": 1,
+		"bits": 2,
+	}
+	def construct(self):
+		rows = []
+		for row in range(0, 2**self.bits):
+			columns = []
+			for column in range(0, 2**self.bits):
+				s = f"\\bra{{{self.bin(row)}}}{self.gate_name}\\ket{{{self.bin(column)}}}"
+				columns.append(s)
+			rows.append(" & ".join(columns))
+		m = " \\\\ ".join(rows)
+
+		matrix = f"\\begin{{bmatrix}} {m} \\end{{bmatrix}}"
+		print(matrix)
+
+		self.add_tex(matrix, scale=None)
+
+	def bin(self, n):
+		return bin(n)[2:].zfill(self.bits)
