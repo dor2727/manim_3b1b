@@ -217,7 +217,7 @@ class RotationMatrix(object):
 		"""
 		theta = np.arccos(abs(self.alpha))*2
 		if self.alpha.imag < 0:
-			theta += np.pi
+			theta = TAU - theta
 		return theta
 
 	_long_doc = """
