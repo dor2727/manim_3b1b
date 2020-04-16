@@ -270,11 +270,12 @@ class DisplayMatrix(WhiteScene):
 		# "\\begin{bmatrix} a_1 \\\\ a_2 \\end{bmatrix} \\otimes \\begin{bmatrix} b_1 \\\\ b_2 \\end{bmatrix} = \\begin{bmatrix} a_1 b_1 \\\\ a_1 b_2 \\\\ a_2 b_1 \\\\ a_2 b_2 \\end{bmatrix}",
 
 		factor = getattr(self, "factor", "")
+
+		s = f"{self.name} = {factor} \\begin{{bmatrix}} {m} \\end{{bmatrix}}"
+
 		if hasattr(self, "subscript"):
-			subscript = f"_{{{self.subscript}}}"
-		else:
-			subscript = ''
-		s = f"{self.name} = {factor} \\begin{{bmatrix}} {m} \\end{{bmatrix}}{subscript}"
+			s += f"_{{{self.subscript}}}"
+
 		print(s)
 
 		self.add_tex(s, scale=None)
@@ -477,3 +478,4 @@ class DisplayMatrix7(WhiteScene):
 
 	def bin(self, n):
 		return bin(n)[2:].zfill(self.bits)
+
