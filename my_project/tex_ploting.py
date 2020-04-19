@@ -141,7 +141,6 @@ class DisplayTex3(WhiteScene):
 
 		self.add(t0, t1, t2, t3)
 
-# broken
 # different colors for different letters
 class DisplayTex4(WhiteScene):
 	def construct(self):
@@ -150,12 +149,30 @@ class DisplayTex4(WhiteScene):
 		# s[2].set_color(BLUE)
 		# self.add(s)
 
-		s = self._tex("\\frac{\\alpha}{2}(", "\\ket{000}", "+", "\\ket{011}", ") + \\frac{\\beta}{2}(", "\\ket{100}", "+", "\\ket{111}", ")")
+		# s = self._tex("X", "\\ket{+}", " = X \\frac{1}{\\sqrt{2}} \\begin{bmatrix} 1 \\\\ 1 \\end{bmatrix} = (", "1", ") ", "\\frac{1}{\\sqrt{2}} \\begin{bmatrix} 1 \\\\ 1 \\end{bmatrix}")
+		# s = self._tex("X", "\\ket{-}", " = X \\frac{1}{\\sqrt{2}} \\begin{bmatrix} 1 \\\\ -1 \\end{bmatrix} = (", "-1", ") ", "\\frac{1}{\\sqrt{2}} \\begin{bmatrix} 1 \\\\ -1 \\end{bmatrix}")
+		# s = self._tex("Z", "\\ket{0}", " = Z \\begin{bmatrix} 1 \\\\ 0 \\end{bmatrix} = (", "1", ") ", "\\begin{bmatrix} 1 \\\\ 0 \\end{bmatrix}")
+		# s = self._tex("Z", "\\ket{1}", " = Z \\begin{bmatrix} 0 \\\\ 1 \\end{bmatrix} = (", "-1", ") ", "\\begin{bmatrix} 0 \\\\ 1 \\end{bmatrix}")
+		# s = self._tex("\\sqrt{X}", "\\ket{+}", " = \\sqrt{X} \\frac{1}{\\sqrt{2}} \\begin{bmatrix} 1 \\\\ 1 \\end{bmatrix} = (", "1", ") ", "\\frac{1}{\\sqrt{2}} \\begin{bmatrix} 1 \\\\ 1 \\end{bmatrix}")
+		# s = self._tex("\\sqrt{X}", "\\ket{-}", " = \\sqrt{X} \\frac{1}{\\sqrt{2}} \\begin{bmatrix} 1 \\\\ -1 \\end{bmatrix} = (", "i", ") ", "\\frac{1}{\\sqrt{2}} \\begin{bmatrix} 1 \\\\ -1 \\end{bmatrix}")
+		# s = self._tex("Y", "\\ket{y_{+}}", " = Y \\frac{1}{\\sqrt{2}} \\begin{bmatrix} 1 \\\\ i \\end{bmatrix} = (", "1", ") ", "\\frac{1}{\\sqrt{2}} \\begin{bmatrix} 1 \\\\ i \\end{bmatrix}")
+		# s = self._tex("Y", "\\ket{y_{-}}", " = Y \\frac{1}{\\sqrt{2}} \\begin{bmatrix} 1 \\\\ -i \\end{bmatrix} = (", "-1", ") ", "\\frac{1}{\\sqrt{2}} \\begin{bmatrix} 1 \\\\ -i \\end{bmatrix}")
+		# s[1].set_color(RED)
+		# s[3].set_color(BLUE)
+		# s[5].set_color(RED)
+
+		s = self._tex("C\\ket{00} = \\ket{00} \\\\ C\\ket{01} = \\ket{01} \\\\ C\\ket{10} = \\ket{11} \\\\ C\\ket{11} = \\ket{10}")
+		for i in (2, 7, 12, 17, 22, 27, 32, 37):
+			s[0][i  :i+1].set_color(BLUE)
+			s[0][i+1:i+2].set_color(RED)
+
+
+		# s = self._tex("\\frac{\\alpha}{2}(", "\\ket{000}", "+", "\\ket{011}", ") + \\frac{\\beta}{2}(", "\\ket{100}", "+", "\\ket{111}", ")")
 		
-		for i in (1,3,5,7): # indexes to sub-tex-mobjects which are kets
-			s[i][1:2].set_color(BLUE)
-			s[i][2:3].set_color(RED)
-			s[i][3:4].set_color(GREEN)
+		# for i in (1,3,5,7): # indexes to sub-tex-mobjects which are kets
+		# 	s[i][1:2].set_color(BLUE)
+		# 	s[i][2:3].set_color(RED)
+		# 	s[i][3:4].set_color(GREEN)
 
 
 		self.add(s)
