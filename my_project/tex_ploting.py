@@ -111,11 +111,14 @@ class DisplayTex(WhiteScene):
 		# 's': "X\\ket{0} = \\ket{1} \\\\ X\\ket{1} = \\ket{0}",
 		# 's': "Z\\ket{0} = \\ket{0} \\\\ Z\\ket{1} = - \\ket{1}",
 		# 's': "H\\ket{0} = \\frac{\\ket{0} + \\ket{1}}{\\sqrt{2}} \\\\ H\\ket{1} = \\frac{\\ket{0} - \\ket{1}}{\\sqrt{2}}",
-		's': "C\\ket{00} = \\ket{00} \\\\ C\\ket{01} = \\ket{01} \\\\ C\\ket{10} = \\ket{11} \\\\ C\\ket{11} = \\ket{10}",
+		# 's': "C\\ket{00} = \\ket{00} \\\\ C\\ket{01} = \\ket{01} \\\\ C\\ket{10} = \\ket{11} \\\\ C\\ket{11} = \\ket{10}",
+		# 's': "\\begin{bmatrix} \\bra{0}\\ket{1} & \\bra{0}\\ket{0} \\\\ \\bra{1}\\ket{1} & \\bra{1}\\ket{0} \\end{bmatrix}",
+		's': "\\begin{bmatrix} 0 & 1 \\\\ 1 & 0 \\end{bmatrix}",
 	}
 
 	def construct(self):
-		self.add_tex(scale=0.6)
+		self.add_tex()
+		# self.add_tex(scale=0.6)
 
 # who goes where
 class DisplayTex2(WhiteScene):
@@ -270,6 +273,7 @@ class DisplayMatrix(WhiteScene):
 		# 	["\\alpha + \\delta","\\beta - i \\gamma"],
 		# 	["\\beta + i \\gamma","\\alpha - \\delta"]
 		# ],
+
 		# "name": "U^2",
 		# "values": [
 		# 	["(\\lambda_{1})^{2}",0],
@@ -285,17 +289,41 @@ class DisplayMatrix(WhiteScene):
 		# 	["1+i","1-i"],
 		# 	["1-i","1+i"]
 		# ],
-		"name": "Phase(\\theta)",
+		# "name": "Phase(\\theta)",
+		# "values": [
+		# 	[1,0],
+		# 	[0,"e^{i \\theta}"]
+		# ],
+		# "name": "Sqrt\\ X",
+		# "values": [
+		# 	[1+1j,1-1j],
+		# 	[1-1j,1+1j]
+		# ],
+		# "name": "Phase",
+		# "values": [
+		# 	[1,0],
+		# 	[0,"e^{i\\theta}"]
+		# ],
+
+		# "name": "X_{1} Z_{0}",
+		# "values": [
+		# 		[0, 0, 1, 0],
+		# 		[0, 0, 0,-1],
+		# 		[1, 0, 0, 0],
+		# 		[0,-1, 0, 0],
+		# ],
+		"name": "X_{diagonal}",
 		"values": [
 			[1,0],
-			[0,"e^{i \\theta}"]
+			[0,-1]
 		],
 
-		"factor": "",
+		# "factor": "",
 		# "factor": "\\frac{1}{\\sqrt{2}}",
 		# "factor": "\\frac{1}{2}",
 
 		# "subscript": "\\{U \\  basis\\}"
+		"subscript": "\\{\\ket{+},\\ket{-}\\}",
 	}
 
 	def construct(self):
@@ -306,9 +334,13 @@ class DisplayMatrix(WhiteScene):
 
 		# "\\begin{bmatrix} a_1 \\\\ a_2 \\end{bmatrix} \\otimes \\begin{bmatrix} b_1 \\\\ b_2 \\end{bmatrix} = \\begin{bmatrix} a_1 b_1 \\\\ a_1 b_2 \\\\ a_2 b_1 \\\\ a_2 b_2 \\end{bmatrix}",
 
-		s = f"{self.name} = {self.factor} \\begin{{bmatrix}} {m} \\end{{bmatrix}}"
+		factor = getattr(self, "factor", "")
+
+		s = f"{self.name} = {factor} \\begin{{bmatrix}} {m} \\end{{bmatrix}}"
+
 		if hasattr(self, "subscript"):
 			s += '_{%s}' % self.subscript
+
 		print(s)
 
 		self.add_tex(s, scale=None)
@@ -478,4 +510,37 @@ class DisplayMatrix5(WhiteScene):
 		# a.scale(1.3)
 
 		# self.add(a)
-		self.add_tex("\\sigma_{Y} = Y = \\begin{bmatrix} 0 & -i \\\\ i & 0 \\end{bmatrix}", scale=1.3)
+		# self.add_tex("\\sigma_{Y} = Y = \\begin{bmatrix} 0 & -i \\\\ i & 0 \\end{bmatrix}", scale=1.3)
+		self.add_tex("\\sigma_{Z} = Z = \\begin{bmatrix} 1 & 0 \\\\ 0 & -1 \\end{bmatrix}", scale=1.3)
+
+# showing 2 equal matrices
+class DisplayMatrix6(WhiteScene):
+	def construct(self):
+		self.add_tex("Phase(\\theta) = \\begin{bmatrix} 1 & 0 \\\\ 0 & e^{i\\theta} \\end{bmatrix} = e^{i\\frac{\\theta}{2}} \\begin{bmatrix} e^{-i\\frac{\\theta}{2}} & 0 \\\\ 0 & e^{i\\frac{\\theta}{2}} \\end{bmatrix}", scale=1.3)
+
+# showing 2 equal matrices
+class DisplayMatrix7(WhiteScene):
+	CONFIG = {
+		# "gate_name": "X",
+		"gate_name": "X_{1} Z_{0}",
+		# "bits": 1,
+		"bits": 2,
+	}
+	def construct(self):
+		rows = []
+		for row in range(0, 2**self.bits):
+			columns = []
+			for column in range(0, 2**self.bits):
+				s = f"\\bra{{{self.bin(row)}}}{self.gate_name}\\ket{{{self.bin(column)}}}"
+				columns.append(s)
+			rows.append(" & ".join(columns))
+		m = " \\\\ ".join(rows)
+
+		matrix = f"\\begin{{bmatrix}} {m} \\end{{bmatrix}}"
+		print(matrix)
+
+		self.add_tex(matrix, scale=None)
+
+	def bin(self, n):
+		return bin(n)[2:].zfill(self.bits)
+

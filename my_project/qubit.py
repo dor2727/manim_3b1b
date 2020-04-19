@@ -36,6 +36,7 @@ class BlochSphere(SpecialThreeDScene):
 		},
 		
 		"rotate_sphere": True,
+		"rotate_circles": False,
 		"rotate_time": 5,
 		"operators": [
 		],
@@ -303,6 +304,15 @@ class BlochSphere(SpecialThreeDScene):
 		vg = VGroup(self.old_zero.line, self.old_one.line)
 		if self.rotate_sphere:
 			vg.add(self.sphere)
+
+		if self.rotate_circles:
+			if self.circle_xy_show:
+				vg.add(self.circle_xy)
+			if self.circle_xz_show:
+				vg.add(self.circle_xz)
+			if self.circle_yz_show:
+				vg.add(self.circle_yz)
+
 
 		rm = RotationMatrix(operator)
 
