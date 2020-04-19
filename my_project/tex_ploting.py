@@ -87,6 +87,31 @@ class DisplayTex(WhiteScene):
 		# 's': "C_{10}H_1\\ket{00}=C_{10}\\frac{\\ket{0}+\\ket{1}}{\\sqrt{2}}\\ket{0}=\\frac{\\ket{00}+\\ket{11}}{\\sqrt{2}}\\equiv\\ket{\\Phi^+}",
 		# 's': "H^{(2)}C_{10}H^{(2)}=%s%s%s" % (Hadamard_2d, C_10, Hadamard_2d),
 		# 's': "O_x=%s=C_{01}" % C_01,
+		# 's': "\\begin{bmatrix} -1 & 0 \\\\ 0 & -1 \\end{bmatrix} = (-1) \\begin{bmatrix} 1 & 0 \\\\ 0 & 1 \\end{bmatrix} = -I",
+		# 's': "X\\ket{+} = X \\frac{1}{\\sqrt{2}} \\begin{bmatrix} 1 \\\\ 1 \\end{bmatrix} = (1) \\frac{1}{\\sqrt{2}} \\begin{bmatrix} 1 \\\\ 1 \\end{bmatrix}",
+
+		# eigenvalues appendix
+		# Z
+		# 's': "\\ket{0}\\bra{0} = \\begin{bmatrix} 1 \\\\ 0 \\end{bmatrix} \\begin{bmatrix} 1 & 0 \\end{bmatrix} = \\begin{bmatrix} 1 & 0 \\\\ 0 & 0 \\end{bmatrix}",
+		# 's': "\\ket{1}\\bra{1} = \\begin{bmatrix} 0 \\\\ 1 \\end{bmatrix} \\begin{bmatrix} 0 & 1 \\end{bmatrix} = \\begin{bmatrix} 0 & 0 \\\\ 0 & 1 \\end{bmatrix}",
+		# 's': "Z = (1)\\ket{0}\\bra{0} + (-1)\\ket{1}\\bra{1} = \\begin{bmatrix} 1 & 0 \\\\ 0 & -1 \\end{bmatrix}",
+		# X
+		# 's': "\\ket{+}\\bra{+} = \\frac{1}{2}\\begin{bmatrix} 1 \\\\ 1 \\end{bmatrix} \\begin{bmatrix} 1 & 1 \\end{bmatrix} = \\frac{1}{2}\\begin{bmatrix} 1 & 1 \\\\ 1 & 1 \\end{bmatrix}",
+		# 's': "\\ket{-}\\bra{-} = \\frac{1}{2}\\begin{bmatrix} 1 \\\\ -1 \\end{bmatrix} \\begin{bmatrix} 1 & -1 \\end{bmatrix} = \\frac{1}{2}\\begin{bmatrix} 1 & -1 \\\\ -1 & 1 \\end{bmatrix}",
+		# 's': "X = (1)\\ket{+}\\bra{+} + (-1)\\ket{-}\\bra{-} = \\begin{bmatrix} 0 & 1 \\\\ 1 & 0 \\end{bmatrix}",
+		# 's': "\\sqrt{X} = (1)\\ket{+}\\bra{+} + (i)\\ket{-}\\bra{-} = \\frac{1}{2}\\begin{bmatrix} 1+i & 1-i \\\\ 1-i & 1+i \\end{bmatrix}",
+
+		# 's': "\\frac{1}{2^{\\frac{3}{2}}} ( \\ket{000} + \\ket{001} + \\ket{010} + \\ket{011} + \\ket{100} + \\ket{101} + \\ket{110} + \\ket{111})",
+		# 's': "input = x = \\ket{x_{n-1} x_{n-2} \\hdots x_2 x_1 x_0}",
+		# 's': "key = k = \\ket{k_{n-1} k_{n-2} \\hdots k_2 k_1 k_0}",
+		# 's': "output = (k_{n-1} \\& x_{n-1}) \\oplus (k_{n-2} \\& x_{n-2}) \\oplus \\hdots \\oplus (k_{1} \\& x_{1}) \\oplus (k_{0} \\& x_{0})",
+		# 's': "P(\\ket{0})=\\abs{\\frac{1}{\\sqrt{2}}}^2 = \\frac{1}{2}",
+		# 's': "P(\\ket{1})=\\abs{\\frac{1}{\\sqrt{2}}}^2 = \\frac{1}{2}",
+		# 's': "P(\\ket{1})=\\abs{- \\frac{1}{\\sqrt{2}}}^2 = \\frac{1}{2}",
+		# 's': "X\\ket{0} = \\ket{1} \\\\ X\\ket{1} = \\ket{0}",
+		# 's': "Z\\ket{0} = \\ket{0} \\\\ Z\\ket{1} = - \\ket{1}",
+		# 's': "H\\ket{0} = \\frac{\\ket{0} + \\ket{1}}{\\sqrt{2}} \\\\ H\\ket{1} = \\frac{\\ket{0} - \\ket{1}}{\\sqrt{2}}",
+		's': "C\\ket{00} = \\ket{00} \\\\ C\\ket{01} = \\ket{01} \\\\ C\\ket{10} = \\ket{11} \\\\ C\\ket{11} = \\ket{10}",
 	}
 
 	def construct(self):
@@ -223,15 +248,37 @@ class DisplayMatrix(WhiteScene):
 		# 	["m_{00}","m_{01}"],
 		# 	["m_{10}","m_{11}"]
 		# ],
-		"name": "\\alpha I + \\beta X + \\gamma Y + \\delta Z",
+		# "name": "\\alpha I + \\beta X + \\gamma Y + \\delta Z",
+		# "values": [
+		# 	["\\alpha + \\delta","\\beta - i \\gamma"],
+		# 	["\\beta + i \\gamma","\\alpha - \\delta"]
+		# ],
+		# "name": "U^2",
+		# "values": [
+		# 	["(\\lambda_{1})^{2}",0],
+		# 	[0,"(\\lambda_{2})^{2}"]
+		# ],
+		# "name": "I",
+		# "values": [
+		# 	[1,0],
+		# 	[0,1]
+		# ],
+		# "name": "\\sqrt{X}",
+		# "values": [
+		# 	["1+i","1-i"],
+		# 	["1-i","1+i"]
+		# ],
+		"name": "Phase(\\theta)",
 		"values": [
-			["\\alpha + \\delta","\\beta - i \\gamma"],
-			["\\beta + i \\gamma","\\alpha - \\delta"]
+			[1,0],
+			[0,"e^{i \\theta}"]
 		],
 
 		"factor": "",
 		# "factor": "\\frac{1}{\\sqrt{2}}",
 		# "factor": "\\frac{1}{2}",
+
+		# "subscript": "\\{U \\  basis\\}"
 	}
 
 	def construct(self):
@@ -243,6 +290,8 @@ class DisplayMatrix(WhiteScene):
 		# "\\begin{bmatrix} a_1 \\\\ a_2 \\end{bmatrix} \\otimes \\begin{bmatrix} b_1 \\\\ b_2 \\end{bmatrix} = \\begin{bmatrix} a_1 b_1 \\\\ a_1 b_2 \\\\ a_2 b_1 \\\\ a_2 b_2 \\end{bmatrix}",
 
 		s = f"{self.name} = {self.factor} \\begin{{bmatrix}} {m} \\end{{bmatrix}}"
+		if hasattr(self, "subscript"):
+			s += '_{%s}' % self.subscript
 		print(s)
 
 		self.add_tex(s, scale=None)
