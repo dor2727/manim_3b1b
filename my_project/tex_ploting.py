@@ -113,12 +113,13 @@ class DisplayTex(WhiteScene):
 		# 's': "H\\ket{0} = \\frac{\\ket{0} + \\ket{1}}{\\sqrt{2}} \\\\ H\\ket{1} = \\frac{\\ket{0} - \\ket{1}}{\\sqrt{2}}",
 		# 's': "C\\ket{00} = \\ket{00} \\\\ C\\ket{01} = \\ket{01} \\\\ C\\ket{10} = \\ket{11} \\\\ C\\ket{11} = \\ket{10}",
 		# 's': "\\begin{bmatrix} \\bra{0}\\ket{1} & \\bra{0}\\ket{0} \\\\ \\bra{1}\\ket{1} & \\bra{1}\\ket{0} \\end{bmatrix}",
-		's': "\\begin{bmatrix} 0 & 1 \\\\ 1 & 0 \\end{bmatrix}",
+		# 's': "\\begin{bmatrix} 0 & 1 \\\\ 1 & 0 \\end{bmatrix}",
+		's': "C H \\ket{0} \\ket{0} = C \\frac{\\ket{0} + \\ket{1}}{\\sqrt{2}} \\ket{0} = \\frac{C \\ket{0} \\ket{0} + C \\ket{1} \\ket{0}}{\\sqrt{2}} = \\frac{\\ket{00} + \\ket{11}}{\\sqrt{2}}",
 	}
 
 	def construct(self):
-		self.add_tex()
-		# self.add_tex(scale=0.6)
+		# self.add_tex()
+		self.add_tex(scale=0.6)
 
 # who goes where
 class DisplayTex2(WhiteScene):
@@ -186,6 +187,11 @@ class DisplayMatrix(WhiteScene):
 		# "values": [
 		# 	[0,1],
 		# 	[1,0]
+		# ],
+		# "name": "Z",
+		# "values": [
+		# 	[1,0],
+		# 	[0,-1]
 		# ],
 		# "name": "ERASE",
 		# "values": [
@@ -368,9 +374,10 @@ class DisplayMatrix2(WhiteScene):
 # dashed lines seperating a matrix
 class DisplayMatrix3(WhiteScene):
 	def construct(self):
-		a = self._tex("I_1 \\otimes X_0 = \\begin{bmatrix} 1 & 0 \\\\ 0 & 1 \\end{bmatrix} \\otimes X_0 = \\begin{bmatrix} 1 \\cdot X_0 & 0 \\cdot X_0 \\\\ 0 \\cdot X_0 & 1 \\cdot X_0 \\end{bmatrix} = \\begin{bmatrix} 0 & 1 & 0 & 0 \\\\ 1 & 0 & 0 & 0 \\\\ 0 & 0 & 0 & 1 \\\\ 0 & 0 & 1 & 0 \\end{bmatrix} = \\begin{bmatrix} X & 0 \\\\ 0 & X \\end{bmatrix}")
+		# a = self._tex("I_1 \\otimes X_0 = \\begin{bmatrix} 1 & 0 \\\\ 0 & 1 \\end{bmatrix} \\otimes X_0 = \\begin{bmatrix} 1 \\cdot X_0 & 0 \\cdot X_0 \\\\ 0 \\cdot X_0 & 1 \\cdot X_0 \\end{bmatrix} = \\begin{bmatrix} 0 & 1 & 0 & 0 \\\\ 1 & 0 & 0 & 0 \\\\ 0 & 0 & 0 & 1 \\\\ 0 & 0 & 1 & 0 \\end{bmatrix} = \\begin{bmatrix} X & 0 \\\\ 0 & X \\end{bmatrix}")
 		# a = TexMobject("I_1 \\otimes X_0 = \\begin{bmatrix} 1 & 0 \\\\ 0 & 1 \\end{bmatrix} \\otimes \\begin{bmatrix} 0 & 1 \\\\ 1 & 0 \\end{bmatrix} = \\begin{bmatrix} 0 & 1 & 0 & 0 \\\\ 1 & 0 & 0 & 0 \\\\ 0 & 0 & 0 & 1 \\\\ 0 & 0 & 1 & 0 \\end{bmatrix} = \\begin{bmatrix} X & 0 \\\\ 0 & X \\end{bmatrix}")
 		# a = TexMobject("X_1 \\otimes I_0 = \\begin{bmatrix} 0 & 1 \\\\ 1 & 0 \\end{bmatrix} \\otimes \\begin{bmatrix} 1 & 0 \\\\ 0 & 1 \\end{bmatrix} = \\begin{bmatrix} 0 & 0 & 1 & 0 \\\\ 0 & 0 & 0 & 1 \\\\ 1 & 0 & 0 & 0 \\\\ 0 & 1 & 0 & 0 \\end{bmatrix} = \\begin{bmatrix} 0 & I \\\\ I & 0 \\end{bmatrix}")
+		a = self._tex("X_1 \\otimes Z_0 = \\begin{bmatrix} 0 & 1 \\\\ 1 & 0 \\end{bmatrix} \\otimes Z_0 = \\begin{bmatrix} 0 \\cdot Z_0 & 1 \\cdot Z_0 \\\\ 1 \\cdot Z_0 & 0 \\cdot Z_0 \\end{bmatrix} = \\begin{bmatrix} 0 & 0 & 1 & 0 \\\\ 0 & 0 & 0 & -1 \\\\ 1 & 0 & 0 & 0 \\\\ 0 & -1 & 0 & 0 \\end{bmatrix} = \\begin{bmatrix} 0 & Z \\\\ Z & 0 \\end{bmatrix}")
 		a.scale(0.6)
 
 		l1 = DashedLine(
@@ -379,8 +386,8 @@ class DisplayMatrix3(WhiteScene):
 		).set_color(RED)
 
 		l2 = DashedLine(
-			start=2.7*RIGHT + 0.4*RIGHT,
-			end=0.6*RIGHT + 0.4*RIGHT,
+			start=2.7*RIGHT + 0.4*RIGHT + 0.2*RIGHT,
+			end=0.6*RIGHT + 0.4*RIGHT + 0.1*LEFT,
 		).set_color(RED)
 
 		l1.scale(0.8)
@@ -508,10 +515,14 @@ class DisplayMatrix5(WhiteScene):
 		# a = TexMobject("\\sigma_{Z} = Z = \\begin{bmatrix} 1 & 0 \\\\ 0 & -1 \\end{bmatrix}")
 		# a = TexMobject("\\sigma_{Y} = Y = \\begin{bmatrix} 0 & -i \\\\ i & 0 \\end{bmatrix}")
 		# a.scale(1.3)
+		self.add_tex(
+			"C^{Z}_{10} = \\begin{bmatrix} I & 0 \\\\ 0 & Z \\end{bmatrix} = \\begin{bmatrix} 1 & 0 & 0 & 0 \\\\ 0 & 1 & 0 & 0 \\\\ 0 & 0 & 1 & 0 \\\\ 0 & 0 & 0 & -1 \\end{bmatrix} = C^{Z}_{01}",
+			# scale=1.3
+		)
 
 		# self.add(a)
 		# self.add_tex("\\sigma_{Y} = Y = \\begin{bmatrix} 0 & -i \\\\ i & 0 \\end{bmatrix}", scale=1.3)
-		self.add_tex("\\sigma_{Z} = Z = \\begin{bmatrix} 1 & 0 \\\\ 0 & -1 \\end{bmatrix}", scale=1.3)
+		# self.add_tex("\\sigma_{Z} = Z = \\begin{bmatrix} 1 & 0 \\\\ 0 & -1 \\end{bmatrix}", scale=1.3)
 
 # showing 2 equal matrices
 class DisplayMatrix6(WhiteScene):
