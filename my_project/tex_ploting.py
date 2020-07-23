@@ -555,3 +555,57 @@ class DisplayMatrix7(WhiteScene):
 	def bin(self, n):
 		return bin(n)[2:].zfill(self.bits)
 
+
+class BellStateSimilarityToGHZState(WhiteScene):
+	def construct(self):
+		s1 = self._tex("\\frac{\\ket{000} + \\ket{111}}{\\sqrt{2}}", background_stroke_width=0)
+		s2 = self._tex("\\frac{\\ket{000} - \\ket{111}}{\\sqrt{2}}", background_stroke_width=0)
+		s3 = self._tex("\\frac{\\ket{011} + \\ket{100}}{\\sqrt{2}}", background_stroke_width=0)
+		s4 = self._tex("\\frac{\\ket{011} - \\ket{100}}{\\sqrt{2}}", background_stroke_width=0)
+		ss = [s1, s2, s3, s4]
+		self.place_in_grid(ss, 2, 2)
+
+		for s in ss:
+			s[0][1:2].set_color(BLUE)
+			s[0][2:3].set_color(RED)
+			s[0][3:4].set_color(WHITE)
+
+			s[0][7:8].set_color(BLUE)
+			s[0][8:9].set_color(RED)
+			s[0][9:10].set_color(WHITE)
+
+		self.add(*ss)
+		self.wait()
+
+		self.play(
+			s1[0][3:4 ].set_color, RED,
+			s1[0][9:10].set_color, RED,
+			s2[0][3:4 ].set_color, RED,
+			s2[0][9:10].set_color, RED,
+			s3[0][3:4 ].set_color, RED,
+			s3[0][9:10].set_color, RED,
+			s4[0][3:4 ].set_color, RED,
+			s4[0][9:10].set_color, RED,
+		)
+
+		self.wait()
+
+	HEIGHT_LIMIT = 3
+	WIDTH_LIMIT = 5
+	def place_in_grid(self, l, rows, columns):
+		width_spacing = self.WIDTH_LIMIT * 2 / (columns+1)
+		column_locations = [
+			-self.WIDTH_LIMIT + (i+1) * width_spacing
+			for i in range(columns)
+		]
+
+		height_spacing = self.HEIGHT_LIMIT * 2 / (rows+1)
+		row_locations = [
+			-self.HEIGHT_LIMIT + (i+1) * height_spacing
+			for i in range(rows)
+		]
+
+
+		for ri, r in enumerate(row_locations):
+			for ci, c in enumerate(column_locations):
+				l[ri*columns + ci].move_to(r*DOWN + c*RIGHT)
