@@ -27,6 +27,10 @@ Sqrt_H = np.sqrt(1j) / s2 * np.array([[ 1 - 1j/s2 ,   - 1j/s2 ],
 									  [   - 1j/s2 , 1 + 1j/s2 ]])
 del s2
 
+Pauli_z_to_Pauli_y = np.array([[1 ,1j],
+							   [1j,1 ]]) / np.sqrt(2)
+# when decomposing this matrix, it resolves into a pi/2 rotation about the X axis. great.
+
 def Phase(phi):
 	return np.array([[1,0               ],
 					 [0,np.exp(1j * phi)]]) # e^(i phi)
