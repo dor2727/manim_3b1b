@@ -87,13 +87,39 @@ class DisplayTex(WhiteScene):
 		# 's': "C_{10}H_1\\ket{00}=C_{10}\\frac{\\ket{0}+\\ket{1}}{\\sqrt{2}}\\ket{0}=\\frac{\\ket{00}+\\ket{11}}{\\sqrt{2}}\\equiv\\ket{\\Phi^+}",
 		# 's': "H^{(2)}C_{10}H^{(2)}=%s%s%s" % (Hadamard_2d, C_10, Hadamard_2d),
 		# 's': "O_x=%s=C_{01}" % C_01,
+		# 's': "\\begin{bmatrix} -1 & 0 \\\\ 0 & -1 \\end{bmatrix} = (-1) \\begin{bmatrix} 1 & 0 \\\\ 0 & 1 \\end{bmatrix} = -I",
+		# 's': "X\\ket{+} = X \\frac{1}{\\sqrt{2}} \\begin{bmatrix} 1 \\\\ 1 \\end{bmatrix} = (1) \\frac{1}{\\sqrt{2}} \\begin{bmatrix} 1 \\\\ 1 \\end{bmatrix}",
+
+		# eigenvalues appendix
+		# Z
+		# 's': "\\ket{0}\\bra{0} = \\begin{bmatrix} 1 \\\\ 0 \\end{bmatrix} \\begin{bmatrix} 1 & 0 \\end{bmatrix} = \\begin{bmatrix} 1 & 0 \\\\ 0 & 0 \\end{bmatrix}",
+		# 's': "\\ket{1}\\bra{1} = \\begin{bmatrix} 0 \\\\ 1 \\end{bmatrix} \\begin{bmatrix} 0 & 1 \\end{bmatrix} = \\begin{bmatrix} 0 & 0 \\\\ 0 & 1 \\end{bmatrix}",
+		# 's': "Z = (1)\\ket{0}\\bra{0} + (-1)\\ket{1}\\bra{1} = \\begin{bmatrix} 1 & 0 \\\\ 0 & -1 \\end{bmatrix}",
+		# X
+		# 's': "\\ket{+}\\bra{+} = \\frac{1}{2}\\begin{bmatrix} 1 \\\\ 1 \\end{bmatrix} \\begin{bmatrix} 1 & 1 \\end{bmatrix} = \\frac{1}{2}\\begin{bmatrix} 1 & 1 \\\\ 1 & 1 \\end{bmatrix}",
+		# 's': "\\ket{-}\\bra{-} = \\frac{1}{2}\\begin{bmatrix} 1 \\\\ -1 \\end{bmatrix} \\begin{bmatrix} 1 & -1 \\end{bmatrix} = \\frac{1}{2}\\begin{bmatrix} 1 & -1 \\\\ -1 & 1 \\end{bmatrix}",
+		# 's': "X = (1)\\ket{+}\\bra{+} + (-1)\\ket{-}\\bra{-} = \\begin{bmatrix} 0 & 1 \\\\ 1 & 0 \\end{bmatrix}",
+		# 's': "\\sqrt{X} = (1)\\ket{+}\\bra{+} + (i)\\ket{-}\\bra{-} = \\frac{1}{2}\\begin{bmatrix} 1+i & 1-i \\\\ 1-i & 1+i \\end{bmatrix}",
+
+		# 's': "\\frac{1}{2^{\\frac{3}{2}}} ( \\ket{000} + \\ket{001} + \\ket{010} + \\ket{011} + \\ket{100} + \\ket{101} + \\ket{110} + \\ket{111})",
+		# 's': "input = x = \\ket{x_{n-1} x_{n-2} \\hdots x_2 x_1 x_0}",
+		# 's': "key = k = \\ket{k_{n-1} k_{n-2} \\hdots k_2 k_1 k_0}",
+		# 's': "output = (k_{n-1} \\& x_{n-1}) \\oplus (k_{n-2} \\& x_{n-2}) \\oplus \\hdots \\oplus (k_{1} \\& x_{1}) \\oplus (k_{0} \\& x_{0})",
+		# 's': "P(\\ket{0})=\\abs{\\frac{1}{\\sqrt{2}}}^2 = \\frac{1}{2}",
+		# 's': "P(\\ket{1})=\\abs{\\frac{1}{\\sqrt{2}}}^2 = \\frac{1}{2}",
+		# 's': "P(\\ket{1})=\\abs{- \\frac{1}{\\sqrt{2}}}^2 = \\frac{1}{2}",
+		# 's': "X\\ket{0} = \\ket{1} \\\\ X\\ket{1} = \\ket{0}",
+		# 's': "Z\\ket{0} = \\ket{0} \\\\ Z\\ket{1} = - \\ket{1}",
+		# 's': "H\\ket{0} = \\frac{\\ket{0} + \\ket{1}}{\\sqrt{2}} \\\\ H\\ket{1} = \\frac{\\ket{0} - \\ket{1}}{\\sqrt{2}}",
+		# 's': "C\\ket{00} = \\ket{00} \\\\ C\\ket{01} = \\ket{01} \\\\ C\\ket{10} = \\ket{11} \\\\ C\\ket{11} = \\ket{10}",
 		# 's': "\\begin{bmatrix} \\bra{0}\\ket{1} & \\bra{0}\\ket{0} \\\\ \\bra{1}\\ket{1} & \\bra{1}\\ket{0} \\end{bmatrix}",
-		's': "\\begin{bmatrix} 0 & 1 \\\\ 1 & 0 \\end{bmatrix}",
+		# 's': "\\begin{bmatrix} 0 & 1 \\\\ 1 & 0 \\end{bmatrix}",
+		's': "C H \\ket{0} \\ket{0} = C \\frac{\\ket{0} + \\ket{1}}{\\sqrt{2}} \\ket{0} = \\frac{C \\ket{0} \\ket{0} + C \\ket{1} \\ket{0}}{\\sqrt{2}} = \\frac{\\ket{00} + \\ket{11}}{\\sqrt{2}}",
 	}
 
 	def construct(self):
-		self.add_tex()
-		# self.add_tex(scale=0.6)
+		# self.add_tex()
+		self.add_tex(scale=0.6)
 
 # who goes where
 class DisplayTex2(WhiteScene):
@@ -119,7 +145,6 @@ class DisplayTex3(WhiteScene):
 
 		self.add(t0, t1, t2, t3)
 
-# broken
 # different colors for different letters
 class DisplayTex4(WhiteScene):
 	def construct(self):
@@ -128,12 +153,30 @@ class DisplayTex4(WhiteScene):
 		# s[2].set_color(BLUE)
 		# self.add(s)
 
-		s = self._tex("\\frac{\\alpha}{2}(", "\\ket{000}", "+", "\\ket{011}", ") + \\frac{\\beta}{2}(", "\\ket{100}", "+", "\\ket{111}", ")")
+		# s = self._tex("X", "\\ket{+}", " = X \\frac{1}{\\sqrt{2}} \\begin{bmatrix} 1 \\\\ 1 \\end{bmatrix} = (", "1", ") ", "\\frac{1}{\\sqrt{2}} \\begin{bmatrix} 1 \\\\ 1 \\end{bmatrix}")
+		# s = self._tex("X", "\\ket{-}", " = X \\frac{1}{\\sqrt{2}} \\begin{bmatrix} 1 \\\\ -1 \\end{bmatrix} = (", "-1", ") ", "\\frac{1}{\\sqrt{2}} \\begin{bmatrix} 1 \\\\ -1 \\end{bmatrix}")
+		# s = self._tex("Z", "\\ket{0}", " = Z \\begin{bmatrix} 1 \\\\ 0 \\end{bmatrix} = (", "1", ") ", "\\begin{bmatrix} 1 \\\\ 0 \\end{bmatrix}")
+		# s = self._tex("Z", "\\ket{1}", " = Z \\begin{bmatrix} 0 \\\\ 1 \\end{bmatrix} = (", "-1", ") ", "\\begin{bmatrix} 0 \\\\ 1 \\end{bmatrix}")
+		# s = self._tex("\\sqrt{X}", "\\ket{+}", " = \\sqrt{X} \\frac{1}{\\sqrt{2}} \\begin{bmatrix} 1 \\\\ 1 \\end{bmatrix} = (", "1", ") ", "\\frac{1}{\\sqrt{2}} \\begin{bmatrix} 1 \\\\ 1 \\end{bmatrix}")
+		# s = self._tex("\\sqrt{X}", "\\ket{-}", " = \\sqrt{X} \\frac{1}{\\sqrt{2}} \\begin{bmatrix} 1 \\\\ -1 \\end{bmatrix} = (", "i", ") ", "\\frac{1}{\\sqrt{2}} \\begin{bmatrix} 1 \\\\ -1 \\end{bmatrix}")
+		# s = self._tex("Y", "\\ket{y_{+}}", " = Y \\frac{1}{\\sqrt{2}} \\begin{bmatrix} 1 \\\\ i \\end{bmatrix} = (", "1", ") ", "\\frac{1}{\\sqrt{2}} \\begin{bmatrix} 1 \\\\ i \\end{bmatrix}")
+		# s = self._tex("Y", "\\ket{y_{-}}", " = Y \\frac{1}{\\sqrt{2}} \\begin{bmatrix} 1 \\\\ -i \\end{bmatrix} = (", "-1", ") ", "\\frac{1}{\\sqrt{2}} \\begin{bmatrix} 1 \\\\ -i \\end{bmatrix}")
+		# s[1].set_color(RED)
+		# s[3].set_color(BLUE)
+		# s[5].set_color(RED)
+
+		s = self._tex("C\\ket{00} = \\ket{00} \\\\ C\\ket{01} = \\ket{01} \\\\ C\\ket{10} = \\ket{11} \\\\ C\\ket{11} = \\ket{10}")
+		for i in (2, 7, 12, 17, 22, 27, 32, 37):
+			s[0][i  :i+1].set_color(BLUE)
+			s[0][i+1:i+2].set_color(RED)
+
+
+		# s = self._tex("\\frac{\\alpha}{2}(", "\\ket{000}", "+", "\\ket{011}", ") + \\frac{\\beta}{2}(", "\\ket{100}", "+", "\\ket{111}", ")")
 		
-		for i in (1,3,5,7): # indexes to sub-tex-mobjects which are kets
-			s[i][1:2].set_color(BLUE)
-			s[i][2:3].set_color(RED)
-			s[i][3:4].set_color(GREEN)
+		# for i in (1,3,5,7): # indexes to sub-tex-mobjects which are kets
+		# 	s[i][1:2].set_color(BLUE)
+		# 	s[i][2:3].set_color(RED)
+		# 	s[i][3:4].set_color(GREEN)
 
 
 		self.add(s)
@@ -144,6 +187,11 @@ class DisplayMatrix(WhiteScene):
 		# "values": [
 		# 	[0,1],
 		# 	[1,0]
+		# ],
+		# "name": "Z",
+		# "values": [
+		# 	[1,0],
+		# 	[0,-1]
 		# ],
 		# "name": "ERASE",
 		# "values": [
@@ -236,11 +284,37 @@ class DisplayMatrix(WhiteScene):
 			["1+i","1-i"],
 			["1-i","1+i"]
 		],
+		# "name": "U^2",
+		# "values": [
+		# 	["(\\lambda_{1})^{2}",0],
+		# 	[0,"(\\lambda_{2})^{2}"]
+		# ],
+		# "name": "I",
+		# "values": [
+		# 	[1,0],
+		# 	[0,1]
+		# ],
+		# "name": "\\sqrt{X}",
+		# "values": [
+		# 	["1+i","1-i"],
+		# 	["1-i","1+i"]
+		# ],
+		# "name": "Phase(\\theta)",
+		# "values": [
+		# 	[1,0],
+		# 	[0,"e^{i \\theta}"]
+		# ],
+		# "name": "Sqrt\\ X",
+		# "values": [
+		# 	[1+1j,1-1j],
+		# 	[1-1j,1+1j]
+		# ],
 		# "name": "Phase",
 		# "values": [
 		# 	[1,0],
 		# 	[0,"e^{i\\theta}"]
 		# ],
+
 		# "name": "X_{1} Z_{0}",
 		# "values": [
 		# 		[0, 0, 1, 0],
@@ -259,6 +333,8 @@ class DisplayMatrix(WhiteScene):
 		"factor": "\\frac{1}{2}",
 
 		# "subscript": "\\{\\ket{+},\\ket{-}\\}",
+		# "subscript": "\\{U \\  basis\\}"
+		"subscript": "\\{\\ket{+},\\ket{-}\\}",
 	}
 
 	def construct(self):
@@ -274,7 +350,7 @@ class DisplayMatrix(WhiteScene):
 		s = f"{self.name} = {factor} \\begin{{bmatrix}} {m} \\end{{bmatrix}}"
 
 		if hasattr(self, "subscript"):
-			s += f"_{{{self.subscript}}}"
+			s += '_{%s}' % self.subscript
 
 		print(s)
 
@@ -303,9 +379,10 @@ class DisplayMatrix2(WhiteScene):
 # dashed lines seperating a matrix
 class DisplayMatrix3(WhiteScene):
 	def construct(self):
-		a = self._tex("I_1 \\otimes X_0 = \\begin{bmatrix} 1 & 0 \\\\ 0 & 1 \\end{bmatrix} \\otimes X_0 = \\begin{bmatrix} 1 \\cdot X_0 & 0 \\cdot X_0 \\\\ 0 \\cdot X_0 & 1 \\cdot X_0 \\end{bmatrix} = \\begin{bmatrix} 0 & 1 & 0 & 0 \\\\ 1 & 0 & 0 & 0 \\\\ 0 & 0 & 0 & 1 \\\\ 0 & 0 & 1 & 0 \\end{bmatrix} = \\begin{bmatrix} X & 0 \\\\ 0 & X \\end{bmatrix}")
+		# a = self._tex("I_1 \\otimes X_0 = \\begin{bmatrix} 1 & 0 \\\\ 0 & 1 \\end{bmatrix} \\otimes X_0 = \\begin{bmatrix} 1 \\cdot X_0 & 0 \\cdot X_0 \\\\ 0 \\cdot X_0 & 1 \\cdot X_0 \\end{bmatrix} = \\begin{bmatrix} 0 & 1 & 0 & 0 \\\\ 1 & 0 & 0 & 0 \\\\ 0 & 0 & 0 & 1 \\\\ 0 & 0 & 1 & 0 \\end{bmatrix} = \\begin{bmatrix} X & 0 \\\\ 0 & X \\end{bmatrix}")
 		# a = TexMobject("I_1 \\otimes X_0 = \\begin{bmatrix} 1 & 0 \\\\ 0 & 1 \\end{bmatrix} \\otimes \\begin{bmatrix} 0 & 1 \\\\ 1 & 0 \\end{bmatrix} = \\begin{bmatrix} 0 & 1 & 0 & 0 \\\\ 1 & 0 & 0 & 0 \\\\ 0 & 0 & 0 & 1 \\\\ 0 & 0 & 1 & 0 \\end{bmatrix} = \\begin{bmatrix} X & 0 \\\\ 0 & X \\end{bmatrix}")
 		# a = TexMobject("X_1 \\otimes I_0 = \\begin{bmatrix} 0 & 1 \\\\ 1 & 0 \\end{bmatrix} \\otimes \\begin{bmatrix} 1 & 0 \\\\ 0 & 1 \\end{bmatrix} = \\begin{bmatrix} 0 & 0 & 1 & 0 \\\\ 0 & 0 & 0 & 1 \\\\ 1 & 0 & 0 & 0 \\\\ 0 & 1 & 0 & 0 \\end{bmatrix} = \\begin{bmatrix} 0 & I \\\\ I & 0 \\end{bmatrix}")
+		a = self._tex("X_1 \\otimes Z_0 = \\begin{bmatrix} 0 & 1 \\\\ 1 & 0 \\end{bmatrix} \\otimes Z_0 = \\begin{bmatrix} 0 \\cdot Z_0 & 1 \\cdot Z_0 \\\\ 1 \\cdot Z_0 & 0 \\cdot Z_0 \\end{bmatrix} = \\begin{bmatrix} 0 & 0 & 1 & 0 \\\\ 0 & 0 & 0 & -1 \\\\ 1 & 0 & 0 & 0 \\\\ 0 & -1 & 0 & 0 \\end{bmatrix} = \\begin{bmatrix} 0 & Z \\\\ Z & 0 \\end{bmatrix}")
 		a.scale(0.6)
 
 		l1 = DashedLine(
@@ -314,8 +391,8 @@ class DisplayMatrix3(WhiteScene):
 		).set_color(RED)
 
 		l2 = DashedLine(
-			start=2.7*RIGHT + 0.4*RIGHT,
-			end=0.6*RIGHT + 0.4*RIGHT,
+			start=2.7*RIGHT + 0.4*RIGHT + 0.2*RIGHT,
+			end=0.6*RIGHT + 0.4*RIGHT + 0.1*LEFT,
 		).set_color(RED)
 
 		l1.scale(0.8)
@@ -443,10 +520,14 @@ class DisplayMatrix5(WhiteScene):
 		# a = TexMobject("\\sigma_{Z} = Z = \\begin{bmatrix} 1 & 0 \\\\ 0 & -1 \\end{bmatrix}")
 		# a = TexMobject("\\sigma_{Y} = Y = \\begin{bmatrix} 0 & -i \\\\ i & 0 \\end{bmatrix}")
 		# a.scale(1.3)
+		self.add_tex(
+			"C^{Z}_{10} = \\begin{bmatrix} I & 0 \\\\ 0 & Z \\end{bmatrix} = \\begin{bmatrix} 1 & 0 & 0 & 0 \\\\ 0 & 1 & 0 & 0 \\\\ 0 & 0 & 1 & 0 \\\\ 0 & 0 & 0 & -1 \\end{bmatrix} = C^{Z}_{01}",
+			# scale=1.3
+		)
 
 		# self.add(a)
 		# self.add_tex("\\sigma_{Y} = Y = \\begin{bmatrix} 0 & -i \\\\ i & 0 \\end{bmatrix}", scale=1.3)
-		self.add_tex("\\sigma_{Z} = Z = \\begin{bmatrix} 1 & 0 \\\\ 0 & -1 \\end{bmatrix}", scale=1.3)
+		# self.add_tex("\\sigma_{Z} = Z = \\begin{bmatrix} 1 & 0 \\\\ 0 & -1 \\end{bmatrix}", scale=1.3)
 
 # showing 2 equal matrices
 class DisplayMatrix6(WhiteScene):
