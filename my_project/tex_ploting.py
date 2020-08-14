@@ -231,11 +231,11 @@ class DisplayMatrix(WhiteScene):
 		# 	["\\alpha + \\delta","\\beta - i \\gamma"],
 		# 	["\\beta + i \\gamma","\\alpha - \\delta"]
 		# ],
-		# "name": "Sqrt\\ X",
-		# "values": [
-		# 	[1+1j,1-1j],
-		# 	[1-1j,1+1j]
-		# ],
+		"name": "Sqrt\\ X",
+		"values": [
+			["1+i","1-i"],
+			["1-i","1+i"]
+		],
 		# "name": "Phase",
 		# "values": [
 		# 	[1,0],
@@ -248,17 +248,17 @@ class DisplayMatrix(WhiteScene):
 		# 		[1, 0, 0, 0],
 		# 		[0,-1, 0, 0],
 		# ],
-		"name": "X_{diagonal}",
-		"values": [
-			[1,0],
-			[0,-1]
-		],
+		# "name": "X_{diagonal}",
+		# "values": [
+		# 	[1,0],
+		# 	[0,-1]
+		# ],
 
 		# "factor": "",
 		# "factor": "\\frac{1}{\\sqrt{2}}",
-		# "factor": "\\frac{1}{2}",
+		"factor": "\\frac{1}{2}",
 
-		"subscript": "\\{\\ket{+},\\ket{-}\\}",
+		# "subscript": "\\{\\ket{+},\\ket{-}\\}",
 	}
 
 	def construct(self):
