@@ -3,7 +3,29 @@ from my_project.qubit_utils import *
 
 OUTPUT_DIRECTORY = "STO_LAO"
 
-class Perovskite(SpecialThreeDScene):
+"""
+TODO
+
+[ ] create a background grid
+		similar to coordinate_systems.py
+		another useful file: three_d_scene.py
+
+[ ] Create a little axis to be displayed at the top-right
+		to help keep track of the orientation
+
+[ ] create 3d vec - with a cone as its tip
+
+[V] change perovskite to be a VGroup
+		so that the animation details will be kept here
+
+[ ] fill perovskite
+		maybe set x_min, x_max, y_min, y_max, z_min, z_max?
+		maybe set `amount`, and create 2n+1 A atoms to each direction
+"""
+
+
+
+class SinglePerovskiteTest(SpecialThreeDScene):
 	CONFIG = {
 		"three_d_axes_config": {
 			"num_axis_pieces": 1,
@@ -19,26 +41,71 @@ class Perovskite(SpecialThreeDScene):
 			# "theta": -135 * DEGREES,
 			"theta": 15 * DEGREES,
 		},
-		"d": 1,
 	}
 
 	def construct(self):
 		self.init_camera()
 		self.init_axes()
 
-		a1 = A()
-		b = []
-		for x in (X_AXIS*self.d/2, -X_AXIS*self.d/2):
-			for y in (Y_AXIS*self.d/2, -Y_AXIS*self.d/2):
-				for z in (Z_AXIS*self.d/2, -Z_AXIS*self.d/2):
-					b.append(B(center=ORIGIN + x + y + z))
-		x = []
-		for d in (self.d/2, -self.d/2):
-			for axis in (X_AXIS, Y_AXIS, Z_AXIS):
-				x.append(X(center=ORIGIN + d*axis))
+		# Sr = Atom_Sr()
 
-		self.add(a1, *b, *x)
+		# Ti = VGroup(*[
+		# 	Atom_Ti(point=self.d*i)
+		# 	for i in all_edges()
+		# ])
+
+		# O = VGroup(*[
+		# 	Atom_O(point=self.d*i)
+		# 	for i in all_sides()
+		# ])
+
+		# self.add(Sr, Ti, O)
+		p = SinglePerovskite(**Perovskite_SrTiO3)
+		self.add(p)
+		
 		self.wait(1)
+
+		self.rotate_to_surface(surface=[1,0,0])
+		self.wait(1)
+		self.rotate_to_surface(surface=[1,1,0])
+		self.wait(1)
+		self.rotate_to_surface(surface=[1,1,1])
+		self.wait(1)
+
+		return
+
+		rate = 0.05 # 0.02
+
+		print(f"theta={self.camera.get_theta()} ; phi={self.camera.get_phi()} ; gamma={self.camera.get_gamma()}")
+
+		# rotate about theta
+		self.begin_ambient_camera_rotation(rate=rate)
+		self.wait(10)
+		self.stop_ambient_camera_rotation()
+		self.wait(1)
+		print(f"theta={self.camera.get_theta()} ; phi={self.camera.get_phi()} ; gamma={self.camera.get_gamma()}")
+
+		# rotate about phi
+		self.camera.phi_tracker.add_updater(
+			lambda m, dt: m.increment_value(rate * dt)
+		)
+		self.add(self.camera.phi_tracker)
+		self.wait(10)
+		self.camera.phi_tracker.clear_updaters()
+		self.remove(self.camera.phi_tracker)
+		self.wait(1)
+		print(f"theta={self.camera.get_theta()} ; phi={self.camera.get_phi()} ; gamma={self.camera.get_gamma()}")
+
+		# rotate about gamma
+		self.camera.gamma_tracker.add_updater(
+			lambda m, dt: m.increment_value(rate * dt)
+		)
+		self.add(self.camera.gamma_tracker)
+		self.wait(10)
+		self.camera.gamma_tracker.clear_updaters()
+		self.remove(self.camera.gamma_tracker)
+		self.wait(1)
+		print(f"theta={self.camera.get_theta()} ; phi={self.camera.get_phi()} ; gamma={self.camera.get_gamma()}")
 
 	def init_camera(self):
 		self.set_camera_orientation(**self.init_camera_orientation)
@@ -47,68 +114,27 @@ class Perovskite(SpecialThreeDScene):
 		self.axes = self.get_axes()
 		self.add(self.axes)
 
-	def _tex(self, *s):
-		tex = TexMobject(*s)
-		tex.rotate(90 * DEGREES, RIGHT)
-		tex.rotate(90 * DEGREES, OUT)
-		tex.scale(0.5)
-		return tex
 
-	def rotate_to_surface(self, surface=[1,0,0]):
+	def rotate_to_surface(self, surface=[1,0,0], display_vec=True):
 		if type(surface) is str:
-			# parse
-			pass
+			assert(len(surface) == 3)
+			for c in surface:
+				assert(c in ['0', '1'])
 
-		vec = surface
-		# plot vec as a line, not a vector, because of the tip, which is aligned with the xy plane
-		# self.play( grow( vec ) )
-		# rorate camera to show vec as a point in the vecter
-		pass
+			surface = [int(c) for c in surface]
+		print(f"surface={surface}")
 
-class A(Sphere):
-	CONFIG = {
-        "radius": 0.12,
-        "fill_color": BLUE_D,
-        "fill_opacity": 1.0,
-        "checkerboard_colors": [BLUE_D, BLUE_E],
+		if display_vec:
+			vec = surface
+			# plot vec as a line, not a vector, because of the tip, which is aligned with the xy plane
 
-        "center": ORIGIN,
-	}
-	def __init__(self, **kwargs):
-		super().__init__(**kwargs)
-		self.move_to(self.center)
-class B(Sphere):
-	CONFIG = {
-        "radius": 0.12,
-        "fill_color": GREEN_D,
-        "checkerboard_colors": [GREEN_D, GREEN_E],
+			# self.play( grow( vec ) )
 
-        "center": ORIGIN,
-	}
-	def __init__(self, **kwargs):
-		super().__init__(**kwargs)
-		self.move_to(self.center)
-class X(Sphere):
-	CONFIG = {
-        "radius": 0.08,
-        "fill_color": RED_D,
-        "checkerboard_colors": [RED_D, RED_E],
-
-        "center": ORIGIN,
-	}
-	def __init__(self, **kwargs):
-		super().__init__(**kwargs)
-		self.move_to(self.center)
+		# rotate camera
+		r, theta, phi = cartesian_to_spherical(*surface)
+		self.move_camera(theta=theta, phi=phi)
 
 
-"""
-create a background grid
-	similar to coordinate_systems.py
-another useful file: three_d_sceene.py
 
-vec = [1,0,0] or [1,1,0] or [1,1,1]
-	then rotate as if we are looking straight at it
-	to see the different surfaces (100) (110) (111)
-
-create 3d vec - with a cone as its tip
-"""
+class SingleSrTiO3(SinglePerovskite):
+	pass		
