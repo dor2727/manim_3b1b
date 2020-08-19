@@ -1125,3 +1125,54 @@ class Wave(VGroup):
 			self.particles[self.n+i+1].set_color(self.visible_color)
 			yield i
 
+
+#
+# Atoms
+#
+class Particle3D(Sphere):
+	CONFIG = {
+		# velocity can be either a vector or a scalar
+		"velocity": np.array((0., 0., 0.)), # m/s
+		"mass": 1, # unified atomic mass units
+
+		"radius": 1, # this is the plotting radius for the sphere
+
+		""
+	}
+
+	def __init__(self, point=ORIGIN,, **kwargs):
+		super().__init__(self, **kwargs)
+		# Sphere.__init__(self, **kwargs)
+		self._point = point
+		self.move_to(point)
+
+class Atom(Particle3D):
+	# by convention, full word (such as velocity, force) is for the vector, while single letter (v, F) is for the scalar
+	CONFIG = {
+		# this is the real radius of the atom
+		"R": 1,
+		"density": 1, # Kg/m^3
+
+		"radius_factor": 1.1e11, # converting from the atomic radius to plotting radius
+
+		"protons": 1,
+		"neutrons": 1,
+		"charge": 0,
+	}
+
+	@property
+	def radius(self):
+		return self.R * self.radius_factor
+
+	@property
+	def electrons(self):
+		return self.protons - self.charge
+
+
+class Atom_Sr(Atom):
+	CONFIG = {
+		"R": 219e-12,
+		"density": 2630, # Kg/m^3
+		"protons": 38,
+		"neutrons": 88 - 38, # the stable isotope is 88, with 38 protons
+	}
