@@ -1,5 +1,6 @@
 from manimlib.imports import *
 from my_project.qubit import *
+import numpy as np
 
 OUTPUT_DIRECTORY = "qubit"
 
@@ -460,6 +461,20 @@ class BlochSphere_example_H_P45_H(BlochSphere):
 			"Hadamard",
 			"Phase 45",
 			"Hadamard",
+		],
+	}
+
+class BlochSphere_example_Z_to_Y(BlochSphere):
+	CONFIG = {
+		"operators": [
+			Pauli_z_to_Pauli_y,
+			Pauli_z,
+			np.linalg.inv(Pauli_z_to_Pauli_y),
+		],
+		"operator_names": [
+			"P",
+			"Z",
+			"P inverse",
 		],
 	}
 
