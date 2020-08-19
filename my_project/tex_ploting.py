@@ -310,7 +310,11 @@ class DisplayMatrix(WhiteScene):
 		# 	["\\alpha + \\delta","\\beta - i \\gamma"],
 		# 	["\\beta + i \\gamma","\\alpha - \\delta"]
 		# ],
-
+		"name": "Sqrt\\ X",
+		"values": [
+			["1+i","1-i"],
+			["1-i","1+i"]
+		],
 		# "name": "U^2",
 		# "values": [
 		# 	["(\\lambda_{1})^{2}",0],
@@ -357,8 +361,9 @@ class DisplayMatrix(WhiteScene):
 
 		# "factor": "",
 		# "factor": "\\frac{1}{\\sqrt{2}}",
-		# "factor": "\\frac{1}{2}",
+		"factor": "\\frac{1}{2}",
 
+		# "subscript": "\\{\\ket{+},\\ket{-}\\}",
 		# "subscript": "\\{U \\  basis\\}"
 		# "subscript": "\\{\\ket{+},\\ket{-}\\}",
 	}
