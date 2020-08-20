@@ -43,17 +43,31 @@ class WhiteScene(Scene):
 class DisplayTex(WhiteScene):
 	CONFIG = {
 		# 's': "\\ket{0}\\qquad\\ket{1}",
+
+		### chapter 1
+		# 's': "\\ket{0}=\\begin{bmatrix} 1 \\\\ 0 \\end{bmatrix}",
+		# 's': "\\ket{1}=\\begin{bmatrix} 0 \\\\ 1 \\end{bmatrix}",
+		# 's': "\\frac{1}{2} \\cdot \\ket{0} = \\frac{1}{2} \\cdot \\begin{bmatrix} 1 \\\\ 0 \\end{bmatrix} = \\begin{bmatrix} \\frac{1}{2} \\\\ 0 \\end{bmatrix}",
+		# 's': "5 \\cdot \\ket{0} + 7 \\cdot \\ket{1} = 5 \\cdot \\begin{bmatrix} 1 \\\\ 0 \\end{bmatrix} + 7 \\cdot \\begin{bmatrix} 0 \\\\ 1 \\end{bmatrix} = \\begin{bmatrix} 5 \\\\ 7 \\end{bmatrix}",
 		# 's': "\\ket{1}\\ket{1}\\ket{0}\\ket{1}",
 		# 's': "\\ket{1101}",
 		# 's': "\\ket{13}_4",
-		# 's': "\\ket{0}=\\begin{bmatrix} 1 \\\\ 0 \\end{bmatrix}",
-		# 's': "\\ket{1}=\\begin{bmatrix} 0 \\\\ 1 \\end{bmatrix}",
-		# 's': "\\ket{10} = \\ket{1}\\otimes\\ket{0} = \\begin{bmatrix} 0 \\\\ 1 \\end{bmatrix} \\otimes \\begin{bmatrix} 1 \\\\ 0 \\end{bmatrix} = \\begin{bmatrix} 0 \\\\ 0 \\\\ 1 \\\\ 0 \\end{bmatrix}",
+		## kronecker product
 		# 's': "\\begin{bmatrix} a_1 \\\\ a_2 \\end{bmatrix} \\otimes \\begin{bmatrix} b_1 \\\\ b_2 \\end{bmatrix} = \\begin{bmatrix} a_1 b_1 \\\\ a_1 b_2 \\\\ a_2 b_1 \\\\ a_2 b_2 \\end{bmatrix}",
+		# 's': "\\ket{10} = \\ket{1}\\otimes\\ket{0} = \\begin{bmatrix} 0 \\\\ 1 \\end{bmatrix} \\otimes \\begin{bmatrix} 1 \\\\ 0 \\end{bmatrix} = \\begin{bmatrix} 0 \\\\ 0 \\\\ 1 \\\\ 0 \\end{bmatrix}",
+		# 's': "\\ket{101}=\\begin{bmatrix} 0 \\\\ 1 \\end{bmatrix} \\otimes \\begin{bmatrix} 1 \\\\ 0 \\end{bmatrix} \\otimes \\begin{bmatrix} 0 \\\\ 1 \\end{bmatrix}=\\begin{bmatrix} 0 \\\\ 0 \\\\ 0 \\\\ 0 \\\\ 0 \\\\ 1 \\\\ 0 \\\\ 0 \\end{bmatrix}",
+		# 's': "\\ket{x_2 x_1 x_0}=\\begin{bmatrix} \\gamma_0 \\\\ \\gamma_1 \\end{bmatrix} \\otimes \\begin{bmatrix} \\beta_0 \\\\ \\beta_1 \\end{bmatrix} \\otimes \\begin{bmatrix} \\alpha_0 \\\\ \\alpha_1 \\end{bmatrix}=\\begin{bmatrix} \\gamma_0 \\beta_0 \\alpha_0 \\\\ \\gamma_0 \\beta_0 \\alpha_1 \\\\ \\gamma_0 \\beta_1 \\alpha_0 \\\\ \\gamma_0 \\beta_1 \\alpha_1 \\\\ \\gamma_1 \\beta_0 \\alpha_0 \\\\ \\gamma_1 \\beta_0 \\alpha_1 \\\\ \\gamma_1 \\beta_1 \\alpha_0 \\\\ \\gamma_1 \\beta_1 \\alpha_1 \\end{bmatrix}",
+		# 's': "\\ket{101}=\\begin{bmatrix} 0 \\\\ 1 \\end{bmatrix} \\otimes \\begin{bmatrix} 1 \\\\ 0 \\end{bmatrix} \\otimes \\begin{bmatrix} 0 \\\\ 1 \\end{bmatrix}=\\begin{bmatrix} 0 \\\\ 0 \\\\ 0 \\\\ 0 \\\\ 0 \\\\ 1 \\\\ 0 \\\\ 0 \\end{bmatrix}",
+
+		### chapter 2
+		## NOT
 		# 's': "NOT\\ket{0}=\\ket{1} \\\\ NOT\\ket{1}=\\ket{0}",
 		# 's': "X\\ket{0}=\\ket{1} \\\\ X\\ket{1}=\\ket{0}",
-		# 's': "ERASE\\ket{0}=\\ket{0} \\\\ ERASE\\ket{1}=\\ket{0}",
-		's': "NOT \\  ERASE\\ket{0}=\\ket{1} \\\\ NOT \\  ERASE\\ket{1}=\\ket{1}",
+		# 's': "X\\ket{0}=\\begin{bmatrix} 0 & 1 \\\\ 1 & 0 \\end{bmatrix} \\begin{bmatrix} 1 \\\\ 0 \\end{bmatrix}=\\begin{bmatrix} 0 \\\\ 1 \\end{bmatrix}=\\ket{1}",
+		# 's': "X\\ket{1}=\\begin{bmatrix} 0 & 1 \\\\ 1 & 0 \\end{bmatrix} \\begin{bmatrix} 0 \\\\ 1 \\end{bmatrix}=\\begin{bmatrix} 1 \\\\ 0 \\end{bmatrix}=\\ket{0}",
+		## ERASE
+		's': "ERASE\\ket{0}=\\ket{0} \\\\ ERASE\\ket{1}=\\ket{0}",
+		# 's': "NOT \\  ERASE\\ket{0}=\\ket{1} \\\\ NOT \\  ERASE\\ket{1}=\\ket{1}",
 		# 's': "50\\% \\ket{0}+ 50\\% \\ket{1}",
 		# 's': "\\ket{\\Psi}=\\alpha_0\\ket{0}+\\alpha_1\\ket{1}",
 		# 's': "\\ket{\\Psi}=\\alpha\\ket{0}+\\beta\\ket{1}",
@@ -66,15 +80,11 @@ class DisplayTex(WhiteScene):
 		# 's': "\\ket{\\Psi}=\\begin{bmatrix} \\alpha_0 \\\\ \\vdots \\\\ \\alpha_{n-1} \\end{bmatrix}",
 		# 's': "\\bra{\\Psi}=\\begin{bmatrix} \\alpha_0^* & \\hdots & \\alpha_{n-1}^* \\end{bmatrix}",
 		# 's': "\\bra{\\Phi}\\ket{\\Psi}=\\sum_{i=0}^{n-1} \\beta_i^*\\alpha_i",
-		# 's': "X\\ket{0}=\\begin{bmatrix} 0 & 1 \\\\ 1 & 0 \\end{bmatrix} \\begin{bmatrix} 1 \\\\ 0 \\end{bmatrix}=\\begin{bmatrix} 0 \\\\ 1 \\end{bmatrix}=\\ket{1}",
-		# 's': "X\\ket{1}=\\begin{bmatrix} 0 & 1 \\\\ 1 & 0 \\end{bmatrix} \\begin{bmatrix} 0 \\\\ 1 \\end{bmatrix}=\\begin{bmatrix} 1 \\\\ 0 \\end{bmatrix}=\\ket{0}",
 		# 's': "C_{10}\\ket{xy}",
 		# 's': "(A \\otimes B) \\otimes C = A \\otimes (B \\otimes C)",
 		# 's': "I_5 \\otimes X_4 \\otimes I_3 \\otimes I_2 \\otimes X_1 \\otimes I_0",
 		# 's': "X_4 X_1=X_1 X_4",
 		# 's': "V U \\ket{x}",
-		# 's': "\\ket{101}=\\begin{bmatrix} 0 \\\\ 1 \\end{bmatrix} \\otimes \\begin{bmatrix} 1 \\\\ 0 \\end{bmatrix} \\otimes \\begin{bmatrix} 0 \\\\ 1 \\end{bmatrix}=\\begin{bmatrix} 0 \\\\ 0 \\\\ 0 \\\\ 0 \\\\ 0 \\\\ 1 \\\\ 0 \\\\ 0 \\end{bmatrix}",
-		# 's': "\\ket{x_2 x_1 x_0}=\\begin{bmatrix} \\gamma_0 \\\\ \\gamma_1 \\end{bmatrix} \\otimes \\begin{bmatrix} \\beta_0 \\\\ \\beta_1 \\end{bmatrix} \\otimes \\begin{bmatrix} \\alpha_0 \\\\ \\alpha_1 \\end{bmatrix}=\\begin{bmatrix} \\gamma_0 \\beta_0 \\alpha_0 \\\\ \\gamma_0 \\beta_0 \\alpha_1 \\\\ \\gamma_0 \\beta_1 \\alpha_0 \\\\ \\gamma_0 \\beta_1 \\alpha_1 \\\\ \\gamma_1 \\beta_0 \\alpha_0 \\\\ \\gamma_1 \\beta_0 \\alpha_1 \\\\ \\gamma_1 \\beta_1 \\alpha_0 \\\\ \\gamma_1 \\beta_1 \\alpha_1 \\end{bmatrix}",
 		# 's': "H\\ket{0}= \\frac{1}{\\sqrt{2}} \\begin{bmatrix} 1 & 1 \\\\ 1 & -1 \\end{bmatrix} \\begin{bmatrix} 1 \\\\ 0 \\end{bmatrix}= \\frac{1}{\\sqrt{2}} \\begin{bmatrix} 1 \\\\ 1 \\end{bmatrix} = \\frac{\\ket{0} + \\ket{1}}{\\sqrt{2}} \\equiv \\ket{+}",
 		# 's': "H\\ket{1}= \\frac{1}{\\sqrt{2}} \\begin{bmatrix} 1 & 1 \\\\ 1 & -1 \\end{bmatrix} \\begin{bmatrix} 0 \\\\ 1 \\end{bmatrix}= \\frac{1}{\\sqrt{2}} \\begin{bmatrix} 1 \\\\ -1 \\end{bmatrix} = \\frac{\\ket{0} - \\ket{1}}{\\sqrt{2}} \\equiv \\ket{-}",
 		# 's': "H = \\frac{1}{\\sqrt{2}}\\begin{bmatrix} 1 & 1 \\\\ 1 & -1 \\end{bmatrix} = \\frac{1}{\\sqrt{2}}\\begin{bmatrix} 0 & 1 \\\\ 1 & 0 \\end{bmatrix} + \\frac{1}{\\sqrt{2}}\\begin{bmatrix} 1 & 0 \\\\ 0 & -1 \\end{bmatrix} = \\frac{\\sigma_{x} + \\sigma_{z}}{\\sqrt{2}}",
@@ -114,26 +124,47 @@ class DisplayTex(WhiteScene):
 		# 's': "C\\ket{00} = \\ket{00} \\\\ C\\ket{01} = \\ket{01} \\\\ C\\ket{10} = \\ket{11} \\\\ C\\ket{11} = \\ket{10}",
 		# 's': "\\begin{bmatrix} \\bra{0}\\ket{1} & \\bra{0}\\ket{0} \\\\ \\bra{1}\\ket{1} & \\bra{1}\\ket{0} \\end{bmatrix}",
 		# 's': "\\begin{bmatrix} 0 & 1 \\\\ 1 & 0 \\end{bmatrix}",
-		's': "C H \\ket{0} \\ket{0} = C \\frac{\\ket{0} + \\ket{1}}{\\sqrt{2}} \\ket{0} = \\frac{C \\ket{0} \\ket{0} + C \\ket{1} \\ket{0}}{\\sqrt{2}} = \\frac{\\ket{00} + \\ket{11}}{\\sqrt{2}}",
+		# 's': "C H \\ket{0} \\ket{0} = C \\frac{\\ket{0} + \\ket{1}}{\\sqrt{2}} \\ket{0} = \\frac{C \\ket{0} \\ket{0} + C \\ket{1} \\ket{0}}{\\sqrt{2}} = \\frac{\\ket{00} + \\ket{11}}{\\sqrt{2}}",
 	}
 
 	def construct(self):
 		# self.add_tex()
-		self.add_tex(scale=0.6)
+		self.add_tex(scale=1.5)
+		# self.add_tex(scale=0.6)
 
 # who goes where
 class DisplayTex2(WhiteScene):
 	def construct(self):
-		# NOT        = TexMobject("\\begin{bmatrix} 0 & 1 \\\\ 1 & 0 \\end{bmatrix}")
+		NOT        = self._tex("\\begin{bmatrix} 0 & 1 \\\\ 1 & 0 \\end{bmatrix}")
 		ERASE      = self._tex("\\begin{bmatrix} 1 & 1 \\\\ 0 & 0 \\end{bmatrix}")
 		ZERO_WHO   = self._tex("\\ket{0}").move_to(1*UP     + 0.35*LEFT)
 		ZERO_WHERE = self._tex("\\ket{0}").move_to(0.3*UP   + 1  *LEFT)
 		ONE_WHO    = self._tex("\\ket{1}").move_to(1*UP     + 0.4*RIGHT)
 		ONE_WHERE  = self._tex("\\ket{1}").move_to(0.3*DOWN + 1  *LEFT)
 		WHO       = self._text("Who").move_to(1.7*UP)
+		WHO.set_color(BLUE)
 		# WHO       = self._tex("Who", alignment="").move_to(1.7*UP)
 		WHERE     = self._text("Where").move_to(2.3*LEFT)
-		self.add(ERASE, ZERO_WHO, ZERO_WHERE, ONE_WHO, ONE_WHERE, WHO, WHERE)
+		WHERE.set_color(RED)
+
+		col_rec = Rectangle(
+			width=2.1,
+			height=0.5,
+		)
+		col_rec.set_color(RED)
+		col_rec.shift(0.3*LEFT + 0.275*DOWN)
+		col_rec.shift(0.575*UP)
+
+		row_rec = Rectangle(
+			width=0.55,
+			height=1.9,
+		)
+		row_rec.set_color(BLUE)
+		row_rec.shift(0.35*LEFT + 0.4*UP)
+		# row_rec.shift(0.75*RIGHT)
+
+		# self.add(NOT, ZERO_WHO, ZERO_WHERE, ONE_WHO, ONE_WHERE, WHO, WHERE, col_rec, row_rec)
+		self.add(ERASE, ZERO_WHO, ZERO_WHERE, ONE_WHO, ONE_WHERE, WHO, WHERE, col_rec)
 
 # 2 bits basis
 class DisplayTex3(WhiteScene):
@@ -203,13 +234,13 @@ class DisplayMatrix(WhiteScene):
 		# 	[0,0],
 		# 	[1,1]
 		# ],
-		# "name": "SWAP",
-		# "values": [
-		# 	[1,0,0,0],
-		# 	[0,0,1,0],
-		# 	[0,1,0,0],
-		# 	[0,0,0,1],
-		# ],
+		"name": "SWAP",
+		"values": [
+			[1,0,0,0],
+			[0,0,1,0],
+			[0,1,0,0],
+			[0,0,0,1],
+		],
 		# "name": "C_{01}",
 		# "values": [
 		# 	[1,0,0,0],
@@ -334,7 +365,7 @@ class DisplayMatrix(WhiteScene):
 
 		# "subscript": "\\{\\ket{+},\\ket{-}\\}",
 		# "subscript": "\\{U \\  basis\\}"
-		"subscript": "\\{\\ket{+},\\ket{-}\\}",
+		# "subscript": "\\{\\ket{+},\\ket{-}\\}",
 	}
 
 	def construct(self):
@@ -354,7 +385,8 @@ class DisplayMatrix(WhiteScene):
 
 		print(s)
 
-		self.add_tex(s, scale=None)
+		self.add_tex(s, scale=2)
+		# self.add_tex(s, scale=None)
 
 # dashed lines seperating a matrix
 class DisplayMatrix2(WhiteScene):
@@ -534,7 +566,6 @@ class DisplayMatrix6(WhiteScene):
 	def construct(self):
 		self.add_tex("Phase(\\theta) = \\begin{bmatrix} 1 & 0 \\\\ 0 & e^{i\\theta} \\end{bmatrix} = e^{i\\frac{\\theta}{2}} \\begin{bmatrix} e^{-i\\frac{\\theta}{2}} & 0 \\\\ 0 & e^{i\\frac{\\theta}{2}} \\end{bmatrix}", scale=1.3)
 
-# showing 2 equal matrices
 class DisplayMatrix7(WhiteScene):
 	CONFIG = {
 		# "gate_name": "X",
