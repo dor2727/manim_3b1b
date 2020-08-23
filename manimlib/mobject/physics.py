@@ -4,6 +4,7 @@ from collections import defaultdict
 
 from manimlib.constants import *
 from manimlib.mobject.geometry import Arc, Arrow, Circle, DashedLine, Dot, Line
+from manimlib.mobject.three_dimensions import Sphere
 from manimlib.mobject.types.vectorized_mobject import VGroup, VMobject, VectorizedPoint
 from manimlib.mobject.svg.tex_mobject import TexMobject
 from manimlib.utils.space_ops import get_norm
@@ -1136,11 +1137,9 @@ class Particle3D(Sphere):
 		"mass": 1, # unified atomic mass units
 
 		"radius": 1, # this is the plotting radius for the sphere
-
-		""
 	}
 
-	def __init__(self, point=ORIGIN,, **kwargs):
+	def __init__(self, point=ORIGIN, **kwargs):
 		super().__init__(self, **kwargs)
 		# Sphere.__init__(self, **kwargs)
 		self._point = point
