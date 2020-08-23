@@ -63,7 +63,7 @@ class ParametricSurface(VGroup):
                 u1, u2 = u_values[i:i + 2]
                 v1, v2 = v_values[j:j + 2]
                 face = ThreeDVMobject()
-                import pdb; pdb.set_trace()
+                # import pdb; pdb.set_trace()
                 face.set_points_as_corners([
                     [u1, v1, 0],
                     [u2, v1, 0],
@@ -88,6 +88,7 @@ class ParametricSurface(VGroup):
             opacity=self.stroke_opacity,
         )
         self.add(*faces)
+        import pdb; pdb.set_trace()
         if self.checkerboard_colors:
             self.set_fill_by_checkerboard(*self.checkerboard_colors)
 
@@ -172,6 +173,12 @@ class Cone(VGroup):
                 [u1, v2, 0],
                 [u1, v1, 0],
             ])
+"""
+                self.points = [
+                    (self.radius * np.cos(angle), self.radius * np.sin(angle), 0)
+                    for angle in radians
+                ]
+"""
             faces.add(face)
             face.v_index = j
             face.v1 = v1
