@@ -73,6 +73,7 @@ class BlochSphere_example_X(BlochSphere):
 	}
 class BlochSphere_example_Y(BlochSphere):
 	CONFIG = {
+		"circle_xz_show": True,
 		"operators": [
 			Pauli_y,
 		],
@@ -103,6 +104,7 @@ class BlochSphere_example_X_X(BlochSphere):
 	}
 class BlochSphere_example_Y_Y(BlochSphere):
 	CONFIG = {
+		"circle_xz_show": True,
 		"operators": [
 			Pauli_y,
 			Pauli_y,
@@ -309,6 +311,7 @@ class BlochSphere_example_SX_P45_SX_Y_SX(BlochSphere):
 
 class BlochSphere_example_SY_SY(BlochSphere):
 	CONFIG = {
+		"circle_xz_show": True,
 		"operators": [
 			Sqrt_y,
 			Sqrt_y,
@@ -320,6 +323,7 @@ class BlochSphere_example_SY_SY(BlochSphere):
 	}
 class BlochSphere_example_SY_SY_SY_SY(BlochSphere):
 	CONFIG = {
+		"circle_xz_show": True,
 		"operators": [
 			Sqrt_y,
 			Sqrt_y,
