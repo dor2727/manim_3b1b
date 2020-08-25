@@ -66,7 +66,34 @@ class DisplayTex(WhiteScene):
 		# 's': "X\\ket{0}=\\begin{bmatrix} 0 & 1 \\\\ 1 & 0 \\end{bmatrix} \\begin{bmatrix} 1 \\\\ 0 \\end{bmatrix}=\\begin{bmatrix} 0 \\\\ 1 \\end{bmatrix}=\\ket{1}",
 		# 's': "X\\ket{1}=\\begin{bmatrix} 0 & 1 \\\\ 1 & 0 \\end{bmatrix} \\begin{bmatrix} 0 \\\\ 1 \\end{bmatrix}=\\begin{bmatrix} 1 \\\\ 0 \\end{bmatrix}=\\ket{0}",
 		## ERASE
-		's': "ERASE\\ket{0}=\\ket{0} \\\\ ERASE\\ket{1}=\\ket{0}",
+		# 's': "ERASE\\ket{0}=\\ket{0} \\\\ ERASE\\ket{1}=\\ket{0}",
+
+		### Chapter 4
+		# 's': "H = \\frac{1}{\\sqrt{2}}\\begin{bmatrix} 1 & 1 \\\\ 1 & -1 \\end{bmatrix} = \\frac{1}{\\sqrt{2}}\\begin{bmatrix} 0 & 1 \\\\ 1 & 0 \\end{bmatrix} + \\frac{1}{\\sqrt{2}}\\begin{bmatrix} 1 & 0 \\\\ 0 & -1 \\end{bmatrix} = \\frac{\\sigma_{x} + \\sigma_{z}}{\\sqrt{2}}",
+			# 'scale': 1,
+
+		### Chapter 5
+		# 's': "C_{10}H_1\\ket{00}=C_{10}\\frac{\\ket{0}+\\ket{1}}{\\sqrt{2}}\\ket{0}=\\frac{\\ket{00}+\\ket{11}}{\\sqrt{2}}\\equiv\\ket{\\Phi^+}",
+			# 'scale': 1.2,
+
+		### Chapter 8
+			'scale': 1,
+		# 's': "Y = \\begin{bmatrix} 0 & -i \\\\ i & 0 \\end{bmatrix} = \\begin{bmatrix} a & b \\\\ c & d \\end{bmatrix} \\begin{bmatrix} 1 & 0 \\\\ 0 & -1 \\end{bmatrix} \\frac{1}{ad-bc} \\begin{bmatrix} d & -b \\\\ -c & a \\end{bmatrix} = PZP^{-1}",
+		# 's': "\\frac{1}{ad-bc} \\begin{bmatrix} a & b \\\\ c & d \\end{bmatrix} \\begin{bmatrix} 1 & 0 \\\\ 0 & -1 \\end{bmatrix} \\begin{bmatrix} d & -b \\\\ -c & a \\end{bmatrix}",
+		# 's': "\\frac{1}{ad-bc} \\begin{bmatrix} a & b \\\\ c & d \\end{bmatrix} \\begin{bmatrix} d & -b \\\\ c & -a \\end{bmatrix}",
+		# 's': "\\frac{1}{ad-bc} \\begin{bmatrix} ad+bc & -ab-ba \\\\ cd+dc & -bc-ad \\end{bmatrix}",
+		# 's': "\\frac{1}{ad-bc} \\begin{bmatrix} ad+bc & -2ab \\\\ 2cd & -(ad+bc) \\end{bmatrix}",
+		# 's': "(1) \\qquad ad+bc=0",
+		# 's': "(2) \\qquad \\frac{2ab}{ad-bc}=i",
+		# 's': "(3) \\qquad \\frac{2cd}{ad-bc}=i",
+		# 's': "\\begin{bmatrix} a & b \\\\ c & d \\end{bmatrix} = \\begin{bmatrix} a^* & c^* \\\\ b^* & d^* \\end{bmatrix}",
+		# 's': "(4) \\qquad a,d\\in \\mathbb{R}",
+		# 's': "(5) \\qquad b=c^*",
+		# 's': "(I) \\qquad ab=cd",
+		# 's': "P\\ket{0} = \\begin{bmatrix} x & -ix \\\\ ix & -x \\end{bmatrix} \\begin{bmatrix} 1 \\\\ 0 \\end{bmatrix} = \\begin{bmatrix} x \\\\ ix \\end{bmatrix}",
+		's': "P = \\frac{1}{\\sqrt{2}}\\begin{bmatrix} 1 & -i \\\\ i & -1 \\end{bmatrix} = \\frac{1}{\\sqrt{2}}\\begin{bmatrix} 0 & -i \\\\ i & 0 \\end{bmatrix} + \\frac{1}{\\sqrt{2}}\\begin{bmatrix} 1 & 0 \\\\ 0 & -1 \\end{bmatrix} = \\frac{\\sigma_{y} + \\sigma_{z}}{\\sqrt{2}}",
+
+
 		# 's': "NOT \\  ERASE\\ket{0}=\\ket{1} \\\\ NOT \\  ERASE\\ket{1}=\\ket{1}",
 		# 's': "50\\% \\ket{0}+ 50\\% \\ket{1}",
 		# 's': "\\ket{\\Psi}=\\alpha_0\\ket{0}+\\alpha_1\\ket{1}",
@@ -88,13 +115,13 @@ class DisplayTex(WhiteScene):
 		# 's': "H\\ket{0}= \\frac{1}{\\sqrt{2}} \\begin{bmatrix} 1 & 1 \\\\ 1 & -1 \\end{bmatrix} \\begin{bmatrix} 1 \\\\ 0 \\end{bmatrix}= \\frac{1}{\\sqrt{2}} \\begin{bmatrix} 1 \\\\ 1 \\end{bmatrix} = \\frac{\\ket{0} + \\ket{1}}{\\sqrt{2}} \\equiv \\ket{+}",
 		# 's': "H\\ket{1}= \\frac{1}{\\sqrt{2}} \\begin{bmatrix} 1 & 1 \\\\ 1 & -1 \\end{bmatrix} \\begin{bmatrix} 0 \\\\ 1 \\end{bmatrix}= \\frac{1}{\\sqrt{2}} \\begin{bmatrix} 1 \\\\ -1 \\end{bmatrix} = \\frac{\\ket{0} - \\ket{1}}{\\sqrt{2}} \\equiv \\ket{-}",
 		# 's': "H = \\frac{1}{\\sqrt{2}}\\begin{bmatrix} 1 & 1 \\\\ 1 & -1 \\end{bmatrix} = \\frac{1}{\\sqrt{2}}\\begin{bmatrix} 0 & 1 \\\\ 1 & 0 \\end{bmatrix} + \\frac{1}{\\sqrt{2}}\\begin{bmatrix} 1 & 0 \\\\ 0 & -1 \\end{bmatrix} = \\frac{\\sigma_{x} + \\sigma_{z}}{\\sqrt{2}}",
+			# 'scale': 1,
 		# 's': "P(k)=\\frac{\\lambda^k e^{-\\lambda}}{k!}",
 		# 's': "\\frac{1}{2}\\cdot\\ket{0}=\\frac{1}{2}\\cdot\\begin{bmatrix} 1 \\\\ 0 \\end{bmatrix}=\\begin{bmatrix} \\frac{1}{2} \\\\ 0 \\end{bmatrix}",
 		# 's': "5\\cdot\\ket{0}+7\\cdot\\ket{1}=5\\cdot\\begin{bmatrix} 1 \\\\ 0 \\end{bmatrix}+7\\cdot\\begin{bmatrix} 0 \\\\ 1 \\end{bmatrix}=\\begin{bmatrix} 5 \\\\ 7 \\end{bmatrix}",
 		# 's': "H(H\\ket{0})=H\\frac{\\ket{0}+\\ket{1}}{\\sqrt{2}}=\\frac{\\ket{0}+\\ket{1}}{2}+\\frac{\\ket{0}-\\ket{1}}{2}=\\ket{0}",
 		# 's': "H(H\\ket{1})=H\\frac{\\ket{0}-\\ket{1}}{\\sqrt{2}}=\\frac{\\ket{0}+\\ket{1}}{2}-\\frac{\\ket{0}-\\ket{1}}{2}=\\ket{1}",
 		# 's': "H^{(2)}\\ket{00}=(H\\ket{0})(H\\ket{0})=(\\frac{\\ket{0}+\\ket{1}}{\\sqrt{2}})(\\frac{\\ket{0}+\\ket{1}}{\\sqrt{2}})=\\frac{\\ket{00}+\\ket{01}+\\ket{10}+\\ket{11}}{2}",
-		# 's': "C_{10}H_1\\ket{00}=C_{10}\\frac{\\ket{0}+\\ket{1}}{\\sqrt{2}}\\ket{0}=\\frac{\\ket{00}+\\ket{11}}{\\sqrt{2}}\\equiv\\ket{\\Phi^+}",
 		# 's': "H^{(2)}C_{10}H^{(2)}=%s%s%s" % (Hadamard_2d, C_10, Hadamard_2d),
 		# 's': "O_x=%s=C_{01}" % C_01,
 		# 's': "\\begin{bmatrix} -1 & 0 \\\\ 0 & -1 \\end{bmatrix} = (-1) \\begin{bmatrix} 1 & 0 \\\\ 0 & 1 \\end{bmatrix} = -I",
@@ -129,8 +156,10 @@ class DisplayTex(WhiteScene):
 
 	def construct(self):
 		# self.add_tex()
-		self.add_tex(scale=1.5)
+		# self.add_tex(scale=1.5)
 		# self.add_tex(scale=0.6)
+		scale = getattr(self, "scale", 1.5)
+		self.add_tex(scale=scale)
 
 # who goes where
 class DisplayTex2(WhiteScene):
@@ -196,10 +225,13 @@ class DisplayTex4(WhiteScene):
 		# s[3].set_color(BLUE)
 		# s[5].set_color(RED)
 
-		s = self._tex("C\\ket{00} = \\ket{00} \\\\ C\\ket{01} = \\ket{01} \\\\ C\\ket{10} = \\ket{11} \\\\ C\\ket{11} = \\ket{10}")
-		for i in (2, 7, 12, 17, 22, 27, 32, 37):
+		### Appendix A
+		s = self._tex("C_{1,0}\\ket{00} = \\ket{00} \\\\ C_{1,0}\\ket{01} = \\ket{01} \\\\ C_{1,0}\\ket{10} = \\ket{11} \\\\ C_{1,0}\\ket{11} = \\ket{10}")
+		# for i in (2, 7, 12, 17, 22, 27, 32, 37):
+		for i in (5, 10, 18, 23, 31, 36, 44, 49):
 			s[0][i  :i+1].set_color(BLUE)
 			s[0][i+1:i+2].set_color(RED)
+		s.scale(1.5)
 
 
 		# s = self._tex("\\frac{\\alpha}{2}(", "\\ket{000}", "+", "\\ket{011}", ") + \\frac{\\beta}{2}(", "\\ket{100}", "+", "\\ket{111}", ")")
@@ -234,13 +266,13 @@ class DisplayMatrix(WhiteScene):
 		# 	[0,0],
 		# 	[1,1]
 		# ],
-		"name": "SWAP",
-		"values": [
-			[1,0,0,0],
-			[0,0,1,0],
-			[0,1,0,0],
-			[0,0,0,1],
-		],
+		# "name": "SWAP",
+		# "values": [
+		# 	[1,0,0,0],
+		# 	[0,0,1,0],
+		# 	[0,1,0,0],
+		# 	[0,0,0,1],
+		# ],
 		# "name": "C_{01}",
 		# "values": [
 		# 	[1,0,0,0],
@@ -310,11 +342,11 @@ class DisplayMatrix(WhiteScene):
 		# 	["\\alpha + \\delta","\\beta - i \\gamma"],
 		# 	["\\beta + i \\gamma","\\alpha - \\delta"]
 		# ],
-		"name": "Sqrt\\ X",
-		"values": [
-			["1+i","1-i"],
-			["1-i","1+i"]
-		],
+		# "name": "Sqrt\\ X",
+		# "values": [
+		# 	["1+i","1-i"],
+		# 	["1-i","1+i"]
+		# ],
 		# "name": "U^2",
 		# "values": [
 		# 	["(\\lambda_{1})^{2}",0],
@@ -359,9 +391,28 @@ class DisplayMatrix(WhiteScene):
 		# 	[0,-1]
 		# ],
 
-		# "factor": "",
+		### chapter 8
+		# "name": "P",
+		# "values": [
+		# 	["a","b"],
+		# 	["c","d"]
+		# ],
+		# "name": "P^{-1}",
+		# "values": [
+		# 	["d","-b"],
+		# 	["-c","a"]
+		# ],
+		# "factor": "\\frac{1}{ad-bc}",
+		"name": "P",
+		"values": [
+			["1","-i"],
+			["i","-1"]
+		],
+		"factor": "\\frac{1}{\\sqrt{2}}",
+		"scale": 1.3,
+
 		# "factor": "\\frac{1}{\\sqrt{2}}",
-		"factor": "\\frac{1}{2}",
+		# "factor": "\\frac{1}{2}",
 
 		# "subscript": "\\{\\ket{+},\\ket{-}\\}",
 		# "subscript": "\\{U \\  basis\\}"
@@ -385,7 +436,9 @@ class DisplayMatrix(WhiteScene):
 
 		print(s)
 
-		self.add_tex(s, scale=2)
+		scale = getattr(self, "scale", 2)
+
+		self.add_tex(s, scale=scale)
 		# self.add_tex(s, scale=None)
 
 # dashed lines seperating a matrix

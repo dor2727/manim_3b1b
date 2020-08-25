@@ -468,19 +468,54 @@ class BlochSphere_example_H_P45_H(BlochSphere):
 		],
 	}
 
-class BlochSphere_example_Z_to_Y(BlochSphere):
+# maybe add xz circle
+class BlochSphere_example_HZY(BlochSphere):
 	CONFIG = {
 		"operators": [
-			Pauli_z_to_Pauli_y,
-			Pauli_z,
-			np.linalg.inv(Pauli_z_to_Pauli_y),
+			Hadamard_Y_Z,
 		],
 		"operator_names": [
-			"P",
-			"Z",
-			"P inverse",
+			"$H_{YZ}$",
 		],
 	}
+class BlochSphere_example_HZY_HZY(BlochSphere):
+	CONFIG = {
+		"operators": [
+			Hadamard_Y_Z,
+			Hadamard_Y_Z,
+		],
+		"operator_names": [
+			"$H_{YZ}$",
+			"$H_{YZ}$",
+		],
+	}
+class BlochSphere_example_HZY_Z_HZY(BlochSphere):
+	CONFIG = {
+		"operators": [
+			Hadamard_Y_Z,
+			Pauli_z,
+			Hadamard_Y_Z,
+		],
+		"operator_names": [
+			"$H_{YZ}$",
+			"Pauli Z",
+			"$H_{YZ}$",
+		],
+	}
+class BlochSphere_example_HZY_Y_HZY(BlochSphere):
+	CONFIG = {
+		"operators": [
+			Hadamard_Y_Z,
+			Pauli_y,
+			Hadamard_Y_Z,
+		],
+		"operator_names": [
+			"$H_{YZ}$",
+			"Pauli Y",
+			"$H_{YZ}$",
+		],
+	}
+
 
 
 # 
