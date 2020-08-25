@@ -63,6 +63,7 @@ class ParametricSurface(VGroup):
                 u1, u2 = u_values[i:i + 2]
                 v1, v2 = v_values[j:j + 2]
                 face = ThreeDVMobject()
+                # import pdb; pdb.set_trace()
                 face.set_points_as_corners([
                     [u1, v1, 0],
                     [u2, v1, 0],
@@ -87,6 +88,7 @@ class ParametricSurface(VGroup):
             opacity=self.stroke_opacity,
         )
         self.add(*faces)
+        import pdb; pdb.set_trace()
         if self.checkerboard_colors:
             self.set_fill_by_checkerboard(*self.checkerboard_colors)
 
@@ -111,6 +113,110 @@ class Sphere(ParametricSurface):
     }
 
     def __init__(self, **kwargs):
+        ParametricSurface.__init__(
+            self, self.func, **kwargs
+        )
+        self.scale(self.radius)
+
+    def func(self, u, v):
+        return np.array([
+            np.cos(v) * np.sin(u),
+            np.sin(v) * np.sin(u),
+            np.cos(u)
+        ])
+
+
+
+class Cone(VGroup):
+    CONFIG = {
+        "base_radius": 1,
+        "height": 1,
+        "direction": Z_AXIS,
+
+        "v_min": 0,
+        "v_max": 1,
+        "resolution": 32,
+
+        "surface_piece_config": {},
+        "fill_color": BLUE_D,
+        "fill_opacity": 1.0,
+        "checkerboard_colors": [BLUE_D, BLUE_E],
+        "stroke_color": LIGHT_GREY,
+        "stroke_width": 0.5,
+        "should_make_jagged": False,
+        "pre_function_handle_to_anchor_scale_factor": 0.00001,
+    }
+
+    def __init__(self, func, **kwargs):
+        VGroup.__init__(self, **kwargs)
+
+        self.side_length = np.sqrt(self.height**2 + self.base_radius**2)
+        self.u = np.arctan(self.base_radius / self.height)
+
+        self.func = func
+        self.setup_in_uv_space()
+        self.apply_function(lambda p: func(p[0], p[1]))
+        if self.should_make_jagged:
+            self.make_jagged()
+
+    def setup_in_uv_space(self):
+        v_values = np.linspace(self.v_min, self.v_max, self.resolution + 1)
+
+        faces = VGroup()
+        for i in range(len(v_values) - 1):
+            v1, v2 = v_values[i:i + 2]
+            face = ThreeDVMobject()
+            face.set_points_as_corners([
+                [u1, v1, 0],
+                [u2, v1, 0],
+                [u2, v2, 0],
+                [u1, v2, 0],
+                [u1, v1, 0],
+            ])
+"""
+                self.points = [
+                    (self.radius * np.cos(angle), self.radius * np.sin(angle), 0)
+                    for angle in radians
+                ]
+"""
+            faces.add(face)
+            face.v_index = j
+            face.v1 = v1
+            face.v2 = v2
+        faces.set_fill(
+            color=self.fill_color,
+            opacity=self.fill_opacity
+        )
+        faces.set_stroke(
+            color=self.stroke_color,
+            width=self.stroke_width,
+            opacity=self.stroke_opacity,
+        )
+        self.add(*faces)
+        if self.checkerboard_colors:
+            self.set_fill_by_checkerboard(*self.checkerboard_colors)
+
+    def set_fill_by_checkerboard(self, *colors, opacity=None):
+        n_colors = len(colors)
+        for face in self:
+            c_index = face.v_index % n_colors
+            face.set_fill(colors[c_index], opacity=opacity)
+
+
+class Cone(ParametricSurface):
+    CONFIG = {
+        "base_radius": 1,
+        "height": 1,
+        "direction": Z_AXIS,
+
+        "resolution": (0, 24),
+        "v_min": 0,
+        "v_max": TAU,
+    }
+
+    def __init__(self, **kwargs):
+        self.u_min = self.u_max = np.arctan(self.base_radius / self.height)
+
         ParametricSurface.__init__(
             self, self.func, **kwargs
         )

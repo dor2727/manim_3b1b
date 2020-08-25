@@ -4,6 +4,7 @@ from collections import defaultdict
 
 from manimlib.constants import *
 from manimlib.mobject.geometry import Arc, Arrow, Circle, DashedLine, Dot, Line
+from manimlib.mobject.three_dimensions import Sphere
 from manimlib.mobject.types.vectorized_mobject import VGroup, VMobject, VectorizedPoint
 from manimlib.mobject.svg.tex_mobject import TexMobject
 from manimlib.utils.space_ops import get_norm
@@ -1124,4 +1125,3 @@ class Wave(VGroup):
 			self.particles[self.n-i-1].set_color(self.visible_color)
 			self.particles[self.n+i+1].set_color(self.visible_color)
 			yield i
-
