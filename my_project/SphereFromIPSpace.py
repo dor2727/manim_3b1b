@@ -46,10 +46,11 @@ class ConeScene(ThreeDScene):
         self.set_camera_orientation(70*DEGREES, 300*DEGREES)
         self.camera.frame_center.shift(UR)
 
-        plane = NumberPlane(
-            background_line_style = {"stroke_color": GREY},
+        plane = ThreeDAxes(
+            # background_line_style = {"stroke_color": GREY},
             x_axis_config = {"x_min":-1, "x_max": 5, "stroke_color":MAROON},
-            y_axis_config = {"x_min":-1, "x_max": 8, "stroke_color":GREEN}
+            y_axis_config = {"x_min":-1, "x_max": 8, "stroke_color":GREEN},
+            z_axis_config = {"x_min":-1, "x_max": 5, "stroke_color":BLUE},
         )
 
         dr, dphi = 0.2, 0.2
@@ -89,10 +90,11 @@ class ConeScene2(ThreeDScene):
         # self.set_camera_orientation(0*DEGREES, 0*DEGREES)
         self.camera.frame_center.shift(UR)
         
-        plane = NumberPlane(
+        plane = ThreeDAxes(
             background_line_style = {"stroke_color": GREY},
             x_axis_config = {"x_min":-1, "x_max": 5, "stroke_color":MAROON},
-            y_axis_config = {"x_min":-1, "x_max": 8, "stroke_color":GREEN}
+            y_axis_config = {"x_min":-1, "x_max": 8, "stroke_color":GREEN},
+            z_axis_config = {"x_min":-1, "x_max": 5, "stroke_color":BLUE},
         )
 
         cone = Cone(direction=Y_AXIS)
