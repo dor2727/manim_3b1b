@@ -59,6 +59,7 @@ from manimlib.mobject.mobject_update_utils import *
 from manimlib.mobject.value_tracker import *
 from manimlib.mobject.vector_field import *
 from manimlib.mobject.physics import *
+from manimlib.mobject.physics_perovskite import *
 
 from manimlib.for_3b1b_videos.common_scenes import *
 from manimlib.for_3b1b_videos.pi_creature import *
