@@ -212,7 +212,7 @@ class BlochSphere(SpecialThreeDScene):
 			self.circle_yz.rotate(90 * DEGREES, UP)
 			self.circle_yz.set_fill(self.circle_yz_color)
 			self.circle_yz.set_opacity(0.1)
-			self.add(self.circle_xy)
+			self.add(self.circle_yz)
 
 	def init_text(self):
 		"""
