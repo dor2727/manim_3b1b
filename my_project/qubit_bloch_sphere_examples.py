@@ -64,10 +64,6 @@ class BlochSphereHadamardRotate_twice_without_sphere_slow(BlochSphereHadamardRot
 # 
 class BlochSphere_example_X(BlochSphere):
 	CONFIG = {
-		"circle_xy_show": False,
-		"circle_yz_show": True,
-		"circle_yz_color": GREEN,
-
 		"operators": [
 			Pauli_x,
 		],
