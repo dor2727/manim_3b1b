@@ -37,6 +37,7 @@ Rz = Phase
 def Rx(phi):
 	return Hadamard.dot(Phase(phi)).dot(Hadamard)
 
+
 # 
 # create a TexMobject which is properly aligned to 3d
 # 
@@ -108,47 +109,6 @@ def vector_to_angles(v, verbose=False):
 	if p < 0:
 		p += 2*PI
 	return t, p
-
-
-class State(Mobject):
-	def __init__(self, zero_amplitude, one_amplitude, r=SPHERE_RADIUS, **kwargs):
-		Mobject.__init__(self, **kwargs)
-
-		self.zero_amplitude = complex(zero_amplitude)
-		self.one_amplitude = complex(one_amplitude)
-
-		self.r = r
-		self.theta, self.phi = vector_to_angles(self.get_vector())
-
-		self.line = self.create_line()
-		self.add(self.line)
-
-	def _get_cartesian(self):
-		return np.array( spherical_to_cartesian(self.r, self.theta, self.phi) )
-
-	def create_line(self):
-		return Arrow3d(
-			start=ORIGIN,
-			end=self._get_cartesian(),
-		)
-
-	def get_vector(self):
-		return np.array([self.zero_amplitude, self.one_amplitude])
-
-	def apply_operator(self, operator, verbose=True):
-		if verbose:
-			print("from: ", self.get_vector())
-		vector_result = operator.dot(self.get_vector())
-		if verbose:
-			print("to  : ", vector_result)
-		new_state = State(*vector_result)
-		new_state.set_color(self.color)
-		return new_state
-
-state_zero  = State(1,             0,            r=SPHERE_RADIUS)
-state_one   = State(0,             1,            r=SPHERE_RADIUS)
-state_plus  = State(1/np.sqrt(2),  1/np.sqrt(2), r=SPHERE_RADIUS)
-state_minus = State(1/np.sqrt(2), -1/np.sqrt(2), r=SPHERE_RADIUS)
 
 
 # 
