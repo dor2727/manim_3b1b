@@ -127,7 +127,7 @@ class State(Mobject):
 		return np.array( spherical_to_cartesian(self.r, self.theta, self.phi) )
 
 	def create_line(self):
-		return Line(
+		return Arrow3d(
 			start=ORIGIN,
 			end=self._get_cartesian(),
 		)
