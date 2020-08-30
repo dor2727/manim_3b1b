@@ -36,6 +36,8 @@ def Phase(phi):
 Rz = Phase
 def Rx(phi):
 	return Hadamard.dot(Phase(phi)).dot(Hadamard)
+def Ry(phi):
+	return Hadamard_Y_Z.dot(Phase(phi)).dot(Hadamard_Y_Z)
 
 
 # 

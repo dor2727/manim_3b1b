@@ -516,6 +516,76 @@ class BlochSphere_example_HZY_Y_HZY(BlochSphere):
 		],
 	}
 
+class BlochSphere_example_Rx45(BlochSphere):
+	CONFIG = {
+		"circle_yz_show": True,
+		"circle_xy_show": False,
+		"operators": [
+			Rx(45 * DEGREES),
+		],
+		"operator_names": [
+			"Rx 45 degrees",
+		],
+	}
+class BlochSphere_example_Ry45(BlochSphere):
+	CONFIG = {
+		"circle_xz_show": True,
+		"operators": [
+			Ry(45 * DEGREES),
+		],
+		"operator_names": [
+			"Ry 45 degrees",
+		],
+	}
+class BlochSphere_example_Rz45(BlochSphere):
+	CONFIG = {
+		"operators": [
+			Rz(45 * DEGREES),
+		],
+		"operator_names": [
+			"Rz 45 degrees",
+		],
+	}
+class BlochSphere_example_Ry45_Rz45(BlochSphere):
+	CONFIG = {
+		"operators": [
+			Ry(45 * DEGREES),
+			Rz(45 * DEGREES),
+		],
+		"operator_names": [
+			"Ry 45 degrees",
+			"Rz 45 degrees",
+		],
+	}
+class BlochSphere_example_Rzm90_Ry90_Rz90(BlochSphere):
+	CONFIG = {
+		"circle_xz_show": True,
+		"operators": [
+			Rz(-PI/2),
+			Ry( PI/2),
+			Rz( PI/2),
+		],
+		"operator_names": [
+			"Rz ($-\\frac{\\pi}{2}$)",
+			"Ry ($\\frac{\\pi}{2}$)",
+			"Rz ($\\frac{\\pi}{2}$)",
+		],
+	}
+class BlochSphere_example_Rzm90_Ry90_Rz90_twice(BlochSphere):
+	CONFIG = {
+		"circle_xz_show": True,
+		"operators": [
+			Rz(-PI/2),
+			Ry( PI/2),
+			Rz( PI/2),
+		] * 2,
+		"operator_names": [
+			"Rz ($-\\frac{\\pi}{2}$)",
+			"Ry ($\\frac{\\pi}{2}$)",
+			"Rz ($\\frac{\\pi}{2}$)",
+		] * 2,
+	}
+
 
 
 # 

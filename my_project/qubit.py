@@ -69,7 +69,7 @@ class BlochSphere(SpecialThreeDScene):
 		"circle_xy_color": GREEN,
 
 		"circle_yz_show": False,
-		"circle_yz_color": GRAY,
+		"circle_yz_color": ORANGE,
 
 		
 		"sphere_config": {
@@ -145,7 +145,7 @@ class BlochSphere(SpecialThreeDScene):
 				+
 				"\\\\".join(f"{i+1}) {n}" for i,n in enumerate(self.operator_names))
 				+
-				"\\end{flushleft}",
+				"\n\\end{flushleft}",
 				alignment="",
 			)
 			self.intro_tex_2.move_to(0.8*DOWN)
