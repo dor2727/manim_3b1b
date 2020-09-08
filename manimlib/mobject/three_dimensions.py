@@ -279,3 +279,117 @@ class Prism(Cube):
         Cube.generate_points(self)
         for dim, value in enumerate(self.dimensions):
             self.rescale_to_fit(value, dim, stretch=True)
+
+
+
+class Paraboloid(ParametricSurface):
+    CONFIG = {
+        "resolution": 24,
+
+        # z = x_factor * x^2 + y_factor * y^2
+        "x_factor": 1,
+        "y_factor": 1,
+
+        "center_point": ORIGIN,
+    }
+    @property
+    def u_min(self):
+        raise NotImplemented
+    @property
+    def u_max(self):
+        raise NotImplemented
+    @property
+    def v_min(self):
+        raise NotImplemented
+    @property
+    def v_max(self):
+        raise NotImplemented
+
+    def __init__(self, **kwargs):
+        ParametricSurface.__init__(
+            self, self.func, **kwargs
+        )
+        self.shift(self.center_point)
+
+    def func(self, u, v):
+        raise NotImplemented
+
+    def _paraboloid(self, x, y):
+        return self.x_factor * x**2 + self.y_factor * y**2
+
+    def get_value_at_point(self, point):
+        # point may be 2d or 3d array
+        x = point[0] - self.center_point[0]
+        y = point[1] - self.center_point[1]
+        return self._paraboloid(x, y)
+
+    def get_slope_at_point(self, point):
+        # point may be 2d or 3d array
+        x = point[0] - self.center_point[0]
+        y = point[1] - self.center_point[1]
+        if len(point) > 2:
+            z = point[2]
+        else:
+            z = 0
+        x_tag = 2*self.x_factor*x
+        y_tag = 2*self.y_factor*y
+        return np.array([
+            x_tag,
+            y_tag,
+            z - self._paraboloid(x_tag, y_tag)
+        ]).reshape(3)
+
+class ParaboloidCartesian(Paraboloid):
+    CONFIG = {
+        "x_min": -2,
+        "x_max": 2,
+        "y_min": -2,
+        "y_max": 2,
+    }
+    @property
+    def u_min(self):
+        return self.x_min
+    @property
+    def u_max(self):
+        return self.x_max
+    @property
+    def v_min(self):
+        return self.y_min
+    @property
+    def v_max(self):
+        return self.y_max
+
+    def func(self, x, y):
+        return np.array([
+            x,
+            y,
+            self.x_factor * x**2 + self.y_factor * y**2
+        ])
+class ParaboloidPolar(Paraboloid):
+    CONFIG = {
+        "r_min": 0,
+        "r_max": 2,
+        "theta_min": 0,
+        "theta_max": TAU,
+    }
+    @property
+    def u_min(self):
+        return self.r_min
+    @property
+    def u_max(self):
+        return self.r_max
+    @property
+    def v_min(self):
+        return self.theta_min
+    @property
+    def v_max(self):
+        return self.theta_max
+
+    def func(self, r, theta):
+        x = r * np.cos(theta)
+        y = r * np.sin(theta)
+        return np.array([
+            x,
+            y,
+            self.x_factor * x**2 + self.y_factor * y**2
+        ])
