@@ -1,5 +1,14 @@
 from manimlib.imports import *
 
+"""
+TODO:
+[ ] fix arrow head size
+		auto scale according to size?
+		have a default size, but, if the arrow size is too short, then shrink the head
+[ ] slide the point according to the gradient
+
+"""
+
 class ParaboloidPlot(SpecialThreeDScene):
 	CONFIG = {
 		"three_d_axes_config": {
@@ -38,36 +47,36 @@ class ParaboloidPlot(SpecialThreeDScene):
 	def construct(self):
 		self.init_camera()
 		self.init_axes()
+		self.init_paraboloid()
 
-		paraboloid = ParaboloidPolar(**self.paraboloid_config)
-		paraboloid.shift(self.axes_center_point)
-		self.add(paraboloid)
-
+		## add dot
 		x, y = 2.1, 2.9
-		z = paraboloid.get_value_at_point([x,y])
+		# x, y = 2.1, 2.1
+		# x, y = 3, 2
+		z = self.paraboloid.get_value_at_point([x,y])
 		point = np.array([x,y,z])
 		sphere = Sphere(radius=0.05, fill_color=WHITE, checkerboard_colors=False)
 		sphere.shift(point)
 		sphere.shift(self.axes_center_point)
 		self.add(sphere)
 
-		# going 20 degrees in 2 seconds
-		# 60 frames per seconds
-		# 20 degrees in 120 frames
-		rate = 20/120
-		# it won't reach exactly 60 degrees, but it'll be close enough
-		self.begin_ambient_camera_rotation(rate=-rate, about="phi")
-		self.wait(2)
-		self.stop_ambient_camera_rotation(about="phi")
+		self.rotate_phi()
 
-		direction = - paraboloid.get_slope_at_point(point)
-		print(point)
-		print(direction)
-		print(point + direction)
-		force = Arrow3d(start=point, end=point + direction)
+		## add force
+		gradient = self.paraboloid.get_gradient(point)
+		step = np.array([
+			gradient[0],
+			gradient[1],
+			gradient[0]**2 + gradient[1]**2
+		])
+		end = point - step
+		end = self.paraboloid_config["center_point"]
+		force = Arrow3d(start=point, end=end)
 		force.shift(self.axes_center_point)
 		self.add(force)
 
+		self.wait()
+		self.rotate_phi()
 		self.wait()
 
 	def init_camera(self):
@@ -81,3 +90,19 @@ class ParaboloidPlot(SpecialThreeDScene):
 		# self.set_axes_labels()
 		self.axes.shift(self.axes_center_point)
 		self.add(self.axes)
+
+	def init_paraboloid(self):
+		paraboloid = self.paraboloid = ParaboloidPolar(**self.paraboloid_config)
+		paraboloid.shift(self.axes_center_point)
+		self.add(paraboloid)
+
+	def rotate_phi(self, duration=2, degrees=+20):
+		# e.g. duration=2 ; degrees = 20
+		# going 20 degrees in 2 seconds
+		# 60 frames per seconds
+		# 20 degrees in 120 frames
+		rate = - degrees / (60*duration)
+		# it won't be exact, but it'll be close enough
+		self.begin_ambient_camera_rotation(rate=rate, about="phi")
+		self.wait(2)
+		self.stop_ambient_camera_rotation(about="phi")

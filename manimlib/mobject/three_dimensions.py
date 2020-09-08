@@ -323,21 +323,15 @@ class Paraboloid(ParametricSurface):
         y = point[1] - self.center_point[1]
         return self._paraboloid(x, y)
 
-    def get_slope_at_point(self, point):
+    def get_gradient(self, point):
         # point may be 2d or 3d array
         x = point[0] - self.center_point[0]
         y = point[1] - self.center_point[1]
-        if len(point) > 2:
-            z = point[2]
-        else:
-            z = 0
-        x_tag = 2*self.x_factor*x
-        y_tag = 2*self.y_factor*y
         return np.array([
-            x_tag,
-            y_tag,
-            z - self._paraboloid(x_tag, y_tag)
-        ]).reshape(3)
+            2*self.x_factor*x,
+            2*self.y_factor*y,
+            0
+        ])
 
 class ParaboloidCartesian(Paraboloid):
     CONFIG = {
