@@ -519,11 +519,24 @@ class BlochSphere_example_HZY_Y_HZY(BlochSphere):
 class BlochSphere_example_Rx45(BlochSphere):
 	CONFIG = {
 		"circle_yz_show": True,
-		"circle_xy_show": False,
+		"rotate_circles": True,
 		"operators": [
 			Rx(45 * DEGREES),
 		],
 		"operator_names": [
+			"Rx 45 degrees",
+		],
+	}
+class BlochSphere_example_Rx45_Rx45(BlochSphere):
+	CONFIG = {
+		"circle_yz_show": True,
+		"rotate_circles": True,
+		"operators": [
+			Rx(45 * DEGREES),
+			Rx(45 * DEGREES),
+		],
+		"operator_names": [
+			"Rx 45 degrees",
 			"Rx 45 degrees",
 		],
 	}
@@ -537,12 +550,35 @@ class BlochSphere_example_Ry45(BlochSphere):
 			"Ry 45 degrees",
 		],
 	}
+class BlochSphere_example_Ry45_Ry45(BlochSphere):
+	CONFIG = {
+		"circle_xz_show": True,
+		"operators": [
+			Ry(45 * DEGREES),
+			Ry(45 * DEGREES),
+		],
+		"operator_names": [
+			"Ry 45 degrees",
+			"Ry 45 degrees",
+		],
+	}
 class BlochSphere_example_Rz45(BlochSphere):
 	CONFIG = {
 		"operators": [
 			Rz(45 * DEGREES),
 		],
 		"operator_names": [
+			"Rz 45 degrees",
+		],
+	}
+class BlochSphere_example_Rz45_Rz45(BlochSphere):
+	CONFIG = {
+		"operators": [
+			Rz(45 * DEGREES),
+			Rz(45 * DEGREES),
+		],
+		"operator_names": [
+			"Rz 45 degrees",
 			"Rz 45 degrees",
 		],
 	}
