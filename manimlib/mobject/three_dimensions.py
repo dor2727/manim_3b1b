@@ -213,6 +213,13 @@ class Cone(ParametricSurface):
         if x < 0:
             phi += PI
 
+        # this is a lazy implementation of rotations
+        # This un-rotates the last rotation (which is stored im memory)
+        # and then calculates a rotation against the z axis
+        # A better way would be to get the angle between the current direction
+        # and the new one (using the dot product for example) and rotate it about
+        # a 3rd vector, normal to the previous two
+
         # undo old rotation (in reverse order)
         self.rotate(-self._current_phi  , Z_AXIS, about_point=ORIGIN)
         self.rotate(-self._current_theta, Y_AXIS, about_point=ORIGIN)
@@ -226,6 +233,9 @@ class Cone(ParametricSurface):
     def set_direction(self, direction):
         self.direction = direction
         self._rotate_to_direction()
+
+    def get_direction(self):
+        return self._current_theta, self._current_phi
 
 class Arrow3d(VGroup):
     CONFIG = {
