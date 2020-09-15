@@ -213,6 +213,10 @@ class Cone(ParametricSurface):
         self.rotate(theta, Y_AXIS, about_point=ORIGIN)
         self.rotate(phi  , Z_AXIS, about_point=ORIGIN)
 
+    def set_direction(self, direction):
+        self.direction = direction
+        self._rotate_to_direction()
+
 class Arrow3d(VGroup):
     CONFIG = {
         "cone_config": {
