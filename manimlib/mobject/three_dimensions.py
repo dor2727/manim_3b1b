@@ -157,6 +157,9 @@ class Cone(ParametricSurface):
         ParametricSurface.__init__(
             self, self.func, **kwargs
         )
+        # used for rotations
+        self._current_theta = 0
+        self._current_phi = 0
 
         if self.show_base:
             self.base_circle = Dot(
@@ -210,8 +213,15 @@ class Cone(ParametricSurface):
         if x < 0:
             phi += PI
 
+        # undo old rotation (in reverse order)
+        self.rotate(-self._current_phi  , Z_AXIS, about_point=ORIGIN)
+        self.rotate(-self._current_theta, Y_AXIS, about_point=ORIGIN)
+        # do new rotation
         self.rotate(theta, Y_AXIS, about_point=ORIGIN)
         self.rotate(phi  , Z_AXIS, about_point=ORIGIN)
+        # store values
+        self._current_theta = theta
+        self._current_phi = phi
 
     def set_direction(self, direction):
         self.direction = direction
