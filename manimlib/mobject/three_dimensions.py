@@ -285,6 +285,89 @@ class Prism(Cube):
             self.rescale_to_fit(value, dim, stretch=True)
 
 
+class Cylinder(ParametricSurface):
+    CONFIG = {
+        "resolution": 24,
+
+        "radius": 1,
+        "height": 2,
+        "direction": Z_AXIS,
+
+        "center_point": ORIGIN,
+
+        # v will is the polar angle
+        "v_min": 0,
+        "v_max": TAU,
+    }
+    # u is the height
+    @property
+    def u_min(self):
+        return - self.height / 2
+    @property
+    def u_max(self):
+        return   self.height / 2
+
+    def __init__(self, **kwargs):
+        ParametricSurface.__init__(
+            self, self.func, **kwargs
+        )
+        self.add_bases()
+        self._rotate_to_direction()
+
+    def func(self, u, v):
+        """
+        u is height
+        v is phi
+        """
+        height = u
+        phi = v
+        r = self.radius
+        return np.array([
+            r * np.cos(phi),
+            r * np.sin(phi),
+            height
+        ])
+
+    def add_bases(self):
+        self.base_top = Dot(
+            point=self.u_max*IN,
+            radius=self.radius,
+            color=self.fill_color,
+            fill_opacity=self.fill_opacity,
+        )
+        self.base_bottom = Dot(
+            point=self.u_min*IN,
+            radius=self.radius,
+            color=self.fill_color,
+            fill_opacity=self.fill_opacity,
+        )
+        self.add(self.base_top, self.base_bottom)
+
+    def _rotate_to_direction(self):
+        x, y, z = self.direction
+
+        r = np.sqrt(x**2 + y**2 + z**2)
+        theta = np.arccos(z/r)
+
+        if x == 0:
+            if y == 0: # along the z axis
+                phi = 0
+            else:
+                phi = np.arctan(np.inf)
+                if y < 0:
+                    phi += PI
+        else:
+            phi = np.arctan(y/x)
+        if x < 0:
+            phi += PI
+
+        self.rotate(theta, Y_AXIS, about_point=ORIGIN)
+        self.rotate(phi  , Z_AXIS, about_point=ORIGIN)
+
+    def set_direction(self, direction):
+        self.direction = direction
+        self._rotate_to_direction()
+
 
 class Paraboloid(ParametricSurface):
     CONFIG = {

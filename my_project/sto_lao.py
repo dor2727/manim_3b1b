@@ -62,7 +62,7 @@ class SinglePerovskiteTest(SpecialThreeDScene):
 		# self.add(Sr, Ti, O)
 		p = SinglePerovskite(**Perovskite_SrTiO3)
 		self.add(p)
-		
+
 		self.wait(1)
 
 		self.rotate_to_surface(surface=[1,0,0])
