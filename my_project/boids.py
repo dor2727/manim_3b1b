@@ -30,20 +30,26 @@ class Boid(object):
 		"mass": 1, # resistance to forces : F=ma
 	}
 	def __init__(self, position, velocity, **kwargs):
-		# digest_config(self, kwargs)
+		# there's no need to call digest config, since this class is a meta class
+		# Thus, Boid2D / Boid3D will inherit from a Mobject, and will call digest_config on their own
 
 		self.move_to(position)
 
-		self.speed = kwargs.get("speed", self.speed_mean)
+		self.set_speed(kwargs.get("speed", self.speed_mean))
 		self.set_velocity(velocity)
 
-		# requires `set_direction` method from Cone/Triangle
+		# requires `set_direction` method from Cone/Triangle/Boid2D
 		self.set_direction(self.velocity)
 
 	#
 	# Getting nearby boids
 	#
 	def set_other_boids(self, boids):
+		if self in boids:
+			# create a copy of the list, so that we won't change it
+			boids = boids[::]
+			boids.remove(self)
+
 		self._other_boids = boids
 	def get_other_boids(self):
 		return getattr(self, "_other_boids", [])
@@ -56,31 +62,31 @@ class Boid(object):
 		return getattr(self, "_other_objects", [])
 
 	#
-	# Getting Field Of View
+	# Field Of View & Distance utils
 	#
-	def is_boid_in_fov(self, b, radius, angle):
-		# b is the other boid
-		# full names (radius, angle) are for the current boid (self)
+	def is_boid_in_fov(self, other_boid, radius, angle):
 		if radius == 0:
 			return False
 
-		if get_norm(self.get_boid_distance(b)) < radius:
+		distance = self.get_boid_distance(other_boid)
+		if get_norm(distance) < radius:
 			if angle == PI: # full circle
 				return True
 
+			# TODO: test this code
 			# following https://math.stackexchange.com/questions/878785/how-to-find-an-angle-in-range0-360-between-2-vectors
-			vec_1 = pos - self.get_center()
+			vec_1 = distance
 			vec_2 = self.velocity
 			dot = vec_1.dot(vec_2)
 			size_1 = get_norm(vec_1)
 			size_2 = get_norm(vec_2)
-			a = np.arccos(dot / (size_1 * size_2))
-			if a < angle:
-				return True
+			other_boid_angle = np.arccos(dot / (size_1 * size_2))
+			return other_boid_angle <= angle
 
 		return False
 	def get_boid_distance(self, b):
 		return b.get_center() - self.get_center()
+
 	def is_object_in_fov(self, obj):
 		distance = self.get_object_distance(obj)
 		return get_norm(distance) <= self.radius_of_seperation
@@ -109,7 +115,7 @@ class Boid(object):
 			elif self.get_center()[1] < y_min:
 				distance += Y_AXIS * (y_min - self.get_center()[1])
 		elif type(obj) is Circle:
-			# TODO: implement
+			raise NotImplemented
 			# Circle has get_center() & radius
 			# size of distance is get_norm(self.get_center() - Circle.get_center()) - radius
 			# direction is self.get_center() - Circle.get_center()
@@ -120,32 +126,27 @@ class Boid(object):
 
 		return distance
 
+	#
+	# Getting Field Of View
+	#
 	def set_fov(self):
-		fov_seperation = []
-		fov_alignment  = []
-		fov_cohesion   = []
+		self.fov_seperation = list(filter(
+			lambda b: self.is_boid_in_fov(b, self.radius_of_seperation, self.angle_of_seperation),
+			self.get_other_boids()
+		))
+		self.fov_alignment  = list(filter(
+			lambda b: self.is_boid_in_fov(b, self.radius_of_alignment , self.angle_of_alignment ),
+			self.get_other_boids()
+		))
+		self.fov_cohesion   = list(filter(
+			lambda b: self.is_boid_in_fov(b, self.radius_of_cohesion  , self.angle_of_cohesion  ),
+			self.get_other_boids()
+		))
 
-		for b in self.get_other_boids():
-			if b is self:
-				continue
-
-			if self.is_boid_in_fov(b, self.radius_of_seperation, self.angle_of_seperation):
-				fov_seperation.append(b)
-			if self.is_boid_in_fov(b, self.radius_of_alignment, self.angle_of_alignment):
-				fov_alignment.append(b)
-			if self.is_boid_in_fov(b, self.radius_of_cohesion, self.angle_of_cohesion):
-				fov_cohesion.append(b)
-
-		self.fov_seperation = fov_seperation
-		self.fov_alignment  = fov_alignment
-		self.fov_cohesion   = fov_cohesion
-
-		fov_seperation_objects = []
-		for obj in self.get_other_objects():
-			if self.is_object_in_fov(obj):
-				fov_seperation_objects.append(obj)
-		self.fov_seperation_objects = fov_seperation_objects
-
+		self.fov_seperation_objects = list(filter(
+			self.is_object_in_fov,
+			self.get_other_objects()
+		))
 	def get_fov_seperation(self):
 		return getattr(self, "fov_seperation", [])
 	def get_fov_alignment(self):
@@ -164,34 +165,32 @@ class Boid(object):
 		strength = factor * get_norm(vector)**power
 		return strength * direction
 	def get_force_seperation_boids(self):
-		if self.radius_of_seperation == 0 or not self.get_fov_seperation():
-			return np.zeros(3)
-
-		force = np.zeros(3)
-		for b in self.get_fov_seperation():
-			distance = self.get_boid_distance(b)
-			force += self.calculate_force(self.factor_seperation, distance, self.seperation_power, True)
-
-		return force * self.factor_seperation
+		return sum(
+			(self.calculate_force(
+				factor = self.factor_seperation,
+				vector = self.get_boid_distance(b),
+				power  = self.seperation_power,
+				repel  = True,
+			) for b in self.get_fov_seperation()),
+			np.zeros(3)
+		)
 	def get_force_seperation_objects(self):
-		if self.radius_of_seperation == 0 or not self.get_fov_seperation_objects():
-			return np.zeros(3)
-
-		force = np.zeros(3)
-		for obj in self.get_fov_seperation_objects():
-			distance = self.get_object_distance(obj)
-			direction = - normalize(distance)
-			strength = self.factor_seperation * get_norm(distance)**self.seperation_object_power
-			force += strength * direction
-
-		return force * self.factor_seperation_object
-	def get_force_seperation(self):
-		return self.get_force_seperation_boids() + self.get_force_seperation_objects()
+		return sum(
+			(self.calculate_force(
+				factor = self.factor_seperation,
+				vector = self.get_object_distance(obj),
+				power  = self.seperation_object_power,
+				repel  = True,
+			) for obj in self.get_fov_seperation_objects()),
+			np.zeros(3)
+		)
 	def get_force_alignment(self):
 		if self.radius_of_alignment == 0 or not self.get_fov_alignment():
 			return np.zeros(3)
 
-		return self.factor_alignment * np.mean([b.velocity for b in self.get_fov_alignment()])
+		velocity_direction = np.mean([b.velocity for b in self.get_fov_alignment()], axis=0)
+
+		return self.calculate_force(self.factor_alignment, velocity_direction, self.alignment_power, repel=False)
 	def get_force_cohesion(self):
 		if self.radius_of_cohesion == 0 or not self.get_fov_cohesion():
 			return np.zeros(3)
@@ -199,14 +198,10 @@ class Boid(object):
 		# calculate Center Of Mass
 		com_direction = np.mean([self.get_boid_distance(b) for b in self.get_fov_cohesion()], axis=0)
 
-		# lets create an attractive force (positive value)
-		# which grows as the distance is large (proportional to r^x, where x>0)
+		return self.calculate_force(self.factor_cohesion, com_direction, self.cohesion_power, repel=False)
 
-		# F = factor * distance^1
-		return self.calculate_force(self.factor_cohesion, com_direction, self.cohesion_power, False)
-		# return self.factor_cohesion * com_direction**self.cohesion_power
-
-
+	def get_force_seperation(self):
+		return self.get_force_seperation_boids() + self.get_force_seperation_objects()
 	def get_force(self):
 		return self.get_force_cohesion() + self.get_force_alignment() + self.get_force_seperation()
 	@property
@@ -233,10 +228,13 @@ class Boid(object):
 		increased_velocity = self.velocity + self.acceleration * dt
 		# however, we allow for a specific range of speeds
 		self.set_speed(get_norm(increased_velocity), normalize=True)
-		self.set_velocity(self.velocity + self.acceleration * dt)
+		self.set_velocity(increased_velocity)
 	def update_direction(self):
 		self.set_direction(self.velocity)
 
+	#
+	# Setting Velocity (vector) and Speed (magnitude)
+	#
 	def set_velocity(self, velocity):
 		self.velocity = normalize(velocity) * self.speed
 	def set_speed(self, new_speed, normalize=False):
@@ -259,11 +257,15 @@ class Boid(object):
 		else:
 			self.speed = new_speed
 
+	#
+	# Speed getter, setter, and other utils
+	#
 	@property
 	def speed(self):
 		return getattr(self, "_speed", self.speed_mean)
 	@speed.setter
 	def speed(self, value):
+		# verifying speed range
 		if value < self.min_allowed_speed:
 			print("[!] a speed lower than the minimum:", value)
 			value = self.min_allowed_speed
@@ -273,20 +275,21 @@ class Boid(object):
 
 		self._speed = value
 
-		normalized_speed = (value - self.speed_mean + self.speed_std) / (self.speed_mean + self.speed_std)
+		## Setting a color to represent the velocity
+		# normalize to a number between 0 and 1
+		normalized_speed = (value - self.speed_mean + self.speed_std) / (2 * self.speed_std)
+		# then use it to get one of the colors
 		self.set_color(self.speed_color_gradient[int(normalized_speed * 20)])
-	@property
-	@functools.lru_cache()
-	def speed_color_gradient(self):
-		return color_gradient([BLUE, RED], 20)
-	
-
 	@property
 	def min_allowed_speed(self):
 		return self.speed_mean - self.speed_std
 	@property
 	def max_allowed_speed(self):
 		return self.speed_mean + self.speed_std
+	@property
+	@functools.lru_cache()
+	def speed_color_gradient(self):
+		return color_gradient([BLUE_A, BLUE_E, RED_E, RED_A], 20)
 
 
 
@@ -295,11 +298,7 @@ class Boid2D(Boid, ArrowTip): # ArrowTip is Triangle++
 	CONFIG = {
 		"dimensions": 2,
 
-		"triangle_config": {
-			"base_radius": 0.2,
-			"height": 0.5,
-		},
-		"boid_config": {},
+		"triangle_config": {},
 	}
 	def __init__(self, position, velocity, **kwargs):
 		# parse CONFIG
@@ -307,15 +306,16 @@ class Boid2D(Boid, ArrowTip): # ArrowTip is Triangle++
 		# ArrowTip constructor first
 		super(Boid, self).__init__(**self.triangle_config, **kwargs)
 		# Then Boid constructor
-		super().__init__(position, velocity, **self.boid_config, **kwargs)
+		super().__init__(position, velocity, **kwargs)
 
+	# in the 2d case, `direction` is identical to `angle`. Yet, `direction` is used for generality and compatability with 3D
 	def set_direction(self, direction):
 		new_angle = angle_of_vector(direction)
 		old_angle = self.get_angle()
 		self.rotate(new_angle - old_angle)
 	def get_direction(self):
 		return self.get_angle()
-	
+
 
 class Boid3D(Boid, Cone):
 	CONFIG = {
@@ -344,17 +344,22 @@ class Boids(VMobject):
 		"z_min": -3,
 		"z_max":  3,
 
-		"boid_speed_mean": 1.5,
-		"boid_speed_std": 0.5,
+		"boid_config": {
+			"speed_mean": 1.5,
+			"speed_std": 0.5,
+		},
 
 		"dimensions": 2, # either 2 or 3
 	}
 	def __init__(self, n=5, **kwargs):
 		super().__init__(**kwargs)
 		self.init_boids(n)
+
 		# for b in self.boids:
 		# 	b.add_updater(self.debug)
 		# 	b.add_updater(self.stay_in_the_box)
+		# self.for_each(Boid.add_updater, self.debug)
+		# self.for_each(Boid.add_updater, self.stay_in_the_box)
 
 	@property
 	@functools.lru_cache()
@@ -366,29 +371,34 @@ class Boids(VMobject):
 		else:
 			raise ValueError("invalid dimensions value. Please enter either 2 or 3.")
 
-	def init_boids(self, n):
-		## Generate random positions
+	def _generate_random_positions(self, n):
 		# each vector has to be 3d
 		random_position = np.array([
 			np.random.uniform(self.x_min, self.x_max, n),
 			np.random.uniform(self.y_min, self.y_max, n),
 			np.random.uniform(self.z_min, self.z_max, n),
 		]).T
+
 		# then, we truncate the unwanted dimensions
 		random_position[:,self.dimensions:] = np.zeros((n,3-self.dimensions))
 
-		## Generate random velocity direction
-		# only choosing direction
+		return random_position
+	def _generate_random_velocities(self, n):
+		# first, choose direction
 		random_velocity = np.random.uniform(-1, 1, (n, 3))
 		random_velocity[:,self.dimensions:] = np.zeros((n,3-self.dimensions))
 
-		## Generate random velocity size (the length of the vector, i.e. the speed)
-		random_speed = np.random.uniform(
-			self.boid_speed_mean - self.boid_speed_std,
-			self.boid_speed_mean + self.boid_speed_std,
-			n
-		)
+		# Then, generate random velocity size (the length of the vector, i.e. the speed)
+		mean = self.boid_config["speed_mean"]
+		std  = self.boid_config["speed_std"]
+		random_speed = np.random.uniform(mean - std, mean + std, n)
 
+		return random_velocity, random_speed
+
+	def init_boids(self, n):
+		random_position = self._generate_random_positions(n)
+		random_velocity, random_speed = self._generate_random_velocities(n)
+		
 		self.boids = []
 
 		for i in range(n):
@@ -396,14 +406,12 @@ class Boids(VMobject):
 				random_position[i],
 				random_velocity[i],
 				speed=random_speed[i],
-				speed_mean=self.boid_speed_mean,
-				speed_std=self.boid_speed_std,
+				**self.boid_config,
 			)
 			b.add_updater(b.__class__.updater)
 			self.boids.append(b)
 		
-		for b in self.boids:
-			b.set_other_boids(self.boids)
+		self.for_each(Boid.set_other_boids, self.boids)
 
 		self.add(*self.boids)
 
@@ -449,6 +457,15 @@ class Boids(VMobject):
 			if b.get_center()[2] < self.z_min:
 				b.shift( box_size*Z_AXIS)
 
+	def for_each(self, method, *args, **kwargs):
+		# the lazy version of a for loop
+		for b in self.boids:
+			method(b, *args, **kwargs)
+
+
+###################
+#### Obstacles ####
+###################
 
 # a line parallel to the x axis, i.e. y doesn't change
 class LineX(Line):
@@ -470,20 +487,40 @@ class LineY(Line):
 		self.y_end   = y_end
 
 
+################
+#### Scenes ####
+################
+
 class Boids2DScene(Scene):
+	CONFIG = {
+		"objstacles": [
+			LineY(3, -1, 1),
+			LineX(1, -5, -4),
+		],
+
+		"boids_config": {
+			"boid_config": {},
+		},
+
+		"n": 15, # amount of boids
+		"duration": 15, # animation duration in seconds
+	}
 	def construct(self):
-		# self.boids = Boids(n=3, dimensions=2)
-		self.boids = Boids(n=15, dimensions=2)
+		# create boids
+		self.boids = Boids(n=self.n, dimensions=2, **self.boids_config)
 		self.add(self.boids)
 
+		# create objects / obstacles
 		self.add_boundary()
-		self.add_obstacles()
-		for b in self.boids.boids:
-			b.set_other_objects(self.borders + self.objstacles)
+		self.add(*self.objstacles)
 
+		# inform the boids about the objects
+		self.boids.for_each(Boid.set_other_objects, self.borders + self.objstacles)
+
+		# add axes for debug purpose
 		self.add_axes()
 
-		self.wait(40)
+		self.wait(self.duration)
 
 	def add_boundary(self):
 		l1 = LineY(self.boids.x_min, self.boids.y_min, self.boids.y_max)
@@ -492,12 +529,6 @@ class Boids2DScene(Scene):
 		l4 = LineX(self.boids.y_max, self.boids.x_min, self.boids.x_max)
 		self.borders = [l1, l2, l3, l4]
 		self.add(*self.borders)
-
-	def add_obstacles(self):
-		o1 = LineY(3, -1, 1)
-		o2 = LineX(1, -5, -4)
-		self.objstacles = [o1, o2]
-		self.add(*self.objstacles)
 
 	def add_axes(self):
 		axes = self.axes = Axes()
