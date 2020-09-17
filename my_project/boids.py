@@ -6,21 +6,23 @@ class Boid(object):
 		# allowing a different radius for each force
 		"radius_of_seperation": 1,
 		"radius_of_alignment": 2,
-		"radius_of_cohesion": 1.5,
+		"radius_of_cohesion": 2.5,
 		# TODO: use this angle for figuring out the fov
 		"angle_of_seperation": PI, # currently not used
 		"angle_of_alignment": PI, # currently not used
 		"angle_of_cohesion": PI, # currently not used
 
 		# allowing different weights for each force
-		"factor_seperation": 1,
+		"factor_seperation": 2,
 		"factor_seperation_object": 1,
-		"factor_alignment": 2,
+		"factor_alignment": 1.5,
 		"factor_cohesion": 1.5,
 
-		"seperation_object_power": -2, # a force like a gravity. going like ~1/x^2
-		"seperation_power": -0.5, # a force like ~1/sqrt(x)
-		"cohesion_power": 1, # a force like a spring. going like ~x
+		# "seperation_object_power": -2, # a force like a gravity. going like ~1/x^2
+		"seperation_object_power": -1, # a force like a gravity. going like ~1/x^2
+		# "seperation_power": -0.5, # a force like ~1/sqrt(x)
+		"seperation_power": -1, # a force like ~1/sqrt(x)
+		"cohesion_power": 1.3, # a force like a spring. going like ~x
 
 		"speed_mean": 1,
 		"speed_std": 0, # if set to 0, then the speed will stay constant
@@ -59,6 +61,9 @@ class Boid(object):
 	def is_boid_in_fov(self, b, radius, angle):
 		# b is the other boid
 		# full names (radius, angle) are for the current boid (self)
+		if radius == 0:
+			return False
+
 		if get_norm(self.get_boid_distance(b)) < radius:
 			if angle == PI: # full circle
 				return True
@@ -153,6 +158,11 @@ class Boid(object):
 	#
 	# calculating the different forces
 	#
+	def calculate_force(self, factor, vector, power, repel=False):
+		sign = (-1) ** repel
+		direction = sign * normalize(vector)
+		strength = factor * get_norm(vector)**power
+		return strength * direction
 	def get_force_seperation_boids(self):
 		if self.radius_of_seperation == 0 or not self.get_fov_seperation():
 			return np.zeros(3)
@@ -160,9 +170,7 @@ class Boid(object):
 		force = np.zeros(3)
 		for b in self.get_fov_seperation():
 			distance = self.get_boid_distance(b)
-			direction = - normalize(distance)
-			strength = self.factor_seperation * get_norm(distance)**self.seperation_power
-			force += strength * direction
+			force += self.calculate_force(self.factor_seperation, distance, self.seperation_power, True)
 
 		return force * self.factor_seperation
 	def get_force_seperation_objects(self):
@@ -189,14 +197,14 @@ class Boid(object):
 			return np.zeros(3)
 
 		# calculate Center Of Mass
-		com = np.mean([b.get_center() for b in self.get_fov_cohesion()])
-		com_direction = com - self.get_center()
+		com_direction = np.mean([self.get_boid_distance(b) for b in self.get_fov_cohesion()], axis=0)
 
 		# lets create an attractive force (positive value)
 		# which grows as the distance is large (proportional to r^x, where x>0)
 
 		# F = factor * distance^1
-		return self.factor_cohesion * com_direction**self.cohesion_power
+		return self.calculate_force(self.factor_cohesion, com_direction, self.cohesion_power, False)
+		# return self.factor_cohesion * com_direction**self.cohesion_power
 
 
 	def get_force(self):
