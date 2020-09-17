@@ -5,24 +5,24 @@ class Boid(object):
 	CONFIG = {
 		# allowing a different radius for each force
 		"radius_of_seperation": 1,
-		"radius_of_alignment": 2,
-		"radius_of_cohesion": 2.5,
+		"radius_of_alignment": 1,
+		"radius_of_cohesion": 1,
 		# TODO: use this angle for figuring out the fov
 		"angle_of_seperation": PI, # currently not used
 		"angle_of_alignment": PI, # currently not used
 		"angle_of_cohesion": PI, # currently not used
 
 		# allowing different weights for each force
-		"factor_seperation": 2,
+		"factor_seperation": 1,
 		"factor_seperation_object": 1,
-		"factor_alignment": 1.5,
-		"factor_cohesion": 1.5,
+		"factor_alignment": 1,
+		"factor_cohesion": 1,
 
-		# "seperation_object_power": -2, # a force like a gravity. going like ~1/x^2
-		"seperation_object_power": -1, # a force like a gravity. going like ~1/x^2
-		# "seperation_power": -0.5, # a force like ~1/sqrt(x)
-		"seperation_power": -1, # a force like ~1/sqrt(x)
-		"cohesion_power": 1.3, # a force like a spring. going like ~x
+		# allowing different powers for each force
+		"seperation_object_power": -1,
+		"seperation_power": -1,
+		"alignment_power": 1,
+		"cohesion_power": 1,
 
 		"speed_mean": 1,
 		"speed_std": 0, # if set to 0, then the speed will stay constant
@@ -326,7 +326,6 @@ class Boid3D(Boid, Cone):
 			"height": 0.5,
 		},
 		"boid_config": {},
-		
 	}
 	def __init__(self, position, velocity, **kwargs):
 		# parse CONFIG
@@ -507,9 +506,95 @@ class Boids2DScene(Scene):
 
 		self.add(axes)
 
+# 3D is still a Work In Progress
 class Boids3DScene(SpecialThreeDScene):
+	CONFIG = {
+		"objstacles": [],
+
+		"n": 5, # amount of boids
+		"duration": 5, # animation duration in seconds
+	}
 	def construct(self):
-		self.boids = Boids(n=5, dimensions=3)
+		self.boids = Boids(n=self.n, dimensions=3)
 		self.add(self.boids)
-		self.wait(4)
-	
+
+		# inform the boids about the objects
+		# self.boids.for_each(Boid.set_other_objects, self.borders + self.objstacles)
+
+		self.wait(self.duration)
+
+	def add_boundary(self):
+		p_xy_top    = PlaneXY(self.boids.z_max, self.boids.x_min, self.boids.x_max, self.boids.y_min, self.boids.y_max)
+		p_xy_bottom = PlaneXY(self.boids.z_min, self.boids.x_min, self.boids.x_max, self.boids.y_min, self.boids.y_max)
+		p_xz_top    = PlaneXZ(self.boids.y_max, self.boids.x_min, self.boids.x_max, self.boids.z_min, self.boids.z_max)
+		p_xz_bottom = PlaneXZ(self.boids.y_min, self.boids.x_min, self.boids.x_max, self.boids.z_min, self.boids.z_max)
+		p_yz_top    = PlaneYZ(self.boids.x_max, self.boids.y_min, self.boids.y_max, self.boids.z_min, self.boids.z_max)
+		p_yz_bottom = PlaneYZ(self.boids.x_min, self.boids.y_min, self.boids.y_max, self.boids.z_min, self.boids.z_max)
+		self.borders = [p_xy_top, p_xy_bottom, p_xz_top, p_xz_bottom, p_yz_top, p_yz_bottom]
+		self.add(*self.borders)
+
+
+class Boids2DScene_1(Boids2DScene):
+	CONFIG = {
+		"boids_config": {
+			"boid_config": {
+				# allowing a different radius for each force
+				"radius_of_seperation": 1,
+				"radius_of_alignment": 2,
+				"radius_of_cohesion": 2.5,
+				# TODO: use this angle for figuring out the fov
+				"angle_of_seperation": PI, # currently not used
+				"angle_of_alignment": PI, # currently not used
+				"angle_of_cohesion": PI, # currently not used
+
+				# allowing different weights for each force
+				"factor_seperation": 2.5,
+				"factor_seperation_object": 1,
+				"factor_alignment": 1.5,
+				"factor_cohesion": 1.5,
+
+				# allowing different powers for each force
+				"seperation_object_power": -1,
+				"seperation_power": -1,
+				"alignment_power": 1,
+				"cohesion_power": 1.3,
+
+				"speed_mean": 1,
+				"speed_std": 0.5, # if set to 0, then the speed will stay constant
+			},
+		},
+		"n": 15,
+		"duration": 60,
+	}
+class Boids2DScene_2(Boids2DScene):
+	CONFIG = {
+		"boids_config": {
+			"boid_config": {
+				# allowing a different radius for each force
+				"radius_of_seperation": 1,
+				"radius_of_alignment": 2,
+				"radius_of_cohesion": 2.5,
+				# TODO: use this angle for figuring out the fov
+				"angle_of_seperation": PI, # currently not used
+				"angle_of_alignment": PI, # currently not used
+				"angle_of_cohesion": PI, # currently not used
+
+				# allowing different weights for each force
+				"factor_seperation": 1,
+				"factor_seperation_object": 1,
+				"factor_alignment": 1.5,
+				"factor_cohesion": 1.5,
+
+				# allowing different powers for each force
+				"seperation_object_power": -1,
+				"seperation_power": -1.25,
+				"alignment_power": 1,
+				"cohesion_power": 1.5,
+
+				"speed_mean": 1,
+				"speed_std": 0.5, # if set to 0, then the speed will stay constant
+			},
+		},
+		"n": 15,
+		"duration": 60,
+	}
