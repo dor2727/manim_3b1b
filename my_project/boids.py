@@ -4,23 +4,23 @@ import functools
 class Boid(object):
 	CONFIG = {
 		# allowing a different radius for each force
-		"radius_of_seperation": 1,
+		"radius_of_separation": 1,
 		"radius_of_alignment": 1,
 		"radius_of_cohesion": 1,
 		# TODO: use this angle for figuring out the fov
-		"angle_of_seperation": PI, # currently not used
+		"angle_of_separation": PI, # currently not used
 		"angle_of_alignment": PI, # currently not used
 		"angle_of_cohesion": PI, # currently not used
 
 		# allowing different weights for each force
-		"factor_seperation": 1,
-		"factor_seperation_object": 1,
+		"factor_separation": 1,
+		"factor_separation_object": 1,
 		"factor_alignment": 1,
 		"factor_cohesion": 1,
 
 		# allowing different powers for each force
-		"seperation_object_power": -1,
-		"seperation_power": -1,
+		"separation_object_power": -1,
+		"separation_power": -1,
 		"alignment_power": 1,
 		"cohesion_power": 1,
 
@@ -89,7 +89,7 @@ class Boid(object):
 
 	def is_object_in_fov(self, obj):
 		distance = self.get_object_distance(obj)
-		return get_norm(distance) <= self.radius_of_seperation
+		return get_norm(distance) <= self.radius_of_separation
 	def get_object_distance(self, obj):
 		if type(obj) is LineX:
 			distance = Y_AXIS * (obj.y - self.get_center()[1])
@@ -130,8 +130,8 @@ class Boid(object):
 	# Getting Field Of View
 	#
 	def set_fov(self):
-		self.fov_seperation = list(filter(
-			lambda b: self.is_boid_in_fov(b, self.radius_of_seperation, self.angle_of_seperation),
+		self.fov_separation = list(filter(
+			lambda b: self.is_boid_in_fov(b, self.radius_of_separation, self.angle_of_separation),
 			self.get_other_boids()
 		))
 		self.fov_alignment  = list(filter(
@@ -143,18 +143,18 @@ class Boid(object):
 			self.get_other_boids()
 		))
 
-		self.fov_seperation_objects = list(filter(
+		self.fov_separation_objects = list(filter(
 			self.is_object_in_fov,
 			self.get_other_objects()
 		))
-	def get_fov_seperation(self):
-		return getattr(self, "fov_seperation", [])
+	def get_fov_separation(self):
+		return getattr(self, "fov_separation", [])
 	def get_fov_alignment(self):
 		return getattr(self, "fov_alignment", [])
 	def get_fov_cohesion(self):
 		return getattr(self, "fov_cohesion", [])
-	def get_fov_seperation_objects(self):
-		return getattr(self, "fov_seperation_objects", [])
+	def get_fov_separation_objects(self):
+		return getattr(self, "fov_separation_objects", [])
 
 	#
 	# calculating the different forces
@@ -164,24 +164,24 @@ class Boid(object):
 		direction = sign * normalize(vector)
 		strength = factor * get_norm(vector)**power
 		return strength * direction
-	def get_force_seperation_boids(self):
+	def get_force_separation_boids(self):
 		return sum(
 			(self.calculate_force(
-				factor = self.factor_seperation,
+				factor = self.factor_separation,
 				vector = self.get_boid_distance(b),
-				power  = self.seperation_power,
+				power  = self.separation_power,
 				repel  = True,
-			) for b in self.get_fov_seperation()),
+			) for b in self.get_fov_separation()),
 			np.zeros(3)
 		)
-	def get_force_seperation_objects(self):
+	def get_force_separation_objects(self):
 		return sum(
 			(self.calculate_force(
-				factor = self.factor_seperation,
+				factor = self.factor_separation,
 				vector = self.get_object_distance(obj),
-				power  = self.seperation_object_power,
+				power  = self.separation_object_power,
 				repel  = True,
-			) for obj in self.get_fov_seperation_objects()),
+			) for obj in self.get_fov_separation_objects()),
 			np.zeros(3)
 		)
 	def get_force_alignment(self):
@@ -200,10 +200,10 @@ class Boid(object):
 
 		return self.calculate_force(self.factor_cohesion, com_direction, self.cohesion_power, repel=False)
 
-	def get_force_seperation(self):
-		return self.get_force_seperation_boids() + self.get_force_seperation_objects()
+	def get_force_separation(self):
+		return self.get_force_separation_boids() + self.get_force_separation_objects()
 	def get_force(self):
-		return self.get_force_cohesion() + self.get_force_alignment() + self.get_force_seperation()
+		return self.get_force_cohesion() + self.get_force_alignment() + self.get_force_separation()
 	@property
 	def acceleration(self):
 		return self.get_force() / self.mass
@@ -251,6 +251,13 @@ class Boid(object):
 				allowed_change = self.max_allowed_speed - self.speed
 			else:
 				allowed_change = 0
+
+			if normalized_diff != normalized_diff: # check if NaN
+				# probably diff is too big, so np.exp(diff) gives infinity
+				# So we'll convert it to a number between -1 to 1 using a strange rule: 1/diff
+				# for no good reason. This is merely a workaround the bug.
+				print(f"[!] NaN speed encountered: {diff}")
+				normalized_diff = 1/diff
 			# the new speed is the current one plus or minus (depending on the sign of normalized_diff)
 			# some fraction of the allowed changed (the fraction is expressed in normalized diff)
 			self.speed += normalized_diff * allowed_change
@@ -277,9 +284,12 @@ class Boid(object):
 
 		## Setting a color to represent the velocity
 		# normalize to a number between 0 and 1
-		normalized_speed = (value - self.speed_mean + self.speed_std) / (2 * self.speed_std)
-		# then use it to get one of the colors
-		self.set_color(self.speed_color_gradient[int(normalized_speed * 20)])
+		try:
+			normalized_speed = (value - self.speed_mean + self.speed_std) / (2 * self.speed_std)
+			# then use it to get one of the colors (multipliying by color_gradient length minus 1)
+			self.set_color(self.speed_color_gradient[int(normalized_speed * 19)])
+		except:
+			import pdb; pdb.set_trace()
 	@property
 	def min_allowed_speed(self):
 		return self.speed_mean - self.speed_std
@@ -290,8 +300,6 @@ class Boid(object):
 	@functools.lru_cache()
 	def speed_color_gradient(self):
 		return color_gradient([BLUE_A, BLUE_E, RED_E, RED_A], 20)
-
-
 
 
 class Boid2D(Boid, ArrowTip): # ArrowTip is Triangle++
@@ -349,17 +357,21 @@ class Boids(VMobject):
 			"speed_std": 0.5,
 		},
 
+		"apply_updaters": [
+			# "debug",
+			# "stay_in_the_box",
+		],
+
 		"dimensions": 2, # either 2 or 3
 	}
 	def __init__(self, n=5, **kwargs):
 		super().__init__(**kwargs)
 		self.init_boids(n)
 
-		# for b in self.boids:
-		# 	b.add_updater(self.debug)
-		# 	b.add_updater(self.stay_in_the_box)
-		# self.for_each(Boid.add_updater, self.debug)
-		# self.for_each(Boid.add_updater, self.stay_in_the_box)
+		if "debug" in self.apply_updaters:
+			self.for_each(self._boid_class.add_updater, self.debug)
+		if "stay_in_the_box" in self.apply_updaters:
+			self.for_each(self._boid_class.add_updater, self.stay_in_the_box)
 
 	@property
 	@functools.lru_cache()
@@ -420,6 +432,7 @@ class Boids(VMobject):
 		print(boid_self.get_center(), boid_self.velocity)
 
 	def stay_in_the_box(self, boid_self, dt):
+		# just keep moving - when reaching one end - go to the other end
 		x_size = self.x_max - self.x_min
 		y_size = self.y_max - self.y_min
 		z_size = self.z_max - self.z_min
@@ -438,24 +451,6 @@ class Boids(VMobject):
 			boid_self.shift(-z_size*Z_AXIS)
 		if boid_self.get_center()[2] < self.z_min:
 			boid_self.shift( z_size*Z_AXIS)
-		return
-
-		for b in self.boids:
-			# very manual check
-			if b.get_center()[0] > self.x_max:
-				b.shift(-box_size*X_AXIS)
-			if b.get_center()[0] < self.x_min:
-				b.shift( box_size*X_AXIS)
-
-			if b.get_center()[1] > self.y_max:
-				b.shift(-box_size*Y_AXIS)
-			if b.get_center()[1] < self.y_min:
-				b.shift( box_size*Y_AXIS)
-
-			if b.get_center()[2] > self.z_max:
-				b.shift(-box_size*Z_AXIS)
-			if b.get_center()[2] < self.z_min:
-				b.shift( box_size*Z_AXIS)
 
 	def for_each(self, method, *args, **kwargs):
 		# the lazy version of a for loop
@@ -522,6 +517,8 @@ class Boids2DScene(Scene):
 
 		self.wait(self.duration)
 
+		self.youtube_description()
+
 	def add_boundary(self):
 		l1 = LineY(self.boids.x_min, self.boids.y_min, self.boids.y_max)
 		l2 = LineY(self.boids.x_max, self.boids.y_min, self.boids.y_max)
@@ -536,6 +533,55 @@ class Boids2DScene(Scene):
 		axes.add_coordinates()
 
 		self.add(axes)
+
+	def youtube_description(self):
+		try:
+			print(f"Boids 2D animation")
+			print(f"Title: {self.__class__.__name__[13:]}")
+			print(f"Parameters:")
+			print(f"  Amount of boids: {self.n}")
+
+			if "boid_config" not in self.boids_config:
+				return
+
+			if "speed_mean" in self.boids_config["boid_config"] and "speed_std" in self.boids_config["boid_config"]:
+				print(f"  Allowed_speed: {  self.boids_config['boid_config']['speed_mean']} \u00B1 {self.boids_config['boid_config']['speed_std']}")
+
+			print(f"")
+
+			print(f"  Separation (from boids):")
+			if "radius_of_separation" in self.boids_config["boid_config"]:
+				print(f"    Radius: {       self.boids_config['boid_config']['radius_of_separation']     }")
+			if "factor_separation" in self.boids_config["boid_config"]:
+				print(f"    Force Factor: { self.boids_config['boid_config']['factor_separation']        }")
+			if "separation_power" in self.boids_config["boid_config"]:
+				print(f"    Force Power: {  self.boids_config['boid_config']['separation_power']         }")
+
+			print(f"  Separation (from objects):")
+			if "radius_of_separation" in self.boids_config["boid_config"]:
+				print(f"    Radius: {       self.boids_config['boid_config']['radius_of_separation']     }")
+			if "factor_separation_object" in self.boids_config["boid_config"]:
+				print(f"    Force Factor: { self.boids_config['boid_config']['factor_separation_object'] }")
+			if "separation_object_power" in self.boids_config["boid_config"]:
+				print(f"    Force Power: {  self.boids_config['boid_config']['separation_object_power']  }")
+
+			print(f"  Alignment:")
+			if "radius_of_alignment" in self.boids_config["boid_config"]:
+				print(f"    Radius: {       self.boids_config['boid_config']['radius_of_alignment']      }")
+			if "factor_alignment" in self.boids_config["boid_config"]:
+				print(f"    Force Factor: { self.boids_config['boid_config']['factor_alignment']         }")
+			if "alignment_power" in self.boids_config["boid_config"]:
+				print(f"    Force Power: {  self.boids_config['boid_config']['alignment_power']          }")
+
+			print(f"  Cohesion:")
+			if "radius_of_cohesion" in self.boids_config["boid_config"]:
+				print(f"    Radius: {       self.boids_config['boid_config']['radius_of_cohesion']       }")
+			if "factor_cohesion" in self.boids_config["boid_config"]:
+				print(f"    Force Factor: { self.boids_config['boid_config']['factor_cohesion']          }")
+			if "cohesion_power" in self.boids_config["boid_config"]:
+				print(f"    Force Power: {  self.boids_config['boid_config']['cohesion_power']           }")
+		except:
+			pass
 
 # 3D is still a Work In Progress
 class Boids3DScene(SpecialThreeDScene):
@@ -564,29 +610,29 @@ class Boids3DScene(SpecialThreeDScene):
 		self.borders = [p_xy_top, p_xy_bottom, p_xz_top, p_xz_bottom, p_yz_top, p_yz_bottom]
 		self.add(*self.borders)
 
-
 class Boids2DScene_1(Boids2DScene):
+	# doesn't converge
 	CONFIG = {
+		"objstacles": [
+			LineY(3, -1, 1),
+			LineX(1, -5, -4),
+		],
 		"boids_config": {
 			"boid_config": {
 				# allowing a different radius for each force
-				"radius_of_seperation": 1,
+				"radius_of_separation": 1,
 				"radius_of_alignment": 2,
 				"radius_of_cohesion": 2.5,
-				# TODO: use this angle for figuring out the fov
-				"angle_of_seperation": PI, # currently not used
-				"angle_of_alignment": PI, # currently not used
-				"angle_of_cohesion": PI, # currently not used
 
 				# allowing different weights for each force
-				"factor_seperation": 2.5,
-				"factor_seperation_object": 1,
+				"factor_separation": 2.5,
+				"factor_separation_object": 1,
 				"factor_alignment": 1.5,
 				"factor_cohesion": 1.5,
 
 				# allowing different powers for each force
-				"seperation_object_power": -1,
-				"seperation_power": -1,
+				"separation_object_power": -1,
+				"separation_power": -1,
 				"alignment_power": 1,
 				"cohesion_power": 1.3,
 
@@ -595,30 +641,265 @@ class Boids2DScene_1(Boids2DScene):
 			},
 		},
 		"n": 15,
-		"duration": 60,
+		"duration": 20,
 	}
-class Boids2DScene_2(Boids2DScene):
+
+class Boids2DScene_small_fov(Boids2DScene):
+	# doesn't converge ; very small group radius
 	CONFIG = {
+		"objstacles": [],
 		"boids_config": {
 			"boid_config": {
 				# allowing a different radius for each force
-				"radius_of_seperation": 1,
-				"radius_of_alignment": 2,
-				"radius_of_cohesion": 2.5,
-				# TODO: use this angle for figuring out the fov
-				"angle_of_seperation": PI, # currently not used
-				"angle_of_alignment": PI, # currently not used
-				"angle_of_cohesion": PI, # currently not used
+				"radius_of_separation": .5,
+				"radius_of_alignment": 1,
+				"radius_of_cohesion": 1,
 
 				# allowing different weights for each force
-				"factor_seperation": 1,
-				"factor_seperation_object": 1,
+				"factor_separation": 1,
+				"factor_separation_object": 1.75,
+				"factor_alignment": 2.25,
+				"factor_cohesion": 1.75,
+
+				# allowing different powers for each force
+				"separation_object_power": -1,
+				"separation_power": -1.25,
+				"alignment_power": 1.3,
+				"cohesion_power": 1.7,
+
+				"speed_mean": 1,
+				"speed_std": 0.5, # if set to 0, then the speed will stay constant
+			},
+			"apply_updaters": [
+				"stay_in_the_box",
+			],
+		},
+		"n": 15,
+		"duration": 30,
+	}
+class Boids2DScene_medium_fov(Boids2DScene):
+	# quickly group ; normal group behavior
+	CONFIG = {
+		"objstacles": [],
+		"boids_config": {
+			"boid_config": {
+				# allowing a different radius for each force
+				"radius_of_separation": 1.5,
+				"radius_of_alignment": 2.5,
+				"radius_of_cohesion": 3,
+
+				# allowing different weights for each force
+				"factor_separation": 1,
+				"factor_separation_object": 1,
+				"factor_alignment": 2.25,
+				"factor_cohesion": 1.75,
+
+				# allowing different powers for each force
+				"separation_object_power": -1,
+				"separation_power": -1.25,
+				"alignment_power": 1.3,
+				"cohesion_power": 1.7,
+
+				"speed_mean": 1,
+				"speed_std": 0.5, # if set to 0, then the speed will stay constant
+			},
+			"apply_updaters": [
+				"stay_in_the_box",
+			],
+		},
+		"n": 15,
+		"duration": 30,
+	}
+class Boids2DScene_large_fov(Boids2DScene):
+	# quickly group ; normal group behavior ; big group radius
+	CONFIG = {
+		"objstacles": [],
+		"boids_config": {
+			"boid_config": {
+				# allowing a different radius for each force
+				"radius_of_separation": 3,
+				"radius_of_alignment": 5,
+				"radius_of_cohesion": 5,
+
+				# allowing different weights for each force
+				"factor_separation": 1,
+				"factor_separation_object": 2,
+				"factor_alignment": 2.25,
+				"factor_cohesion": 1.75,
+
+				# allowing different powers for each force
+				"separation_object_power": -1,
+				"separation_power": -1.25,
+				"alignment_power": 1.3,
+				"cohesion_power": 1.7,
+
+				"speed_mean": 1,
+				"speed_std": 0.5, # if set to 0, then the speed will stay constant
+			},
+			"apply_updaters": [
+				"stay_in_the_box",
+			],
+		},
+		"n": 15,
+		"duration": 20,
+	}
+class Boids2DScene_uniform_large_fov(Boids2DScene):
+	# bad ; buggy ; they group, very widely
+	CONFIG = {
+		"objstacles": [],
+		"boids_config": {
+			"boid_config": {
+				# allowing a different radius for each force
+				"radius_of_separation": 2.5,
+				"radius_of_alignment": 2.5,
+				"radius_of_cohesion": 2.5,
+
+				# allowing different weights for each force
+				"factor_separation": 1.5,
+				"factor_separation_object": 1,
+				"factor_alignment": 2,
+				"factor_cohesion": 1.5,
+
+				# allowing different powers for each force
+				"separation_object_power": -1,
+				"separation_power": -1,
+				"alignment_power": 1.5,
+				"cohesion_power": 1.2,
+
+				"speed_mean": 2,
+				"speed_std": 1, # if set to 0, then the speed will stay constant
+			},
+			"apply_updaters": [
+				"stay_in_the_box",
+			],
+		},
+		"n": 15,
+		"duration": 60*4,
+	}
+
+class Boids2DScene_strong_separation(Boids2DScene):
+	# quickly group ; large group radius ; wiggles
+	CONFIG = {
+		"objstacles": [],
+		"boids_config": {
+			"boid_config": {
+				# allowing a different radius for each force
+				"radius_of_separation": 1.5,
+				"radius_of_alignment": 2.5,
+				"radius_of_cohesion": 3,
+
+				# allowing different weights for each force
+				"factor_separation": 3,
+				"factor_separation_object": 1,
+				"factor_alignment": 2.25,
+				"factor_cohesion": 1.75,
+
+				# allowing different powers for each force
+				"separation_object_power": -1.75,
+				"separation_power": -1.25,
+				"alignment_power": 1.3,
+				"cohesion_power": 1.7,
+
+				"speed_mean": 1,
+				"speed_std": 0.5, # if set to 0, then the speed will stay constant
+			},
+			"apply_updaters": [
+				"stay_in_the_box",
+			],
+		},
+		"n": 15,
+		"duration": 30,
+	}
+class Boids2DScene_strong_alignment(Boids2DScene):
+	# quickly group ; converges
+	CONFIG = {
+		"objstacles": [],
+		"boids_config": {
+			"boid_config": {
+				# allowing a different radius for each force
+				"radius_of_separation": 1.5,
+				"radius_of_alignment": 2.5,
+				"radius_of_cohesion": 3,
+
+				# allowing different weights for each force
+				"factor_separation": 1,
+				"factor_separation_object": 1,
+				"factor_alignment": 4.25,
+				"factor_cohesion": 1.75,
+
+				# allowing different powers for each force
+				"separation_object_power": -1,
+				"separation_power": -1.25,
+				"alignment_power": 2,
+				"cohesion_power": 1.7,
+
+				"speed_mean": 1,
+				"speed_std": 0.5, # if set to 0, then the speed will stay constant
+			},
+			"apply_updaters": [
+				"stay_in_the_box",
+			],
+		},
+		"n": 15,
+		"duration": 25,
+	}
+class Boids2DScene_strong_cohesion(Boids2DScene):
+	# quickly group ; small group radius ; wiggles
+	CONFIG = {
+		"objstacles": [],
+		"boids_config": {
+			"boid_config": {
+				# allowing a different radius for each force
+				"radius_of_separation": 1.5,
+				"radius_of_alignment": 2.5,
+				"radius_of_cohesion": 3,
+
+				# allowing different weights for each force
+				"factor_separation": 1,
+				"factor_separation_object": 1,
+				"factor_alignment": 2.25,
+				"factor_cohesion": 4.75,
+
+				# allowing different powers for each force
+				"separation_object_power": -1,
+				"separation_power": -1.25,
+				"alignment_power": 1.3,
+				"cohesion_power": 2.5,
+
+				"speed_mean": 1,
+				"speed_std": 0.5, # if set to 0, then the speed will stay constant
+			},
+			"apply_updaters": [
+				"stay_in_the_box",
+			],
+		},
+		"n": 15,
+		"duration": 25,
+	}
+
+class Boids2DScene_weak_separation(Boids2DScene):
+	# group ; small group radius ; interesting (doesn't converge)
+	CONFIG = {
+		"objstacles": [
+			LineY(3, -1, 1),
+			LineX(1, -5, -4),
+		],
+		"boids_config": {
+			"boid_config": {
+				# allowing a different radius for each force
+				"radius_of_separation": 1,
+				"radius_of_alignment": 2,
+				"radius_of_cohesion": 2.5,
+
+				# allowing different weights for each force
+				"factor_separation": 1,
+				"factor_separation_object": 1,
 				"factor_alignment": 1.5,
 				"factor_cohesion": 1.5,
 
 				# allowing different powers for each force
-				"seperation_object_power": -1,
-				"seperation_power": -1.25,
+				"separation_object_power": -1,
+				"separation_power": -1.25,
 				"alignment_power": 1,
 				"cohesion_power": 1.5,
 
@@ -627,5 +908,261 @@ class Boids2DScene_2(Boids2DScene):
 			},
 		},
 		"n": 15,
+		"duration": 60*4,
+	}
+
+class Boids2DScene_Separation_only(Boids2DScene):
+	# as expected ; converges (i.e., boring)
+	CONFIG = {
+		"boids_config": {
+			"boid_config": {
+				# allowing a different radius for each force
+				"radius_of_separation": 1,
+				"radius_of_alignment": 0,
+				"radius_of_cohesion": 0,
+
+				# allowing different weights for each force
+				"factor_separation": 1,
+				"factor_separation_object": 1,
+
+				# allowing different powers for each force
+				"separation_object_power": -1,
+				"separation_power": -1,
+
+				"speed_mean": 1,
+				"speed_std": 0.25, # if set to 0, then the speed will stay constant
+			},
+		},
+		"n": 15,
+		"duration": 40,
+	}
+class Boids2DScene_Alignment_only(Boids2DScene):
+	# converges
+	CONFIG = {
+		"boids_config": {
+			"boid_config": {
+				# allowing a different radius for each force
+				"radius_of_separation": 0,
+				"radius_of_alignment": 1,
+				"radius_of_cohesion": 0,
+
+				# allowing different weights for each force
+				"factor_alignment": 1,
+
+				# allowing different powers for each force
+				"alignment_power": 1,
+
+				"speed_mean": 1,
+				"speed_std": 0.25, # if set to 0, then the speed will stay constant
+			},
+			"apply_updaters": [
+				"stay_in_the_box",
+			],
+		},
+		"n": 15,
 		"duration": 60,
 	}
+# want more of this
+class Boids2DScene_Cohesion_only(Boids2DScene):
+	# stable equilibrium (in low quiality)
+	CONFIG = {
+		"boids_config": {
+			"boid_config": {
+				# allowing a different radius for each force
+				"radius_of_separation": 0,
+				"radius_of_alignment": 0,
+				"radius_of_cohesion": 3,
+
+				# allowing different weights for each force
+				"factor_cohesion": 4,
+
+				# allowing different powers for each force
+				"cohesion_power": 2,
+
+				"speed_mean": 1,
+				"speed_std": 0.25, # if set to 0, then the speed will stay constant
+			},
+			"apply_updaters": [
+				"stay_in_the_box",
+			],
+		},
+		"n": 15,
+		"duration": 60*2.5,
+	}
+class Boids2DScene_no_separation(Boids2DScene):
+	# slowly group ; converges
+	CONFIG = {
+		"objstacles": [
+			LineY(3, -1, 1),
+			LineX(1, -5, -4),
+		],
+		"boids_config": {
+			"boid_config": {
+				# allowing a different radius for each force
+				"radius_of_separation": 0,
+				"radius_of_alignment": 2,
+				"radius_of_cohesion": 2.5,
+
+				# allowing different weights for each force
+				"factor_alignment": 1.5,
+				"factor_cohesion": 1.5,
+
+				# allowing different powers for each force
+				"alignment_power": 1,
+				"cohesion_power": 1.5,
+
+				"speed_mean": 1,
+				"speed_std": 0.5, # if set to 0, then the speed will stay constant
+			},
+			"apply_updaters": [
+				"stay_in_the_box",
+			],
+		},
+		"n": 15,
+		"duration": 15,
+	}
+# want more of this
+class Boids2DScene_no_alignment(Boids2DScene):
+	# like bugs ; somewhat stable equilibrium
+	CONFIG = {
+		"objstacles": [
+			LineY(3, -1, 1),
+			LineX(1, -5, -4),
+		],
+		"boids_config": {
+			"boid_config": {
+				# allowing a different radius for each force
+				"radius_of_separation": 1,
+				"radius_of_alignment": 0,
+				"radius_of_cohesion": 2.5,
+
+				# allowing different weights for each force
+				"factor_separation": 1,
+				"factor_separation_object": 1,
+				"factor_alignment": 0,
+				"factor_cohesion": 1.5,
+
+				# allowing different powers for each force
+				"separation_object_power": -1,
+				"separation_power": -1.25,
+				"alignment_power": 1,
+				"cohesion_power": 1.5,
+
+				"speed_mean": 1,
+				"speed_std": 0.5, # if set to 0, then the speed will stay constant
+			},
+		},
+		"n": 15,
+		"duration": 40,
+	}
+class Boids2DScene_no_cohesion(Boids2DScene):
+	# they group somewhat quickly ; easily seperate ; wide group radius
+	CONFIG = {
+		"objstacles": [
+			LineY(3, -1, 1),
+			LineX(1, -5, -4),
+		],
+		"boids_config": {
+			"boid_config": {
+				# allowing a different radius for each force
+				"radius_of_separation": 1,
+				"radius_of_alignment": 2,
+				"radius_of_cohesion": 0,
+
+				# allowing different weights for each force
+				"factor_separation": 1,
+				"factor_separation_object": 1.75,
+				"factor_alignment": 1.5,
+				"factor_cohesion": 0,
+
+				# allowing different powers for each force
+				"separation_object_power": -1,
+				"separation_power": -1.5,
+				"alignment_power": 1,
+				"cohesion_power": 1.5,
+
+				"speed_mean": 1,
+				"speed_std": 0.5, # if set to 0, then the speed will stay constant
+			},
+			"apply_updaters": [
+				"stay_in_the_box",
+			],
+		},
+		"n": 15,
+		"duration": 40,
+	}
+
+class Boids2DScene_unique_separation(Boids2DScene):
+	# quickly group ; solid group radius
+	CONFIG = {
+		"objstacles": [],
+		"boids_config": {
+			"boid_config": {
+				# allowing a different radius for each force
+				"radius_of_separation": 1.5,
+				"radius_of_alignment": 2.5,
+				"radius_of_cohesion": 3,
+
+				# allowing different weights for each force
+				"factor_separation": 0.5,
+				# "factor_separation": 1.5,
+				"factor_separation_object": 1,
+				"factor_alignment": 2.25,
+				"factor_cohesion": 3,
+
+				# allowing different powers for each force
+				"separation_object_power": -1.75,
+				"separation_power": -2.,
+				"alignment_power": 1.3,
+				"cohesion_power": 1.5,
+
+				"speed_mean": 1,
+				"speed_std": 0.5, # if set to 0, then the speed will stay constant
+			},
+			"apply_updaters": [
+				"stay_in_the_box",
+			],
+		},
+		"n": 15,
+		"duration": 25,
+	}
+
+class Boids2DScene_more_boids_3(Boids2DScene_1):
+	CONFIG = {
+		"n": 3,
+		"duration": 25,
+	}
+class Boids2DScene_more_boids_8(Boids2DScene_1):
+	CONFIG = {
+		"n": 8,
+		"duration": 25,
+	}
+class Boids2DScene_more_boids_12(Boids2DScene_1):
+	CONFIG = {
+		"n": 12,
+		"duration": 25,
+	}
+class Boids2DScene_more_boids_20(Boids2DScene_1):
+	CONFIG = {
+		"n": 20,
+		"duration": 25,
+	}
+class Boids2DScene_more_boids_28(Boids2DScene_1):
+	CONFIG = {
+		"n": 28,
+		"duration": 40,
+	}
+
+class Boids2DScene_more_boids_28_full(Boids2DScene_more_boids_28):
+	CONFIG = {
+		"duration": 60*4,
+	}
+
+"""
+TODO:
+- add wind (as a force)
+
+try:
+	separation: factor 1.5 ; power -0.5
+
+"""

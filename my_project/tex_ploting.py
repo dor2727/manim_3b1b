@@ -106,8 +106,8 @@ class DisplayTex(WhiteScene):
 		### Chapter 7
 		# 's': "H^{(2)}C_{10}H^{(2)}=%s%s%s" % (Hadamard_2d, C_10, Hadamard_2d),
 			# 'scale': .8,
-		's': "O_x=%s=C_{01}" % C_01,
-			'scale': 1.2,
+		# 's': "O_x=%s=C_{01}" % C_01,
+			# 'scale': 1.2,
 
 		### Chapter 8
 			# 'scale': 1,
@@ -175,8 +175,12 @@ class DisplayTex(WhiteScene):
 		# 's': "F=ma \\qquad ; \\qquad  a=\\frac{dv}{dt}",
 		# 's': "F=-\\frac{dU}{dx}",
 		# 's': "F=-kx \\qquad ; \\qquad U=\\frac{1}{2}k x^2",
-		's': "F_x=-kx \\quad ; \\quad F_y=-ky \\quad ; \\quad U=\\frac{1}{2}k (x^2+y^2)",
-		"scale": 1,
+		# 's': "F_x=-kx \\quad ; \\quad F_y=-ky \\quad ; \\quad U=\\frac{1}{2}k (x^2+y^2)",
+		# "scale": 1,
+
+		# 's': "Separation \\  boid-boid & \\frac{2.5}{x} \\\\ Separation \\  boid-object & \\frac{1}{x} \\\\ Alignment & 1.5 \\cdot x \\\\ Cohesion & 1.5 \\cdot x^{1.3}",
+		# 's': "\\begin{bmatrix} Separation \\  boid-boid & \\frac{2.5}{x} \\\\ Separation \\  boid-object & \\frac{1}{x} \\\\ Alignment & 1.5 \\cdot x \\\\ Cohesion & 1.5 \\cdot x^{1.3} \\end{bmatrix}",
+		# "scale": 1,
 	}
 
 	def construct(self):
