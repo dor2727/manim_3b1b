@@ -54,6 +54,7 @@ from .mobject.types.vectorized_mobject import *
 from .mobject.mobject_update_utils import *
 from .mobject.value_tracker import *
 from .mobject.vector_field import *
+from .mobject.physics import *
 
 from .scene.graph_scene import *
 from .scene.moving_camera_scene import *
