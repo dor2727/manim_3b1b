@@ -2,11 +2,11 @@ import itertools
 
 import numpy as np
 
-from manimlib.constants import *
-from manimlib.mobject.three_dimensions import Sphere
-from manimlib.mobject.svg.tex_mobject import TexMobject
-from manimlib.mobject.types.vectorized_mobject import VGroup, VMobject
-from manimlib.scene.three_d_scene import SpecialThreeDScene
+from ..constants import *
+from ..mobject.three_dimensions import Sphere
+from ..mobject.types.vectorized_mobject import VGroup, VMobject
+from ..scene.three_d_scene import SpecialThreeDScene
+from ..utils.color import *
 
 
 #

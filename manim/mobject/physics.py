@@ -2,14 +2,15 @@ import numpy as np
 import random
 from collections import defaultdict
 
-from manimlib.constants import *
-from manimlib.mobject.geometry import Arc, Arrow, Circle, DashedLine, Dot, Line
-from manimlib.mobject.three_dimensions import Sphere
-from manimlib.mobject.types.vectorized_mobject import VGroup, VMobject, VectorizedPoint
-from manimlib.mobject.svg.tex_mobject import TexMobject
-from manimlib.utils.space_ops import get_norm
-from manimlib.mobject.mobject_update_utils import always_redraw
-from manimlib.animation.creation import Write
+from ..constants import *
+from ..mobject.geometry import Arc, Arrow, Circle, DashedLine, Dot, Line
+from ..mobject.three_dimensions import Sphere
+from ..mobject.types.vectorized_mobject import VGroup, VMobject, VectorizedPoint
+from ..mobject.svg.tex_mobject import TexMobject
+from ..utils.space_ops import get_norm
+from ..mobject.mobject_update_utils import always_redraw
+from ..animation.creation import Write
+from ..utils.color import *
 
 
 # physical constants.
