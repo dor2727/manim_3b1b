@@ -1,4 +1,4 @@
-from manimlib.imports import *
+from manim import *
 from my_project.qubit import *
 import numpy as np
 

@@ -1,4 +1,4 @@
-from manimlib.imports import *
+from manim import *
 
 OUTPUT_DIRECTORY = "my_plot_function"
 
@@ -123,7 +123,7 @@ class VectorFieldParabola(GraphScene):
 		self.wait()
 
 	def _setup_equation(self, *args, **kwargs):
-		equation = TexMobject(self.function_tex(*args, **kwargs))
+		equation = MathTex(self.function_tex(*args, **kwargs))
 		equation.to_corner(UP + RIGHT)
 		equation.set_color(self.function_color)
 		equation.add_background_rectangle()
@@ -317,7 +317,7 @@ class MyParameterizedCurve(GraphScene):
 
 	def _setup_equation(self, *args, **kwargs):
 		equation_tex = "(3t/{1+t^3}, 3t^2/{1+t^3})"
-		equation = TexMobject(equation_tex)
+		equation = MathTex(equation_tex)
 		equation.to_corner(UP + RIGHT)
 		equation.set_color(self.function_color)
 		equation.add_background_rectangle()

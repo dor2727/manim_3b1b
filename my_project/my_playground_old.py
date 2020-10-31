@@ -1,4 +1,4 @@
-from manimlib.imports import *
+from manim import *
 
 # my first manim classes
 
@@ -45,7 +45,7 @@ class PlotParabola(GraphScene):
 		self.wait(2)
 
 	def _setup_equation(self, *args, **kwargs):
-		equation = TexMobject(parabola_tex(*args, **kwargs))
+		equation = MathTex(parabola_tex(*args, **kwargs))
 		equation.to_corner(UP + RIGHT)
 		equation.set_color(self.function_color)
 		equation.add_background_rectangle()
@@ -279,7 +279,7 @@ class VisualizeStates(Scene):
 				tex = label_tex
 				if u < 0:
 					tex = "-" + tex
-				label = TexMobject(tex)
+				label = MathTex(tex)
 				label.scale(0.5)
 				if label.get_height() > 0.4:
 					label.set_height(0.4)
@@ -303,7 +303,7 @@ class VisualizeStates(Scene):
 		self.initialize_grid_of_states()  # Again
 		state_grid = self.state_grid
 
-		title = TextMobject("All states")
+		title = Tex("All states")
 		title.to_edge(UP, buff=MED_SMALL_BUFF)
 		self.all_states_title = title
 
@@ -518,11 +518,11 @@ class VisualizeStates(Scene):
 		self.wait()
 
 		# Abstract vs. physical
-		abstract = TextMobject("Abstract")
+		abstract = Tex("Abstract")
 		abstract.add_background_rectangle()
 		abstract.scale(2)
 		abstract.to_corner(UR)
-		physical = TextMobject("Physical")
+		physical = Tex("Physical")
 		physical.next_to(state.get_top(), DOWN)
 
 		self.play(
@@ -726,7 +726,7 @@ class PlotFunctions(GraphScene):
 			self.FUNC_PARAMETER = x
 			graph_lab_transformed = self.get_graph_label(func_graph, label = self.func_name)
 			Transform(graph_lab_transformed, graph_lab, run_time = 2),
-			func_text = TextMobject( "func y $= %s$" % self.func_name )
+			func_text = Tex( "func y $= %s$" % self.func_name )
 			func_text.to_corner(UP + RIGHT)
 			Animation(func_text)
 			self.wait()
@@ -737,7 +737,7 @@ class PlotFunctions(GraphScene):
 		label_coord = self.input_to_graph_point(TAU,func_graph)
 		# ???
 
-		func_name_display = TexMobject("y = " + self.func_name)
+		func_name_display = MathTex("y = " + self.func_name)
 		func_name_display.next_to(label_coord,RIGHT+UP)
 
 		self.play(

@@ -1,4 +1,4 @@
-from manimlib.imports import *
+from manim import *
 
 OUTPUT_DIRECTORY = "complex_numbers2"
 
@@ -39,8 +39,8 @@ class StretchNumberLine(Scene):
 		)
 
 		if self.display_text:
-			self.write_and_fade( TextMobject("This is the number line") )
-			self.write_and_fade( TextMobject("Let us copy the number line") )
+			self.write_and_fade( Tex("This is the number line") )
+			self.write_and_fade( Tex("Let us copy the number line") )
 
 		# create the second number line
 		self.other_number_line = number_line_2 = self.real_number_line.copy()
@@ -51,8 +51,8 @@ class StretchNumberLine(Scene):
 
 		if self.display_text:
 			self.wait(1)
-			self.write_and_fade( TextMobject("Let us look at the act of multiplying by %s" % self.multiply_by) )
-			self.write_and_fade( TextMobject("This will move 1 into the location of %s" % self.multiply_by) )
+			self.write_and_fade( Tex("Let us look at the act of multiplying by %s" % self.multiply_by) )
+			self.write_and_fade( Tex("This will move 1 into the location of %s" % self.multiply_by) )
 
 		# define 2 arrows.
 		# since the animation of stretching the numberline occurs simultaniously to the stretching of the arrow,
@@ -73,7 +73,7 @@ class StretchNumberLine(Scene):
 		self.wait(1)
 
 		self.write_and_fade(
-			TextMobject("Now, we multiply by %s" % self.multiply_by),
+			Tex("Now, we multiply by %s" % self.multiply_by),
 			position=2 * LEFT
 		)
 
@@ -91,7 +91,7 @@ class StretchNumberLine(Scene):
 		if self.display_text:
 			self.wait(1.5)
 			self.write_and_fade(
-				TextMobject("Every number has been multiplied by %s" % self.multiply_by),
+				Tex("Every number has been multiplied by %s" % self.multiply_by),
 				position=2.4 * LEFT
 			)
 		for example_number, text_location in self.multiply_example:
@@ -100,7 +100,7 @@ class StretchNumberLine(Scene):
 		self.wait(3)
 
 	def add_title(self):
-		title = TextMobject(self.title_text)
+		title = Tex(self.title_text)
 		title.add_background_rectangle()
 		title.scale(1.5)
 		title.to_corner(UL, buff=MED_SMALL_BUFF)
@@ -128,12 +128,12 @@ class StretchNumberLine(Scene):
 	def move_multiply_arrow(self, example_number, text_location):
 		if self.display_text:
 			self.write_and_fade(
-				TexMobject(f"For \\enspace example, ({example_number})\\rightarrow({example_number * self.multiply_by})"),
+				MathTex(f"For \\enspace example, ({example_number})\\rightarrow({example_number * self.multiply_by})"),
 				position=text_location
 			)
 		else:
 			self.write_and_fade(
-				TexMobject(f"({example_number})\\rightarrow({example_number * self.multiply_by})"),
+				MathTex(f"({example_number})\\rightarrow({example_number * self.multiply_by})"),
 				position=text_location
 			)
 		
@@ -212,8 +212,8 @@ class RotateNumberLine(Scene):
 			Write(number_line)
 		)
 
-		self.write_and_fade( TextMobject("Let us look at the act of multiplying by (-1)"), position=2 * DOWN )
-		self.write_and_fade( TextMobject("Which is equivalent to rotating by 180 degrees"), position=2 * DOWN )
+		self.write_and_fade( Tex("Let us look at the act of multiplying by (-1)"), position=2 * DOWN )
+		self.write_and_fade( Tex("Which is equivalent to rotating by 180 degrees"), position=2 * DOWN )
 		self.wait(1)
 
 		self.play(
@@ -248,7 +248,7 @@ class RotateNumberLine_Twice(Scene):
 		)
 		number_line.add_numbers()
 
-		number_line_text = TextMobject("(number line)")
+		number_line_text = Tex("(number line)")
 		number_line_text.move_to(2 * DOWN + 3 * LEFT)
 
 		self.add(number_line, number_line_text)
@@ -259,7 +259,7 @@ class RotateNumberLine_Twice(Scene):
 
 		self.wait(1)
 
-		multiply_once = TexMobject("\\cdot(-1)")
+		multiply_once = MathTex("\\cdot(-1)")
 		multiply_once.move_to(2 * DOWN + 0.9 * LEFT)
 		self.add(multiply_once)
 		self.play(
@@ -270,7 +270,7 @@ class RotateNumberLine_Twice(Scene):
 
 		self.wait(1)
 
-		multiply_twice = TexMobject("\\cdot(-1)")
+		multiply_twice = MathTex("\\cdot(-1)")
 		multiply_twice.move_to(2 * DOWN + 0.3 * RIGHT)
 		self.add(multiply_twice)
 		self.play(
@@ -322,7 +322,7 @@ class StretchNumberLine_summary(Scene):
 		)
 
 		self.write_and_fade(
-			TextMobject("First, we multiply by %s" % self.multiply_by),
+			Tex("First, we multiply by %s" % self.multiply_by),
 			position=2 * LEFT
 		)
 
@@ -360,7 +360,7 @@ class StretchNumberLine_summary(Scene):
 
 		self.multiply_by = 1.5
 		self.write_and_fade(
-			TextMobject("Then, by %s" % self.multiply_by),
+			Tex("Then, by %s" % self.multiply_by),
 			position=2 * LEFT
 		)
 		multiply_arrow_before_stretch_new = Arrow(
@@ -392,7 +392,7 @@ class StretchNumberLine_summary(Scene):
 
 		self.multiply_by = 0.5
 		self.write_and_fade(
-			TextMobject("Finally, by %s" % self.multiply_by),
+			Tex("Finally, by %s" % self.multiply_by),
 			position=2 * LEFT
 		)
 		multiply_arrow_before_stretch_new = Arrow(
@@ -461,11 +461,11 @@ class StretchNumberLine_summary_negative(Scene):
 		)
 
 		self.write_and_fade(
-			TextMobject("First, we will multiply by (-1)"),
+			Tex("First, we will multiply by (-1)"),
 			position=2 * LEFT
 		)
 		self.write_and_fade(
-			TextMobject("Then, we will multiply by (3)"),
+			Tex("Then, we will multiply by (3)"),
 			position=2 * LEFT
 		)
 
@@ -604,7 +604,7 @@ class StretchNumberLine_3_times(Scene):
 		self.wait(3)
 
 	def add_title(self):
-		title = TextMobject(self.title_text)
+		title = Tex(self.title_text)
 		title.add_background_rectangle()
 		title.scale(1.5)
 		title.to_corner(UL, buff=MED_SMALL_BUFF)
@@ -642,12 +642,12 @@ class RotateComplexPlane(ComplexTransformationScene):
 	def construct(self):
 		self.add_plane()
 		if self.display_text:
-			self.write_and_fade(TextMobject("This is the complex plane"), position=2.3*UP + 3.5*LEFT)
+			self.write_and_fade(Tex("This is the complex plane"), position=2.3*UP + 3.5*LEFT)
 			self.wait()
 
 
 		if self.display_text:
-			self.write_and_fade(TextMobject("Let us draw the unit circle"), position=2.3*UP + 3.5*LEFT)
+			self.write_and_fade(Tex("Let us draw the unit circle"), position=2.3*UP + 3.5*LEFT)
 
 		unit_circle = Circle(radius=self.circle_radius)
 		self.add(unit_circle)
@@ -657,7 +657,7 @@ class RotateComplexPlane(ComplexTransformationScene):
 
 
 		if self.display_text:
-			self.write_and_fade(TextMobject("Now we can visualise our solutions"), position=2.3 * UP + 1.8 * LEFT)
+			self.write_and_fade(Tex("Now we can visualise our solutions"), position=2.3 * UP + 1.8 * LEFT)
 
 		dots = [Dot(self.z_to_point(i)) for i in self.get_all_roots_of_1()]
 		angles = self.get_all_angles()
@@ -666,7 +666,7 @@ class RotateComplexPlane(ComplexTransformationScene):
 		arrows = []
 		
 		for dot, angle, position in zip(dots, angles, self.dot_positions):
-			angle_tex = TexMobject(f"{angle:.0f}^\\circ")
+			angle_tex = MathTex(f"{angle:.0f}^\\circ")
 			angle_tex.move_to(position)
 
 			arrow = Arrow(
@@ -787,18 +787,18 @@ class RotateComplexPlane_by_root_of_2(ComplexTransformationScene):
 		self.angle_rad      = self.solution_angle * DEGREES
 
 		if self.display_text:
-			self.write_and_fade(TextMobject(f"We are looking for the {self.root_text} root of {self.root_of}"), position=2.3 * UP + 2 * LEFT)
+			self.write_and_fade(Tex(f"We are looking for the {self.root_text} root of {self.root_of}"), position=2.3 * UP + 2 * LEFT)
 
-			self.write_and_fade(TextMobject(f"Let us look at the solution with {self.solution_angle:.0f} degrees"), position=2.3 * UP + 1.1 * LEFT)
+			self.write_and_fade(Tex(f"Let us look at the solution with {self.solution_angle:.0f} degrees"), position=2.3 * UP + 1.1 * LEFT)
 
 			temp_1 = self.write_and_fade(
-				TextMobject(f"since it is the {self.root_text} root, it will have a magnitude of"),
+				Tex(f"since it is the {self.root_text} root, it will have a magnitude of"),
 				position=2.3 * UP + 1 * LEFT,
 				fade=False,
 				wait=False,
 			)
 			temp_2 = self.write_and_fade(
-				TexMobject(f"\\sqrt[{self.root}]{self.root_of}\\approx{self.magnitude:.3f}"),
+				MathTex(f"\\sqrt[{self.root}]{self.root_of}\\approx{self.magnitude:.3f}"),
 				position=1.3 * UP + 2.8 * RIGHT,
 				fade=False
 			)
@@ -826,11 +826,11 @@ class RotateComplexPlane_by_root_of_2(ComplexTransformationScene):
 		# 
 		# display details on screen
 		# 
-		# self.magnitude_tex = TexMobject(f"Magnitude\\approx{self.magnitude:.3f}")
+		# self.magnitude_tex = MathTex(f"Magnitude\\approx{self.magnitude:.3f}")
 		# self.magnitude_tex.move_to(2.3 * DOWN + 2 * RIGHT)
-		# self.angle_tex = TexMobject(f"angle={self.solution_angle:.0f}^\\circ")
+		# self.angle_tex = MathTex(f"angle={self.solution_angle:.0f}^\\circ")
 		# self.angle_tex.move_to(3.3 * DOWN + 2 * RIGHT)
-		# self.solution_tex = TexMobject(f"z={np.around(self.solution, 3)}")
+		# self.solution_tex = MathTex(f"z={np.around(self.solution, 3)}")
 		# self.solution_tex.move_to(2.3 * DOWN + 2 * LEFT)
 
 		latest_solution = self.solution
@@ -860,7 +860,7 @@ class RotateComplexPlane_by_root_of_2(ComplexTransformationScene):
 		return Vector(c.real * RIGHT + c.imag * UP)
 
 	def step_1(self, last_solution):
-		self.write_and_fade(TextMobject(f"Step 1: multiply by magnitude"), position=2.3 * UP + 3.5 * LEFT)
+		self.write_and_fade(Tex(f"Step 1: multiply by magnitude"), position=2.3 * UP + 3.5 * LEFT)
 
 		new_solution        = last_solution * self.magnitude
 		new_solution_vector = self.complex_to_vector(new_solution)
@@ -880,7 +880,7 @@ class RotateComplexPlane_by_root_of_2(ComplexTransformationScene):
 		return new_solution
 
 	def step_2(self, last_solution):
-		self.write_and_fade(TextMobject(f"Step 2: rotate by angle"), position=2.3 * UP + 3 * LEFT)
+		self.write_and_fade(Tex(f"Step 2: rotate by angle"), position=2.3 * UP + 3 * LEFT)
 
 		new_solution = last_solution * self.solution
 
@@ -907,13 +907,13 @@ class RotateComplexPlane_by_root_of_2(ComplexTransformationScene):
 		return new_solution
 
 	def initiate_tex(self):
-		self.magnitude_tex = magnitude_tex = TexMobject(f"Magnitude\\approx{self.magnitude:.3f}")
+		self.magnitude_tex = magnitude_tex = MathTex(f"Magnitude\\approx{self.magnitude:.3f}")
 		magnitude_tex.move_to(self.magnitude_tex_location)
 
-		self.angle_tex = angle_tex = TexMobject(f"angle={self.solution_angle:.1f}^\\circ")
+		self.angle_tex = angle_tex = MathTex(f"angle={self.solution_angle:.1f}^\\circ")
 		angle_tex.move_to(self.angle_tex_location)
 
-		self.solution_tex = solution_tex = TexMobject(f"z={np.around(self.solution, 3)}")
+		self.solution_tex = solution_tex = MathTex(f"z={np.around(self.solution, 3)}")
 		solution_tex.move_to(self.solution_tex_location)
 
 		self.add(magnitude_tex, angle_tex, solution_tex)
@@ -924,7 +924,7 @@ class RotateComplexPlane_by_root_of_2(ComplexTransformationScene):
 		)
 
 	def get_new_tex(self, current_solution):
-		magnitude_tex = TexMobject(f"Magnitude\\approx{abs(current_solution):.3f}")
+		magnitude_tex = MathTex(f"Magnitude\\approx{abs(current_solution):.3f}")
 		magnitude_tex.move_to(self.magnitude_tex_location)
 
 		# fun with rounding floats
@@ -936,10 +936,10 @@ class RotateComplexPlane_by_root_of_2(ComplexTransformationScene):
 		if np.around(angle) == 0:
 			angle = 0.0
 
-		angle_tex = TexMobject(f"angle={angle:.1f}^\\circ")
+		angle_tex = MathTex(f"angle={angle:.1f}^\\circ")
 		angle_tex.move_to(self.angle_tex_location)
 
-		solution_tex = TexMobject(f"z={np.around(current_solution, 3)}")
+		solution_tex = MathTex(f"z={np.around(current_solution, 3)}")
 		solution_tex.move_to(self.solution_tex_location)
 
 		return magnitude_tex, angle_tex, solution_tex

@@ -1,4 +1,4 @@
-from manimlib.imports import *
+from manim import *
 
 OUTPUT_DIRECTORY = "magnetic_force"
 
@@ -58,7 +58,7 @@ class ReferenceFrame(Scene):
 		self.wait(self.end_wait_time)
 
 	def add_title(self):
-		self.title = title = TextMobject(self.title_text)
+		self.title = title = Tex(self.title_text)
 		title.add_background_rectangle()
 		title.scale(1.5)
 		title.to_corner(UL, buff=MED_SMALL_BUFF)
@@ -78,17 +78,17 @@ class ReferenceFrame(Scene):
 		self.electrons_gamma = beta_to_gamma(self.electrons_beta)
 		self.electrons_lambda = self.electrons_lambda_0 / self.electrons_gamma
 
-		self.velocity_proton_tex   = TexMobject(f"\\beta_{{proton}}={self.protons_beta:.2f}")
-		self.velocity_electron_tex = TexMobject(f"\\beta_{{electron}}={self.electrons_beta:.2f}")
+		self.velocity_proton_tex   = MathTex(f"\\beta_{{proton}}={self.protons_beta:.2f}")
+		self.velocity_electron_tex = MathTex(f"\\beta_{{electron}}={self.electrons_beta:.2f}")
 		self.velocity_proton_tex.to_corner(DOWN+LEFT)
 		self.velocity_electron_tex.to_corner(DOWN+RIGHT)
 
 		self.charge_beta = gamma_to_beta(self.charge_gamma)
-		self.velocity_charge_tex = TexMobject(f"\\beta_{{charge}}={self.charge_beta:.2f}")
+		self.velocity_charge_tex = MathTex(f"\\beta_{{charge}}={self.charge_beta:.2f}")
 		self.velocity_charge_tex.to_corner(DOWN * 0.5)
 
 		self.total_charge = 1/self.protons_lambda - 1/self.electrons_lambda
-		self.charge_per_metre = TexMobject(f"total \\enspace charge=({1/self.protons_lambda:.2f})^+"
+		self.charge_per_metre = MathTex(f"total \\enspace charge=({1/self.protons_lambda:.2f})^+"
 			f" + ({1/self.electrons_lambda:.2f})^- = "
 			f"{self.total_charge:.2f}"
 		)
@@ -288,7 +288,7 @@ class ReferenceFrameTransform(Scene):
 		self.wait(self.end_wait_time)
 
 	def add_title(self):
-		self.title = title = TextMobject(self.title_text)
+		self.title = title = Tex(self.title_text)
 		title.add_background_rectangle()
 		title.scale(1.5)
 		title.to_corner(UL, buff=MED_SMALL_BUFF)
@@ -414,7 +414,7 @@ class ReferenceFrameIntroduction(Scene):
 		self.wait(1)
 
 	def add_title(self):
-		self.title = title = TextMobject(self.title_text)
+		self.title = title = Tex(self.title_text)
 		title.add_background_rectangle()
 		title.scale(1.5)
 		title.to_corner(UL, buff=MED_SMALL_BUFF)
@@ -424,9 +424,9 @@ class ReferenceFrameIntroduction(Scene):
 		self.A_velocity = 0 - self.reference_frame_velocity
 		self.B_velocity = self.B_absolute_velocity - self.reference_frame_velocity
 
-		self.velocity_A_tex = TexMobject(f"Velocity_A={self.A_velocity:.2f} \\frac{{m}}{{s}}")
+		self.velocity_A_tex = MathTex(f"Velocity_A={self.A_velocity:.2f} \\frac{{m}}{{s}}")
 		self.velocity_A_tex.to_corner(DOWN+LEFT)
-		self.velocity_B_tex = TexMobject(f"Velocity_B={self.B_velocity:.2f} \\frac{{m}}{{s}}")
+		self.velocity_B_tex = MathTex(f"Velocity_B={self.B_velocity:.2f} \\frac{{m}}{{s}}")
 		self.velocity_B_tex.to_corner(DOWN+RIGHT)
 										
 

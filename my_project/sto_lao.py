@@ -1,4 +1,4 @@
-from manimlib.imports import *
+from manim import *
 from my_project.qubit_utils import *
 
 OUTPUT_DIRECTORY = "STO_LAO"

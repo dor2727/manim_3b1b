@@ -1,4 +1,4 @@
-from manimlib.imports import *
+from manim import *
 
 OUTPUT_DIRECTORY = "temperature"
 
@@ -918,7 +918,7 @@ class ShootParticles(Scene):
 		).flip().set_height(self.laser_height).move_to(laser_tip_center)
 		laser_tip.set_fill(opacity=1)
 
-		laser_text = TextMobject("particle gun")
+		laser_text = Tex("particle gun")
 		laser_text.next_to(laser_base, UP, buff = 0)
 		laser_text.shift(0.2*UP + 0.5*RIGHT)
 
@@ -931,10 +931,10 @@ class ShootParticles(Scene):
 			end  =self.wall_position + 10*DOWN,
 		)
 
-		E_left  = TexMobject("\\vec{E}=1\\hat{y}")
-		B_left  = TexMobject("\\vec{B}=1\\hat{z}")
-		E_right = TexMobject("\\vec{E}=0\\hat{y}")
-		B_right = TexMobject("\\vec{B}=1\\hat{z}")
+		E_left  = MathTex("\\vec{E}=1\\hat{y}")
+		B_left  = MathTex("\\vec{B}=1\\hat{z}")
+		E_right = MathTex("\\vec{E}=0\\hat{y}")
+		B_right = MathTex("\\vec{B}=1\\hat{z}")
 
 		E_left.next_to (wall_top, LEFT )
 		E_left.shift(1.5*DOWN)
@@ -1402,7 +1402,7 @@ class RaiseTemperature(Scene):
 		self.play(*crystal.write_simultaneously(), suspend_mobject_updating=False)
 
 	def add_updating_value(self, text, value, position, shift=None):
-		updater_text = TextMobject(text)
+		updater_text = Tex(text)
 
 		updater = DecimalNumber(value, num_decimal_places=4)
 		updater.next_to(

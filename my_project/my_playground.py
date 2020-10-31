@@ -1,4 +1,4 @@
-from manimlib.imports import *
+from manim import *
 
 Hadamard_1d = ""
 # Hadamard_2d = "\\begin{bmatrix} 1 & 1 & 1 & 1 \\\\ 1 & -1 & 1 & -1 \\\\ 1 & 1 & -1 & -1 \\\\ 1 & -1 & -1 & 1\\end{bmatrix}"
@@ -59,7 +59,7 @@ class DisplayTex(Scene):
 		self.camera.background_color = WHITE
 		self.camera.init_background()
 
-		a = TexMobject(self.s)
+		a = MathTex(self.s)
 		# a.scale(1.5)
 		a.scale(0.6)
 		a.set_color(BLACK)
@@ -68,31 +68,31 @@ class DisplayTex(Scene):
 # who goes where
 class DisplayTex2(Scene):
 	def construct(self):
-		# NOT        = TexMobject("\\begin{bmatrix} 0 & 1 \\\\ 1 & 0 \\end{bmatrix}")
-		ERASE      = TexMobject("\\begin{bmatrix} 1 & 1 \\\\ 0 & 0 \\end{bmatrix}")
-		ZERO_WHO   = TexMobject("\\ket{0}").move_to(1*UP     + 0.35*LEFT)
-		ZERO_WHERE = TexMobject("\\ket{0}").move_to(0.3*UP   + 1  *LEFT)
-		ONE_WHO    = TexMobject("\\ket{1}").move_to(1*UP     + 0.4*RIGHT)
-		ONE_WHERE  = TexMobject("\\ket{1}").move_to(0.3*DOWN + 1  *LEFT)
-		WHO       = TextMobject("Who").move_to(1.7*UP)
-		WHERE     = TextMobject("Where").move_to(2.3*LEFT)
+		# NOT        = MathTex("\\begin{bmatrix} 0 & 1 \\\\ 1 & 0 \\end{bmatrix}")
+		ERASE      = MathTex("\\begin{bmatrix} 1 & 1 \\\\ 0 & 0 \\end{bmatrix}")
+		ZERO_WHO   = MathTex("\\ket{0}").move_to(1*UP     + 0.35*LEFT)
+		ZERO_WHERE = MathTex("\\ket{0}").move_to(0.3*UP   + 1  *LEFT)
+		ONE_WHO    = MathTex("\\ket{1}").move_to(1*UP     + 0.4*RIGHT)
+		ONE_WHERE  = MathTex("\\ket{1}").move_to(0.3*DOWN + 1  *LEFT)
+		WHO       = Tex("Who").move_to(1.7*UP)
+		WHERE     = Tex("Where").move_to(2.3*LEFT)
 		self.add(ERASE, ZERO_WHO, ZERO_WHERE, ONE_WHO, ONE_WHERE, WHO, WHERE)
 
 # 2 bits basis
 class DisplayTex3(Scene):
 	def construct(self):
-		t0 = TexMobject("\\ket{0}_2=\\ket{00}=\\begin{bmatrix} 1 \\\\ 0 \\\\ 0 \\\\ 0 \\end{bmatrix}").move_to(1.4*UP   + 2.5*LEFT )
-		t1 = TexMobject("\\ket{1}_2=\\ket{01}=\\begin{bmatrix} 0 \\\\ 1 \\\\ 0 \\\\ 0 \\end{bmatrix}").move_to(1.4*UP   + 2.5*RIGHT)
-		t2 = TexMobject("\\ket{2}_2=\\ket{10}=\\begin{bmatrix} 0 \\\\ 0 \\\\ 1 \\\\ 0 \\end{bmatrix}").move_to(1.4*DOWN + 2.5*LEFT )
-		t3 = TexMobject("\\ket{3}_2=\\ket{11}=\\begin{bmatrix} 0 \\\\ 0 \\\\ 0 \\\\ 1 \\end{bmatrix}").move_to(1.4*DOWN + 2.5*RIGHT)
+		t0 = MathTex("\\ket{0}_2=\\ket{00}=\\begin{bmatrix} 1 \\\\ 0 \\\\ 0 \\\\ 0 \\end{bmatrix}").move_to(1.4*UP   + 2.5*LEFT )
+		t1 = MathTex("\\ket{1}_2=\\ket{01}=\\begin{bmatrix} 0 \\\\ 1 \\\\ 0 \\\\ 0 \\end{bmatrix}").move_to(1.4*UP   + 2.5*RIGHT)
+		t2 = MathTex("\\ket{2}_2=\\ket{10}=\\begin{bmatrix} 0 \\\\ 0 \\\\ 1 \\\\ 0 \\end{bmatrix}").move_to(1.4*DOWN + 2.5*LEFT )
+		t3 = MathTex("\\ket{3}_2=\\ket{11}=\\begin{bmatrix} 0 \\\\ 0 \\\\ 0 \\\\ 1 \\end{bmatrix}").move_to(1.4*DOWN + 2.5*RIGHT)
 
 		self.add(t0, t1, t2, t3)
 
 # different colors for different letters
 class DisplayTex4(Scene):
 	def construct(self):
-		# s = TexMobject("C_{", "i", "j", "}\\ket{x_{n-1} \\hdots x_1 x_0}")
-		s = TexMobject("\\frac{\\alpha}{2}(\\ket{", '0', '0', '0', "}+\\ket{", '0', '1', '1', "}) + \\frac{\\beta}{2}(\\ket{", '1', '0', '0', "}+\\ket{", '1', '1', '1', "})")
+		# s = MathTex("C_{", "i", "j", "}\\ket{x_{n-1} \\hdots x_1 x_0}")
+		s = MathTex("\\frac{\\alpha}{2}(\\ket{", '0', '0', '0', "}+\\ket{", '0', '1', '1', "}) + \\frac{\\beta}{2}(\\ket{", '1', '0', '0', "}+\\ket{", '1', '1', '1', "})")
 		
 		s[1].set_color(GREEN)
 		s[2].set_color(BLUE)
@@ -216,7 +216,7 @@ class DisplayMatrix(Scene):
 
 		s = f"{self.name} = {self.factor} \\begin{{bmatrix}} {m} \\end{{bmatrix}}"
 		print(s)
-		a = TexMobject(s)
+		a = MathTex(s)
 		# a.scale(1.5)
 
 		self.add(a)
@@ -224,7 +224,7 @@ class DisplayMatrix(Scene):
 # dashed lines seperating a matrix
 class DisplayMatrix2(Scene):
 	def construct(self):
-		a = TexMobject("C_{10} = \\begin{bmatrix} 1 & 0 & 0 & 0 \\\\ 0 & 1 & 0 & 0 \\\\ 0 & 0 & 0 & 1 \\\\ 0 & 0 & 1 & 0 \\end{bmatrix} = \\begin{bmatrix} I & 0 \\\\ 0 & X \\end{bmatrix}")
+		a = MathTex("C_{10} = \\begin{bmatrix} 1 & 0 & 0 & 0 \\\\ 0 & 1 & 0 & 0 \\\\ 0 & 0 & 0 & 1 \\\\ 0 & 0 & 1 & 0 \\end{bmatrix} = \\begin{bmatrix} I & 0 \\\\ 0 & X \\end{bmatrix}")
 		a.scale(1.3)
 
 		l1 = DashedLine(
@@ -244,9 +244,9 @@ class DisplayMatrix2(Scene):
 # dashed lines seperating a matrix
 class DisplayMatrix3(Scene):
 	def construct(self):
-		a = TexMobject("I_1 \\otimes X_0 = \\begin{bmatrix} 1 & 0 \\\\ 0 & 1 \\end{bmatrix} \\otimes X_0 = \\begin{bmatrix} 1 \\cdot X_0 & 0 \\cdot X_0 \\\\ 0 \\cdot X_0 & 1 \\cdot X_0 \\end{bmatrix} = \\begin{bmatrix} 0 & 1 & 0 & 0 \\\\ 1 & 0 & 0 & 0 \\\\ 0 & 0 & 0 & 1 \\\\ 0 & 0 & 1 & 0 \\end{bmatrix} = \\begin{bmatrix} X & 0 \\\\ 0 & X \\end{bmatrix}")
-		# a = TexMobject("I_1 \\otimes X_0 = \\begin{bmatrix} 1 & 0 \\\\ 0 & 1 \\end{bmatrix} \\otimes \\begin{bmatrix} 0 & 1 \\\\ 1 & 0 \\end{bmatrix} = \\begin{bmatrix} 0 & 1 & 0 & 0 \\\\ 1 & 0 & 0 & 0 \\\\ 0 & 0 & 0 & 1 \\\\ 0 & 0 & 1 & 0 \\end{bmatrix} = \\begin{bmatrix} X & 0 \\\\ 0 & X \\end{bmatrix}")
-		# a = TexMobject("X_1 \\otimes I_0 = \\begin{bmatrix} 0 & 1 \\\\ 1 & 0 \\end{bmatrix} \\otimes \\begin{bmatrix} 1 & 0 \\\\ 0 & 1 \\end{bmatrix} = \\begin{bmatrix} 0 & 0 & 1 & 0 \\\\ 0 & 0 & 0 & 1 \\\\ 1 & 0 & 0 & 0 \\\\ 0 & 1 & 0 & 0 \\end{bmatrix} = \\begin{bmatrix} 0 & I \\\\ I & 0 \\end{bmatrix}")
+		a = MathTex("I_1 \\otimes X_0 = \\begin{bmatrix} 1 & 0 \\\\ 0 & 1 \\end{bmatrix} \\otimes X_0 = \\begin{bmatrix} 1 \\cdot X_0 & 0 \\cdot X_0 \\\\ 0 \\cdot X_0 & 1 \\cdot X_0 \\end{bmatrix} = \\begin{bmatrix} 0 & 1 & 0 & 0 \\\\ 1 & 0 & 0 & 0 \\\\ 0 & 0 & 0 & 1 \\\\ 0 & 0 & 1 & 0 \\end{bmatrix} = \\begin{bmatrix} X & 0 \\\\ 0 & X \\end{bmatrix}")
+		# a = MathTex("I_1 \\otimes X_0 = \\begin{bmatrix} 1 & 0 \\\\ 0 & 1 \\end{bmatrix} \\otimes \\begin{bmatrix} 0 & 1 \\\\ 1 & 0 \\end{bmatrix} = \\begin{bmatrix} 0 & 1 & 0 & 0 \\\\ 1 & 0 & 0 & 0 \\\\ 0 & 0 & 0 & 1 \\\\ 0 & 0 & 1 & 0 \\end{bmatrix} = \\begin{bmatrix} X & 0 \\\\ 0 & X \\end{bmatrix}")
+		# a = MathTex("X_1 \\otimes I_0 = \\begin{bmatrix} 0 & 1 \\\\ 1 & 0 \\end{bmatrix} \\otimes \\begin{bmatrix} 1 & 0 \\\\ 0 & 1 \\end{bmatrix} = \\begin{bmatrix} 0 & 0 & 1 & 0 \\\\ 0 & 0 & 0 & 1 \\\\ 1 & 0 & 0 & 0 \\\\ 0 & 1 & 0 & 0 \\end{bmatrix} = \\begin{bmatrix} 0 & I \\\\ I & 0 \\end{bmatrix}")
 		a.scale(0.6)
 
 		l1 = DashedLine(
@@ -291,7 +291,7 @@ class DisplayMatrix4(Scene):
 
 		s = f"{self.name} = \\begin{{bmatrix}} {m} \\end{{bmatrix}}"
 		print(s)
-		a = TexMobject(s)
+		a = MathTex(s)
 		a.scale(1.5)
 
 		# self.add_col_rectangle(0, "\\ket{00}")
@@ -333,7 +333,7 @@ class DisplayMatrix4(Scene):
 		if name is True:
 			name = self._generate_name(rownum)
 		if name:
-			n = TexMobject(name)
+			n = MathTex(name)
 			n.set_color(BLUE)
 
 			n.shift(LEFT)
@@ -363,7 +363,7 @@ class DisplayMatrix4(Scene):
 		if name is True:
 			name = self._generate_name(colnum)
 		if name:
-			n = TexMobject(name)
+			n = MathTex(name)
 			n.set_color(RED)
 
 			n.shift(2.4*UP)
@@ -380,9 +380,9 @@ class DisplayMatrix4(Scene):
 # showing a matrix with multiple names
 class DisplayMatrix5(Scene):
 	def construct(self):
-		# a = TexMobject("C^{Z}_{10} = \\begin{bmatrix} I & 0 \\\\ 0 & Z \\end{bmatrix} = \\begin{bmatrix} 1 & 0 & 0 & 0 \\\\ 0 & 1 & 0 & 0 \\\\ 0 & 0 & 1 & 0 \\\\ 0 & 0 & 0 & -1 \\end{bmatrix} = C^{Z}_{01}")
-		# a = TexMobject("\\sigma_{Z} = Z = \\begin{bmatrix} 1 & 0 \\\\ 0 & -1 \\end{bmatrix}")
-		a = TexMobject("\\sigma_{Y} = Y = \\begin{bmatrix} 0 & -i \\\\ i & 0 \\end{bmatrix}")
+		# a = MathTex("C^{Z}_{10} = \\begin{bmatrix} I & 0 \\\\ 0 & Z \\end{bmatrix} = \\begin{bmatrix} 1 & 0 & 0 & 0 \\\\ 0 & 1 & 0 & 0 \\\\ 0 & 0 & 1 & 0 \\\\ 0 & 0 & 0 & -1 \\end{bmatrix} = C^{Z}_{01}")
+		# a = MathTex("\\sigma_{Z} = Z = \\begin{bmatrix} 1 & 0 \\\\ 0 & -1 \\end{bmatrix}")
+		a = MathTex("\\sigma_{Y} = Y = \\begin{bmatrix} 0 & -i \\\\ i & 0 \\end{bmatrix}")
 		a.scale(1.3)
 
 		self.add(a)

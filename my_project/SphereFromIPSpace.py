@@ -1,4 +1,4 @@
-from manimlib.imports import *
+from manim import *
 
 class SphereFromIPSpace(ThreeDScene):
     def construct(self):

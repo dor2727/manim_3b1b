@@ -1,4 +1,4 @@
-from manimlib.imports import *
+from manim import *
 
 Hadamard_1d = ""
 # Hadamard_2d = "\\begin{bmatrix} 1 & 1 & 1 & 1 \\\\ 1 & -1 & 1 & -1 \\\\ 1 & 1 & -1 & -1 \\\\ 1 & -1 & -1 & 1\\end{bmatrix}"
@@ -15,18 +15,18 @@ class WhiteScene(Scene):
 
 	def _tex(self, string=None, *args, **kwargs):
 		if string is None:
-			t = TexMobject(self.s, *args, **kwargs)
+			t = MathTex(self.s, *args, **kwargs)
 		else:
-			t = TexMobject(string, *args, **kwargs)
+			t = MathTex(string, *args, **kwargs)
 
 		t.set_color(BLACK)
 		return t
 
 	def _text(self, string=None, *args, **kwargs):
 		if string is None:
-			t = TextMobject(self.s, *args, **kwargs)
+			t = Tex(self.s, *args, **kwargs)
 		else:
-			t = TextMobject(string, *args, **kwargs)
+			t = Tex(string, *args, **kwargs)
 
 		t.set_color(BLACK)
 		return t
@@ -643,7 +643,7 @@ class DisplayMatrix4(WhiteScene):
 		if name is True:
 			name = self._generate_name(rownum)
 		if name:
-			n = TexMobject(name)
+			n = MathTex(name)
 			n.set_color(RED)
 
 			n.shift(LEFT)
@@ -673,7 +673,7 @@ class DisplayMatrix4(WhiteScene):
 		if name is True:
 			name = self._generate_name(colnum)
 		if name:
-			n = TexMobject(name)
+			n = MathTex(name)
 			n.set_color(BLUE)
 
 			n.shift(2.4*UP)

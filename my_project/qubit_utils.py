@@ -1,4 +1,4 @@
-from manimlib.imports import *
+from manim import *
 
 OUTPUT_DIRECTORY = "qubit"
 
@@ -41,10 +41,10 @@ def Ry(phi):
 
 
 # 
-# create a TexMobject which is properly aligned to 3d
+# create a MathTex which is properly aligned to 3d
 # 
 def tex(*s):
-	tex = TexMobject(*s)
+	tex = MathTex(*s)
 	tex.rotate(90 * DEGREES, RIGHT)
 	tex.rotate(90 * DEGREES, OUT)
 	tex.scale(0.5)

@@ -1,4 +1,4 @@
-from manimlib.imports import *
+from manim import *
 from my_project.qubit_utils import *
 
 OUTPUT_DIRECTORY = "qubit"
@@ -109,7 +109,7 @@ class BlochSphere(SpecialThreeDScene):
 		self.wait(self.final_wait_time)
 
 	def present_introduction(self):
-		self.intro_tex_1 = TextMobject(
+		self.intro_tex_1 = Tex(
 			"\\begin{flushleft}\n"
 			"The State of the Qbit"
 			"\\\\"
@@ -117,7 +117,7 @@ class BlochSphere(SpecialThreeDScene):
 			"\n\\end{flushleft}",
 			alignment="",
 		)
-		# self.intro_tex_1 = TextMobject(
+		# self.intro_tex_1 = Tex(
 		# 	# "\\begin{align*}\n" + "The state of the Qbit" + "\n\\end{align*}",
 		# 	"\\begin{flalign}\n" + "The state of the Qbit" + "\n\\end{flalign}",
 		# 	# "The state of the Qbit",
@@ -138,7 +138,7 @@ class BlochSphere(SpecialThreeDScene):
 		)
 
 		if self.operator_names:
-			self.intro_tex_2 = TextMobject(
+			self.intro_tex_2 = Tex(
 				"\\begin{flushleft}"
 				"The following gates will be applied:"
 				"\\\\"
@@ -178,7 +178,7 @@ class BlochSphere(SpecialThreeDScene):
 		self.add(self.axes)
 
 	def _tex(self, *s):
-		tex = TexMobject(*s)
+		tex = MathTex(*s)
 		tex.rotate(90 * DEGREES, RIGHT)
 		tex.rotate(90 * DEGREES, OUT)
 		tex.scale(0.5)

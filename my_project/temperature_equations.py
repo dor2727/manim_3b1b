@@ -1,18 +1,18 @@
-from manimlib.imports import *
+from manim import *
 import numbers
 
 OUTPUT_DIRECTORY = "temperature"
 
 k_B = 1.38064852e-23
-# k_B_tex = TexMobject("1.38064852\\times10^{-23} \\frac{m^2 kg}{s^2 K}")
+# k_B_tex = MathTex("1.38064852\\times10^{-23} \\frac{m^2 kg}{s^2 K}")
 
-# internal_energy_of_all_particles = TexMobject("U=\\frac{3}{2}N k_B T")
-# energy_of_a_single_particle = TexMobject("E=\\frac{U}{N}")
-# energy_of_a_single_particle_2 = TexMobject("E=\\frac{3}{2} k_B T")
-# kinetic_energy = TexMobject("E_k=\\frac{1}{2} m v^2")
-# velocity_of_particle = TexMobject("\\frac{1}{2} m v^2 = \\frac{3}{2} k_B T")
-# velocity_of_particle_extracted = TexMobject("v = \\sqrt{\\frac{3 k_B T}{m}}")
-# velocity_of_particle_extracted_as_func_of_T = TexMobject("v = \\sqrt{\\frac{3 k_B}{m}}\\cdot\\sqrt{T}")
+# internal_energy_of_all_particles = MathTex("U=\\frac{3}{2}N k_B T")
+# energy_of_a_single_particle = MathTex("E=\\frac{U}{N}")
+# energy_of_a_single_particle_2 = MathTex("E=\\frac{3}{2} k_B T")
+# kinetic_energy = MathTex("E_k=\\frac{1}{2} m v^2")
+# velocity_of_particle = MathTex("\\frac{1}{2} m v^2 = \\frac{3}{2} k_B T")
+# velocity_of_particle_extracted = MathTex("v = \\sqrt{\\frac{3 k_B T}{m}}")
+# velocity_of_particle_extracted_as_func_of_T = MathTex("v = \\sqrt{\\frac{3 k_B}{m}}\\cdot\\sqrt{T}")
 
 
 class Algebra(Scene):
@@ -35,13 +35,13 @@ class Algebra(Scene):
 		U = N * E_k
 		"""
 
-		E_k = TexMobject("E_k=\\frac{1}{2} m v^2")
+		E_k = MathTex("E_k=\\frac{1}{2} m v^2")
 		E_k.to_corner(UL)
-		U_E_k = TexMobject("U=N E_k")
+		U_E_k = MathTex("U=N E_k")
 		U_E_k.to_corner(UR)
 		self.add(E_k, U_E_k)
 
-		U_equation = TexMobject(
+		U_equation = MathTex(
 			"U", "=", "\\frac{3}{2}", "N", "k_B", "T"
 		)
 		U_equation.set_color_by_tex("T", GREEN)
@@ -50,7 +50,7 @@ class Algebra(Scene):
 			Write(U_equation),
 		)
 
-		N__E_k = TexMobject("N", "E_k")
+		N__E_k = MathTex("N", "E_k")
 		N__E_k.move_to(U_equation[0].get_center())
 		N__E_k.shift(0.3 * LEFT)
 		self.play(
@@ -73,15 +73,15 @@ class Algebra(Scene):
 		)
 
 		E_k = N__E_k[1]
-		E_k_equation = TexMobject("\\frac{1}{2}", "m", "v^2")
+		E_k_equation = MathTex("\\frac{1}{2}", "m", "v^2")
 		E_k_equation.move_to(E_k.get_center())
 		self.play(
 			ReplacementTransform( E_k, E_k_equation ),
 		)
 
-		one = TexMobject("1")
+		one = MathTex("1")
 		one.move_to(E_k_equation[0].get_center())
-		three = TexMobject("3")
+		three = MathTex("3")
 		three.move_to(U_equation[2].get_center())
 
 		self.play(
@@ -92,7 +92,7 @@ class Algebra(Scene):
 			FadeOut(one)
 		)
 
-		temp = TexMobject("\\frac{3 k_B}{m}")
+		temp = MathTex("\\frac{3 k_B}{m}")
 		temp.move_to(
 			(three.get_center() + U_equation[4].get_center()) / 2
 		)
@@ -106,7 +106,7 @@ class Algebra(Scene):
 
 class Algebra_test(Scene):
 	def construct(self):
-		equation = TexMobject(
+		equation = MathTex(
 			"A", "\\vec{\\textbf{x}}", "=", "\\vec{\\textbf{v}}"
 		)
 		equation.scale(1.25)
@@ -116,7 +116,7 @@ class Algebra_test(Scene):
 		self.add(equation)
 		self.add_foreground_mobject(equation)
 
-		det_equation = TexMobject(
+		det_equation = MathTex(
 			"\\det{", "A", "}", "=", "0"
 		)
 		det_equation.scale(1.25)
@@ -142,7 +142,7 @@ class Algebra_test(Scene):
 
 class LorentzForce(Scene):
 	def construct(self):
-		equation = TexMobject(
+		equation = MathTex(
 			*("F = q ( E + v \\times B )".split())
 		)
 		equation.set_height(1.6)
