@@ -30,6 +30,7 @@ __all__ = [
     "Rectangle",
     "Square",
     "RoundedRectangle",
+    "ArrowTriangleFilledTip",
 ]
 
 import warnings

@@ -312,7 +312,7 @@ class Boid2D(Boid, ArrowTip): # ArrowTip is Triangle++
 		# parse CONFIG
 		digest_config(self, kwargs)
 		# ArrowTip constructor first
-		# super(Boid, self).__init__(**self.triangle_config, **kwargs)
+		super(Boid, self).__init__(**self.triangle_config, **kwargs)
 		# Then Boid constructor
 		super().__init__(position, velocity, **kwargs)
 
